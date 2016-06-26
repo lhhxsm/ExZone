@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ExZone.iml" filepath="$PROJECT_DIR$/ExZone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExZoneDome/app.iml" filepath="$PROJECT_DIR$/ExZoneDome/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExZoneLib/ExZoneLib.iml" filepath="$PROJECT_DIR$/ExZoneLib/ExZoneLib.iml" />
+    </modules>
+  </component>
+</project>
