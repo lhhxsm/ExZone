@@ -1,0 +1,1 @@
+1.签名打包方法:先"build-clean Project"，然后Terminal输入命名行：gradlew assembleRelease
