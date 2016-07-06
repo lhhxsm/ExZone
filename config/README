@@ -1,1 +1,16 @@
 1.签名打包方法:先"build-clean Project"，然后Terminal输入命名行：gradlew assembleRelease
+    style="@style/TextAppearance.AppCompat.Display4"//112sp
+    style="@style/TextAppearance.AppCompat.Display3"//56sp
+    style="@style/TextAppearance.AppCompat.Display2"//45sp
+    style="@style/TextAppearance.AppCompat.Display1"//34sp
+    style="@style/TextAppearance.AppCompat.Headline"//24sp
+    style="@style/TextAppearance.AppCompat.Title"//21sp
+    style="@style/TextAppearance.AppCompat.Subhead"//17sp、16sp
+    style="@style/TextAppearance.AppCompat.Body2"//15sp、14sp
+    style="@style/TextAppearance.AppCompat.Body1"//15sp、14sp
+    style="@style/TextAppearance.AppCompat.Caption"//13sp
+    style="@style/TextAppearance.AppCompat.Button"//15sp
+    style="@style/Widget.AppCompat.Button"
+    style="@style/Widget.AppCompat.Button.Borderless"
+    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+    style="@style/Widget.AppCompat.Button.Small"
