@@ -11,7 +11,7 @@ public class AppContextUtil {
     private static Context sContext;
 
     private AppContextUtil() {
-
+        throw new AssertionError();
     }
 
     public static void init(Context context) {

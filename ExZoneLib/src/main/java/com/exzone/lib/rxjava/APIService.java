@@ -1,6 +1,8 @@
-package com.exzone.lib;
+package com.exzone.lib.rxjava;
 
 import android.database.Observable;
+
+import com.exzone.lib.Test;
 
 import retrofit2.http.GET;
 import retrofit2.http.Headers;

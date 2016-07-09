@@ -1,0 +1,46 @@
+<resources>
+    <!--Elevation-->
+    <dimen name="elevation_dialog">24dp</dimen>
+    <dimen name="elevation_picker">24dp</dimen>
+    <dimen name="elevation_nav_drawer">16dp</dimen>
+    <dimen name="elevation_right_drawer">16dp</dimen>
+    <dimen name="elevation_bottom_navigation_bar">8dp</dimen>
+    <dimen name="elevation_modal_bottom_Sheet">16dp</dimen>
+    <dimen name="elevation_fab_pressed">12dp</dimen>
+    <dimen name="elevation_fab_resting">6dp</dimen>
+    <dimen name="elevation_sub_menu">9dp</dimen>
+    <dimen name="elevation_menu">8dp</dimen>
+    <dimen name="elevation_card_raised">8dp</dimen>
+    <dimen name="elevation_card_resting">2dp</dimen>
+    <dimen name="elevation_button_pressed">8dp</dimen>
+    <dimen name="elevation_button_raised">2dp</dimen>
+    <dimen name="elevation_refresh_indicator">3dp</dimen>
+    <dimen name="elevation_search_bar_scrolled">3dp</dimen>
+    <dimen name="elevation_search_bar_resting">2dp</dimen>
+    <dimen name="elevation_quick_entry_scrolled">3dp</dimen>
+    <dimen name="elevation_quick_entry_resting">2dp</dimen>
+    <dimen name="elevation_snack_bar">6dp</dimen>
+    <dimen name="elevation_app_bar">4dp</dimen>
+    <dimen name="elevation_switch">1dp</dimen>
+    <!--Font-->
+    <dimen name="font_caption">13sp</dimen>
+    <dimen name="font_button">15sp</dimen>
+    <dimen name="font_body">15sp</dimen>
+    <dimen name="font_subheading">17sp</dimen>
+    <dimen name="font_title">21sp</dimen>
+    <dimen name="font_headline">24sp</dimen>
+    <dimen name="font_display1">34sp</dimen>
+    <dimen name="font_display2">45sp</dimen>
+    <dimen name="font_display3">56sp</dimen>
+    <dimen name="font_display4">112sp</dimen>
+    <dimen name="font_body_medium">14sp</dimen>
+    <dimen name="font_subheading_medium">16sp</dimen>
+    <dimen name="font_title_medium">20sp</dimen>
+    <!--  -->
+    <dimen name="margins">16dp</dimen>
+    <dimen name="status_bar">24dp</dimen>
+    <dimen name="toolbar">56dp</dimen>
+    <dimen name="subtitle">48dp</dimen>
+    <dimen name="between">8dp</dimen>
+
+</resources>

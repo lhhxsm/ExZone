@@ -1,4 +1,4 @@
-package com.exzone.lib;
+package com.exzone.lib.rxjava;
 
 /**
  * 作者:李鸿浩

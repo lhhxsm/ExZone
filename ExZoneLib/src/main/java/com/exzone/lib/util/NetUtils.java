@@ -9,9 +9,10 @@ import android.net.NetworkInfo;
  * 描述:
  * 时间:2016/7/6.
  */
-public class NetUtil {
+public class NetUtils {
 
-    private NetUtil() {
+    private NetUtils() {
+        throw new AssertionError();
     }
 
     public static boolean isNetworkConnected() {
