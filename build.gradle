@@ -18,6 +18,17 @@ allprojects {
         mavenCentral()
         maven { url "https://jitpack.io" }
     }
+    apply plugin: 'checkstyle'
+    task checkstyle(type: Checkstyle) {
+        source 'src'
+        include '**/*.java'
+        exclude '**/gen/**'
+        exclude '**/R.java'
+        exclude '**/BuildConfig.java'
+        configFile new File(rootDir, "CheckStyle.xml")
+        // empty classpath
+        classpath = files()
+    }
 }
 
 task clean(type: Delete) {

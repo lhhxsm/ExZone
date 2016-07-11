@@ -1,7 +1,5 @@
 package com.exzone.lib;
 
-import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 /**

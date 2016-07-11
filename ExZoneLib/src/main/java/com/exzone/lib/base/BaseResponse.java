@@ -8,7 +8,7 @@ package com.exzone.lib.base;
 public class BaseResponse<T> {
     private int code;
     private String msg;
-    private  T data;
+    private T data;
 
     public int getCode() {
         return code;

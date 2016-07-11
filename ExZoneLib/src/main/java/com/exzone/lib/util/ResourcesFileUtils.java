@@ -15,7 +15,7 @@ public class ResourcesFileUtils {
     /**
      * 从assert文件夹下读取文本资源
      *
-     * @param context 上下文
+     * @param context  上下文
      * @param fileName 文件名
      * @return 文件内容字符串
      */
@@ -34,7 +34,7 @@ public class ResourcesFileUtils {
      * 从raw文件夹下读取文本资源
      *
      * @param context 上下文
-     * @param rawId raw资源id
+     * @param rawId   raw资源id
      * @return 文件内容字符串
      */
     public static String readStringFromRaw(Context context, int rawId) {
@@ -51,7 +51,7 @@ public class ResourcesFileUtils {
     /**
      * 从assert文件夹下读取文件到字节数组
      *
-     * @param context 上下文
+     * @param context  上下文
      * @param fileName 文件名
      * @return 文件字节数组
      */
@@ -83,7 +83,7 @@ public class ResourcesFileUtils {
      * 从raw文件夹下读取文件到字节数组
      *
      * @param context 上下文
-     * @param rawId raw资源id
+     * @param rawId   raw资源id
      * @return 文件字节数组
      */
     public static byte[] readBytesFromRaw(Context context, int rawId) {

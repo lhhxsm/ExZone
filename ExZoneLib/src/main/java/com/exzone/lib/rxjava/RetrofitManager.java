@@ -43,7 +43,7 @@ public class RetrofitManager {
     private static OkHttpClient mOkHttpClient;
     private final APIService mAPIService;
 
-    public static RetrofitManager builder(){
+    public static RetrofitManager builder() {
         return new RetrofitManager();
     }
 
@@ -106,7 +106,7 @@ public class RetrofitManager {
         }
     };
 
-    public Observable<Test> getTest(){
+    public Observable<Test> getTest() {
         return mAPIService.getTest();
     }
 }

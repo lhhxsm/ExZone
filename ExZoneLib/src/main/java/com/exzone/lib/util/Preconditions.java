@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
  */
 public class Preconditions {
 
-    private Preconditions(){
+    private Preconditions() {
         throw new AssertionError();
     }
 
