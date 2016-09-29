@@ -2,7 +2,6 @@ package com.exzone.lib.rxjava;
 
 import android.database.Observable;
 
-import com.exzone.lib.Test;
 import com.exzone.lib.base.BaseApplication;
 import com.exzone.lib.util.NetUtils;
 

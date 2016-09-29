@@ -2,9 +2,10 @@ package com.exzone.lib.rxjava;
 
 import android.database.Observable;
 
-import com.exzone.lib.Test;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import junit.framework.Test;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public interface APIService {
     String ENDPOINT = "https://api.ribot.io/";
 
     @GET("")
-    Observable<List<Test>> getRibots();
+    Observable<List<?>> getRibots();
 
     /********
      * Helper class that sets up a new services
