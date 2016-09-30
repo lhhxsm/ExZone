@@ -67,7 +67,7 @@ public class RetrofitManager {
                 if (mOkHttpClient == null) {
 
                     // 指定缓存路径,缓存大小100Mb
-                    Cache cache = new Cache(new File(BaseApplication.getContext().getCacheDir(), "HttpCache"),
+                    Cache cache = new Cache(new File(BaseApplication.sContext.getCacheDir(), "HttpCache"),
                             1024 * 1024 * 100);
 
                     mOkHttpClient = new OkHttpClient.Builder()
@@ -105,7 +105,7 @@ public class RetrofitManager {
         }
     };
 
-    public Observable<Test> getTest() {
+    public Observable<?> getTest() {
         return mAPIService.getTest();
     }
 }
