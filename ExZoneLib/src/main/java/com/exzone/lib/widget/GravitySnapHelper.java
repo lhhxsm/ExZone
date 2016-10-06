@@ -41,7 +41,7 @@ public class GravitySnapHelper extends SnapHelper {
     @Override
     public void attachToRecyclerView(@Nullable RecyclerView recyclerView) throws IllegalStateException {
         if (recyclerView != null && (mGravity == Gravity.START || mGravity == Gravity.END)) {
-            mIsRtlHorizontal = recyclerView.getContext().getResources().getBoolean(R.bool.is_rtl);
+//            mIsRtlHorizontal = recyclerView.getContext().getResources().getBoolean(R.bool.is_rtl);
         }
         super.attachToRecyclerView(recyclerView);
     }
