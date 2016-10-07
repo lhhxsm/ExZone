@@ -20,9 +20,6 @@ public class SDCardUtils {
     /**
      * 获取公用的存放图片的目录（/storage/emulated/0/Pictures/）
      * 这些文件对与用户与其他app来说是public的，当用户卸载你的app时，这些文件应该保留。例如，那些被你的app拍摄的图片或者下载的文件。
-     *
-     * @param albumName
-     * @return
      */
     public static File getAlbumStorageDir(String albumName) {
         // Get the directory for the user's public pictures directory.
@@ -36,8 +33,6 @@ public class SDCardUtils {
 
     /**
      * 判断SDCard是否可用
-     *
-     * @return
      */
     public static boolean isSDCardEnable() {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
@@ -46,8 +41,6 @@ public class SDCardUtils {
 
     /**
      * 获取SD卡路径
-     *
-     * @return
      */
     public static String getSDCardPath() {
         return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
@@ -55,8 +48,6 @@ public class SDCardUtils {
 
     /**
      * 获取SD卡的剩余容量 单位byte
-     *
-     * @return
      */
     public static long getSDCardAllSize() {
         if (isSDCardEnable()) {
@@ -72,8 +63,6 @@ public class SDCardUtils {
 
     /**
      * 获取指定路径所在空间的剩余可用容量字节数，单位byte
-     *
-     * @param filePath
      * @return 容量字节 SDCard可用空间，内部存储可用空间
      */
     public static long getFreeBytes(String filePath) {
@@ -90,8 +79,6 @@ public class SDCardUtils {
 
     /**
      * 获取系统存储路径
-     *
-     * @return
      */
     public static String getRootDirectoryPath() {
         return Environment.getRootDirectory().getAbsolutePath();
@@ -100,10 +87,6 @@ public class SDCardUtils {
 
     /**
      * 获取文件夹的大小
-     * by yanshi
-     *
-     * @param file
-     * @return
      */
     public static double getDirSize(File file) {
         //判断文件是否存在

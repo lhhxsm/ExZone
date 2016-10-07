@@ -1,5 +1,6 @@
 package com.exzone.lib.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.webkit.WebSettings;
@@ -13,6 +14,8 @@ import com.exzone.lib.util.NetUtils;
  * 时间:2016/10/6.
  */
 public class ExWebView extends WebView {
+
+    private boolean mZoom=false;
 
     public ExWebView(Context context) {
         super(context);
@@ -28,14 +31,36 @@ public class ExWebView extends WebView {
         super(context, attrs, defStyleAttr);
         init(context);
     }
-
+    @SuppressLint({"NewApi", "SetJavaScriptEnabled"})
     private void init(Context context) {
-        WebSettings webSettings = getSettings();
+        WebSettings settings = getSettings();
         if (NetUtils.isConnected(context)) {
-            webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+            settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         } else {
-            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         }
-        webSettings.setJavaScriptEnabled(true);
+        //设置是否支持Javascript
+        settings.setJavaScriptEnabled(true);
+        //是否支持缩放
+        settings.setSupportZoom(mZoom);
+        //是否显示缩放按钮
+        //settings.setDisplayZoomControls(false);
+        //提高渲染优先级
+        settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+        //设置页面自适应手机屏幕
+        settings.setUseWideViewPort(true);
+        //WebView自适应屏幕大小
+        settings.setLoadWithOverviewMode(true);
+        //加载url前，设置不加载图片WebViewClient-->onPageFinished加载图片
+        //settings.setBlockNetworkImage(true);
+        //设置网页编码
+        settings.setDefaultTextEncodingName("UTF-8");
+    }
+
+    /**
+     * 是否支持缩放 默认false
+     */
+    public void setZoom(boolean zoom) {
+        mZoom = zoom;
     }
 }

@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Process;
 
+import com.exzone.lib.exception.UncaughtException;
 import com.exzone.lib.util.Logger;
 
 /**

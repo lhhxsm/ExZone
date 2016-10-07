@@ -2,6 +2,12 @@ package com.exzone.lib.util;
 
 import android.text.TextUtils;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +20,16 @@ public class StringUtils {
 
     private StringUtils() {
         throw new AssertionError();
+    }
+
+    /**
+     * 获取UUID
+     * @return 32UUID小写字符串
+     */
+    public static String gainUUID(){
+        String strUUID = UUID.randomUUID().toString();
+        strUUID = strUUID.replaceAll("-", "").toLowerCase();
+        return strUUID;
     }
 
     /**
@@ -53,5 +69,32 @@ public class StringUtils {
             return hrefMatcher.group(1);
         }
         return href;
+    }
+
+    /**
+     * 将流转成字符串
+     * @param is 输入流
+     * @throws Exception
+     */
+    public static String convertStreamToString(InputStream is) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line).append("\n");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 将文件转成字符串
+     * @param file 文件
+     * @throws Exception
+     */
+    public static String getStringFromFile(File file) throws Exception {
+        FileInputStream fis = new FileInputStream(file);
+        String string = convertStreamToString(fis);
+        fis.close();
+        return string;
     }
 }
