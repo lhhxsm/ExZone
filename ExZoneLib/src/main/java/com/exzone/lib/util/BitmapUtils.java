@@ -284,7 +284,7 @@ public class BitmapUtils {
      * @param newH 需要缩放成的图片高度
      * @return 缩放后的图片
      */
-    public static Bitmap zoom(Bitmap bmp, int newW, int newH) {
+    public static Bitmap zoomBitmap(Bitmap bmp, int newW, int newH) {
         // 获得图片的宽高
         int width = bmp.getWidth();
         int height = bmp.getHeight();
@@ -296,6 +296,23 @@ public class BitmapUtils {
         matrix.postScale(scaleWidth, scaleHeight);
         // 得到新的图片
         return Bitmap.createBitmap(bmp, 0, 0, width, height, matrix, true);
+    }
+
+    public static Drawable zoomDrawable(Drawable drawable, int w, int h) {
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        Bitmap oldbmp = drawableToBitmap(drawable); // drawable转换成bitmap
+        Matrix matrix = new Matrix(); // 创建操作图片用的Matrix对象
+        float scaleWidth = ((float) w / width); // 计算缩放比例
+        float scaleHeight = ((float) h / height);
+        matrix.postScale(scaleWidth, scaleHeight); // 设置缩放比例
+        Bitmap newbmp = Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true); // 建立新的bitmap，其内容是对原bitmap的缩放后的图
+        return new BitmapDrawable(newbmp); // 把bitmap转换成drawable并返回
+    }
+
+    public static Drawable bitmap2Drawable(Bitmap bitmap) {
+        Drawable drawable = new BitmapDrawable(bitmap);
+        return drawable;
     }
 
     /**
@@ -327,6 +344,62 @@ public class BitmapUtils {
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
         canvas.drawRect(0, height, width, bitmapWithReflection.getHeight() + reflectionGap, paint);
         return bitmapWithReflection;
+    }
+
+    /**
+     * 获得倒影的图片
+     *
+     * @return Bitmap
+     */
+    public static Bitmap makeReflectionImage(Bitmap bitmap, int number) {
+        final int reflectionGap = 0; // 倒影和原图片间的距离
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        Matrix matrix = new Matrix();
+        matrix.preScale(1, -1);
+
+        double reflectHeight = number / 100.00;
+
+        number = (int) (height * reflectHeight);
+        // 倒影部分
+        Bitmap reflectionImage = Bitmap.createBitmap(bitmap, 0, number, width, number, matrix, false);
+        // 要返回的倒影图片
+        Bitmap bitmapWithReflection = Bitmap.createBitmap(width, (height + number), Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(bitmapWithReflection);
+        // 画原来的图片
+        canvas.drawBitmap(bitmap, 0, 0, null);
+
+        // Paint defaultPaint = new Paint();
+        //倒影和原图片间的距离
+        // canvas.drawRect(0, height, width, height + reflectionGap,defaultPaint);
+        // 画倒影部分
+        canvas.drawBitmap(reflectionImage, 0, height + reflectionGap, null);
+
+        Paint paint = new Paint();
+        LinearGradient shader = new LinearGradient(0, bitmap.getHeight(), 0, bitmapWithReflection.getHeight() + reflectionGap, 0x70ffffff, 0x00ffffff, Shader.TileMode.MIRROR);
+        paint.setShader(shader);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+        canvas.drawRect(0, height, width, bitmapWithReflection.getHeight() + reflectionGap, paint);
+        return bitmapWithReflection;
+    }
+
+    /**
+     * 图片增加边框
+     */
+    public static Bitmap addFrame(Bitmap bitmap, int color) {
+        Bitmap bitmap2 = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap2);
+        Rect rect = canvas.getClipBounds();
+        rect.bottom--;
+        rect.right--;
+        Paint recPaint = new Paint();
+        recPaint.setColor(color);
+        recPaint.setStyle(Paint.Style.STROKE);
+        canvas.drawRect(rect, recPaint);
+        canvas.drawBitmap(bitmap, 0, 0, null);
+        return bitmap2;
     }
 
 }

@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.os.StatFs;
+import android.text.TextUtils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -28,6 +31,8 @@ import java.util.Map;
  * 时间：2016/10/7.
  */
 public class FileUtils {
+    public final static String FILE_EXTENSION_SEPARATOR = ".";
+
     private FileUtils() {
         throw new AssertionError();
     }
@@ -114,6 +119,22 @@ public class FileUtils {
         } else {
             return 0;
         }
+    }
+
+    /**
+     * 获取文件大小
+     * <ul>
+     * <li>if path is null or empty, return -1</li>
+     * <li>if path exist and it is a file, return file size, else return -1</li>
+     * <ul>
+     */
+    public static long getFileSize(String path) {
+        if (TextUtils.isEmpty(path)) {
+            return -1;
+        }
+
+        File file = new File(path);
+        return (file.exists() && file.isFile() ? file.length() : -1);
     }
 
     /**
@@ -323,13 +344,11 @@ public class FileUtils {
      * @return 字符串内容
      * @throws IOException
      */
-    public static String read(String fileName, String encoding)
-            throws IOException {
+    public static String read(String fileName, String encoding) throws IOException {
         BufferedReader reader = null;
         StringBuilder sb = new StringBuilder();
         try {
-            reader = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(fileName), encoding));
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), encoding));
             String tempString = null;
             while ((tempString = reader.readLine()) != null) {
                 sb.append(tempString);
@@ -419,7 +438,7 @@ public class FileUtils {
      * @param fileNameNoExt 文件名称（不用带后缀名）
      * @return
      */
-    public static Map<String, ?> readShrePerface(Context context, String fileNameNoExt) {
+    public static Map<String, ?> readSharedPreferences(Context context, String fileNameNoExt) {
         SharedPreferences preferences = context.getSharedPreferences(fileNameNoExt, Context.MODE_PRIVATE);
         return preferences.getAll();
     }
@@ -432,7 +451,7 @@ public class FileUtils {
      * @param values        需要写入的数据Map(String,Boolean,Float,Long,Integer)
      * @return
      */
-    public static void writeShrePerface(Context context, String fileNameNoExt, Map<String, ?> values) {
+    public static void writeSharedPreferences(Context context, String fileNameNoExt, Map<String, ?> values) {
         try {
             SharedPreferences preferences = context.getSharedPreferences(fileNameNoExt, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
@@ -465,12 +484,9 @@ public class FileUtils {
      */
     public static void write(Context context, String fileName, String content) {
         try {
-
-            FileOutputStream outStream = context.openFileOutput(fileName,
-                    Context.MODE_PRIVATE);
+            FileOutputStream outStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             outStream.write(content.getBytes());
             outStream.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -488,7 +504,6 @@ public class FileUtils {
             FileOutputStream outStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             outStream.write(content);
             outStream.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -644,4 +659,248 @@ public class FileUtils {
             }
         }
     }
+
+    /**
+     * 文件拷贝
+     */
+    public static void copyFile(File sourceFile, File targetFile) {
+        BufferedInputStream inBuff = null;
+        BufferedOutputStream outBuff = null;
+        try {
+            // 新建文件输入流并对它进行缓冲
+            inBuff = new BufferedInputStream(new FileInputStream(sourceFile));
+            // 新建文件输出流并对它进行缓冲
+            outBuff = new BufferedOutputStream(new FileOutputStream(targetFile));
+            // 缓冲数组
+            byte[] b = new byte[1024 * 5];
+            int len;
+            while ((len = inBuff.read(b)) != -1) {
+                outBuff.write(b, 0, len);
+            }
+            // 刷新此缓冲的输出流
+            outBuff.flush();
+            sourceFile.delete();
+            sourceFile.deleteOnExit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 关闭流
+            try {
+                if (inBuff != null)
+                    inBuff.close();
+                if (outBuff != null)
+                    outBuff.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    /**
+     * delete file or directory
+     * <ul>
+     * <li>if path is null or empty, return true</li>
+     * <li>if path not exist, return true</li>
+     * <li>if path exist, delete recursion. return true</li>
+     * <ul>
+     */
+    public static boolean deleteFile(String path) {
+        if (TextUtils.isEmpty(path)) {
+            return true;
+        }
+
+        File file = new File(path);
+        if (!file.exists()) {
+            return true;
+        }
+        if (file.isFile()) {
+            return file.delete();
+        }
+        if (!file.isDirectory()) {
+            return false;
+        }
+        for (File f : file.listFiles()) {
+            if (f.isFile()) {
+                f.delete();
+            } else if (f.isDirectory()) {
+                deleteFile(f.getAbsolutePath());
+            }
+        }
+        return file.delete();
+    }
+
+    /**
+     * Indicates if this file represents a file on the underlying file system.
+     */
+    public static boolean isFileExist(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            return false;
+        }
+
+        File file = new File(filePath);
+        return (file.exists() && file.isFile());
+    }
+
+    /**
+     * Indicates if this file represents a directory on the underlying file system.
+     */
+    public static boolean isFolderExist(String directoryPath) {
+        if (TextUtils.isEmpty(directoryPath)) {
+            return false;
+        }
+
+        File dire = new File(directoryPath);
+        return (dire.exists() && dire.isDirectory());
+    }
+
+    /**
+     * get file name from path, not include suffix
+     * <p>
+     * <pre>
+     *      getFileNameWithoutExtension(null)               =   null
+     *      getFileNameWithoutExtension("")                 =   ""
+     *      getFileNameWithoutExtension("   ")              =   "   "
+     *      getFileNameWithoutExtension("abc")              =   "abc"
+     *      getFileNameWithoutExtension("a.mp3")            =   "a"
+     *      getFileNameWithoutExtension("a.b.rmvb")         =   "a.b"
+     *      getFileNameWithoutExtension("c:\\")              =   ""
+     *      getFileNameWithoutExtension("c:\\a")             =   "a"
+     *      getFileNameWithoutExtension("c:\\a.b")           =   "a"
+     *      getFileNameWithoutExtension("c:a.txt\\a")        =   "a"
+     *      getFileNameWithoutExtension("/home/admin")      =   "admin"
+     *      getFileNameWithoutExtension("/home/admin/a.txt/b.mp3")  =   "b"
+     * </pre>
+     */
+    public static String getFileNameWithoutExtension(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            return filePath;
+        }
+
+        int extenPosi = filePath.lastIndexOf(FILE_EXTENSION_SEPARATOR);
+        int filePosi = filePath.lastIndexOf(File.separator);
+        if (filePosi == -1) {
+            return (extenPosi == -1 ? filePath : filePath.substring(0, extenPosi));
+        }
+        if (extenPosi == -1) {
+            return filePath.substring(filePosi + 1);
+        }
+        return (filePosi < extenPosi ? filePath.substring(filePosi + 1, extenPosi) : filePath.substring(filePosi + 1));
+    }
+
+    /**
+     * get file name from path, include suffix
+     * <p>
+     * <pre>
+     *      getFileName(null)               =   null
+     *      getFileName("")                 =   ""
+     *      getFileName("   ")              =   "   "
+     *      getFileName("a.mp3")            =   "a.mp3"
+     *      getFileName("a.b.rmvb")         =   "a.b.rmvb"
+     *      getFileName("abc")              =   "abc"
+     *      getFileName("c:\\")              =   ""
+     *      getFileName("c:\\a")             =   "a"
+     *      getFileName("c:\\a.b")           =   "a.b"
+     *      getFileName("c:a.txt\\a")        =   "a"
+     *      getFileName("/home/admin")      =   "admin"
+     *      getFileName("/home/admin/a.txt/b.mp3")  =   "b.mp3"
+     * </pre>
+     *
+     * @param filePath
+     * @return file name from path, include suffix
+     */
+    public static String getFileName(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            return filePath;
+        }
+
+        int filePosi = filePath.lastIndexOf(File.separator);
+        return (filePosi == -1) ? filePath : filePath.substring(filePosi + 1);
+    }
+
+    /**
+     * get folder name from path
+     * <p>
+     * <pre>
+     *      getFolderName(null)               =   null
+     *      getFolderName("")                 =   ""
+     *      getFolderName("   ")              =   ""
+     *      getFolderName("a.mp3")            =   ""
+     *      getFolderName("a.b.rmvb")         =   ""
+     *      getFolderName("abc")              =   ""
+     *      getFolderName("c:\\")              =   "c:"
+     *      getFolderName("c:\\a")             =   "c:"
+     *      getFolderName("c:\\a.b")           =   "c:"
+     *      getFolderName("c:a.txt\\a")        =   "c:a.txt"
+     *      getFolderName("c:a\\b\\c\\d.txt")    =   "c:a\\b\\c"
+     *      getFolderName("/home/admin")      =   "/home"
+     *      getFolderName("/home/admin/a.txt/b.mp3")  =   "/home/admin/a.txt"
+     * </pre>
+     */
+    public static String getFolderName(String filePath) {
+
+        if (TextUtils.isEmpty(filePath)) {
+            return filePath;
+        }
+
+        int filePosi = filePath.lastIndexOf(File.separator);
+        return (filePosi == -1) ? "" : filePath.substring(0, filePosi);
+    }
+
+    /**
+     * get suffix of file from path
+     * <p>
+     * <pre>
+     *      getFileExtension(null)               =   ""
+     *      getFileExtension("")                 =   ""
+     *      getFileExtension("   ")              =   "   "
+     *      getFileExtension("a.mp3")            =   "mp3"
+     *      getFileExtension("a.b.rmvb")         =   "rmvb"
+     *      getFileExtension("abc")              =   ""
+     *      getFileExtension("c:\\")              =   ""
+     *      getFileExtension("c:\\a")             =   ""
+     *      getFileExtension("c:\\a.b")           =   "b"
+     *      getFileExtension("c:a.txt\\a")        =   ""
+     *      getFileExtension("/home/admin")      =   ""
+     *      getFileExtension("/home/admin/a.txt/b")  =   ""
+     *      getFileExtension("/home/admin/a.txt/b.mp3")  =   "mp3"
+     * </pre>
+     *
+     * @param filePath
+     * @return
+     */
+    public static String getFileExtension(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            return filePath;
+        }
+
+        int extenPosi = filePath.lastIndexOf(FILE_EXTENSION_SEPARATOR);
+        int filePosi = filePath.lastIndexOf(File.separator);
+        if (extenPosi == -1) {
+            return "";
+        }
+        return (filePosi >= extenPosi) ? "" : filePath.substring(extenPosi + 1);
+    }
+
+    /**
+     * Creates the directory named by the trailing filename of this file, including the complete directory path required to create this directory.
+     */
+    public static boolean makeDirs(String filePath) {
+        String folderName = getFolderName(filePath);
+        if (TextUtils.isEmpty(folderName)) {
+            return false;
+        }
+
+        File folder = new File(folderName);
+        return (folder.exists() && folder.isDirectory()) ? true : folder.mkdirs();
+    }
+
+    /**
+     * @param filePath
+     * @return
+     * @see #makeDirs(String)
+     */
+    public static boolean makeFolders(String filePath) {
+        return makeDirs(filePath);
+    }
+
+
 }
