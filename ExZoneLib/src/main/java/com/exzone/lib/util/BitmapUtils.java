@@ -24,6 +24,7 @@ import android.view.View;
 
 import com.exzone.lib.constant.SysEnv;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -166,6 +167,45 @@ public class BitmapUtils {
         } else {
             return null;
         }
+    }
+
+    /**
+     * View转成Bitmap
+     */
+    public static Bitmap viewToBitmap(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
+        view.draw(canvas);
+        return bitmap;
+    }
+
+    /**
+     * View转成Bitmap
+     */
+    public static Bitmap view2Bitmap(View view) {
+        view.clearFocus();
+        view.setPressed(false);
+        // 能画缓存就返回false
+        boolean willNotCache = view.willNotCacheDrawing();
+        view.setWillNotCacheDrawing(false);
+        int color = view.getDrawingCacheBackgroundColor();
+        view.setDrawingCacheBackgroundColor(0);
+        if (color != 0) {
+            view.destroyDrawingCache();
+        }
+        view.buildDrawingCache();
+        Bitmap cacheBitmap = view.getDrawingCache();
+        if (cacheBitmap == null) {
+            Logger.e("failed getViewBitmap(" + view + ")", new RuntimeException());
+            return null;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
+        // Restore the view
+        view.destroyDrawingCache();
+        view.setWillNotCacheDrawing(willNotCache);
+        view.setDrawingCacheBackgroundColor(color);
+        return bitmap;
     }
 
     /**
@@ -400,6 +440,130 @@ public class BitmapUtils {
         canvas.drawRect(rect, recPaint);
         canvas.drawBitmap(bitmap, 0, 0, null);
         return bitmap2;
+    }
+
+    /**
+     * 合并Bitmap
+     *
+     * @param bgd 背景Bitmap
+     * @param fg  前景Bitmap
+     * @return 合成后的Bitmap
+     */
+    public static Bitmap combineImages(Bitmap bgd, Bitmap fg) {
+        Bitmap bmp;
+        int width = bgd.getWidth() > fg.getWidth() ? bgd.getWidth() : fg.getWidth();
+        int height = bgd.getHeight() > fg.getHeight() ? bgd.getHeight() : fg.getHeight();
+
+        bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Paint paint = new Paint();
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
+
+        Canvas canvas = new Canvas(bmp);
+        canvas.drawBitmap(bgd, 0, 0, null);
+        canvas.drawBitmap(fg, 0, 0, paint);
+        return bmp;
+    }
+
+    /**
+     * 合并Bitmap
+     *
+     * @param bgd 后景Bitmap
+     * @param fg  前景Bitmap
+     * @return 合成后Bitmap
+     */
+    public static Bitmap combineImagesToSameSize(Bitmap bgd, Bitmap fg) {
+        Bitmap bmp;
+        int width = bgd.getWidth() < fg.getWidth() ? bgd.getWidth() : fg.getWidth();
+        int height = bgd.getHeight() < fg.getHeight() ? bgd.getHeight() : fg.getHeight();
+
+        if (fg.getWidth() != width && fg.getHeight() != height) {
+            fg = zoomBitmap(fg, width, height);
+        }
+        if (bgd.getWidth() != width && bgd.getHeight() != height) {
+            bgd = zoomBitmap(bgd, width, height);
+        }
+
+        bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Paint paint = new Paint();
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
+
+        Canvas canvas = new Canvas(bmp);
+        canvas.drawBitmap(bgd, 0, 0, null);
+        canvas.drawBitmap(fg, 0, 0, paint);
+
+        return bmp;
+    }
+
+    /**
+     * 压缩图片大小
+     *
+     * @param image 源Bitmap
+     * @return 压缩后的Bitmap 小于100KB
+     */
+    public static Bitmap compress(Bitmap image) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, stream);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到stream中
+        int options = 100;
+        while (stream.toByteArray().length / 1024 > 100) { // 循环判断如果压缩后图片是否大于100KB,大于继续压缩
+            stream.reset();// 重置stream即清空stream
+            image.compress(Bitmap.CompressFormat.JPEG, options, stream);// 这里压缩options%，把压缩后的数据存放到stream中
+            options -= 10;// 每次都减少10
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(stream.toByteArray());// 把压缩后的数据stream存放到ByteArrayInputStream中
+        return BitmapFactory.decodeStream(isBm, null, null);// 把ByteArrayInputStream数据生成图片
+    }
+
+    public static Bitmap compress(Bitmap image, double maxSize) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, stream);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到stream中
+        int options = 100;
+        while (stream.toByteArray().length / 1024 > maxSize) { // 循环判断如果压缩后图片是否大于maxSize KB,大于继续压缩
+            stream.reset();// 重置stream即清空stream
+            image.compress(Bitmap.CompressFormat.JPEG, options, stream);// 这里压缩options%，把压缩后的数据存放到stream中
+            options -= 10;// 每次都减少10
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(stream.toByteArray());// 把压缩后的数据stream存放到ByteArrayInputStream中
+        return BitmapFactory.decodeStream(isBm, null, null);// 把ByteArrayInputStream数据生成图片
+    }
+
+    /**
+     * 旋转图片
+     *
+     * @param angle  旋转角度
+     * @param bitmap 要旋转的图片
+     * @return 旋转后的图片
+     */
+    public static Bitmap rotate(Bitmap bitmap, int angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                bitmap.getHeight(), matrix, true);
+    }
+
+    /**
+     * 水平翻转处理
+     *
+     * @param bitmap 原图
+     * @return 水平翻转后的图片
+     */
+    public static Bitmap reverseByHorizontal(Bitmap bitmap) {
+        Matrix matrix = new Matrix();
+        matrix.preScale(-1, 1);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                bitmap.getHeight(), matrix, false);
+    }
+
+    /**
+     * 垂直翻转处理
+     *
+     * @param bitmap 原图
+     * @return 垂直翻转后的图片
+     */
+    public static Bitmap reverseByVertical(Bitmap bitmap) {
+        Matrix matrix = new Matrix();
+        matrix.preScale(1, -1);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                bitmap.getHeight(), matrix, false);
     }
 
 }

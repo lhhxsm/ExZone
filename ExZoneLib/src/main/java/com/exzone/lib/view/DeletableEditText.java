@@ -14,11 +14,12 @@ import android.widget.EditText;
 
 /**
  * 作者:李鸿浩
- * 描述:
+ * 描述:可以自带删除按键的EditText,图标设置方法是drawableRight
  * 时间：2016/10/6.
  */
 public class DeletableEditText extends EditText {
     private Drawable mRightDrawable;
+
     public DeletableEditText(Context context) {
         super(context);
         init();
@@ -108,7 +109,6 @@ public class DeletableEditText extends EditText {
     // 显示一个动画,以提示用户输入
     public void setShakeAnimation() {
         this.startAnimation(shakeAnimation(5));
-
     }
 
     //CycleTimes动画重复的次数

@@ -11,8 +11,8 @@ import com.exzone.lib.base.BaseApplication;
  * 描述:UI工具类
  * 时间: 2016/9/30.
  */
-public class UiUtils {
-    private UiUtils() {
+public class UIUtils {
+    private UIUtils() {
         throw new AssertionError();
     }
 

@@ -10,12 +10,12 @@ import com.exzone.lib.util.NetUtils;
 
 /**
  * 作者:李鸿浩
- * 描述:
+ * 描述:封装一些常用的方法的WebView
  * 时间:2016/10/6.
  */
 public class ExWebView extends WebView {
 
-    private boolean mZoom=false;
+    private boolean mZoom = false;
 
     public ExWebView(Context context) {
         super(context);
@@ -31,6 +31,7 @@ public class ExWebView extends WebView {
         super(context, attrs, defStyleAttr);
         init(context);
     }
+
     @SuppressLint({"NewApi", "SetJavaScriptEnabled"})
     private void init(Context context) {
         WebSettings settings = getSettings();
@@ -61,6 +62,6 @@ public class ExWebView extends WebView {
      * 是否支持缩放 默认false
      */
     public void setZoom(boolean zoom) {
-        mZoom = zoom;
+        this.mZoom = zoom;
     }
 }
