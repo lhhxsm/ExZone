@@ -19,7 +19,7 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_count_down);
         TextView mTextView1 = (TextView) findViewById(R.id.text1);
         final TextView mTextView2 = (TextView) findViewById(R.id.text2);
         TextView mTextView3 = (TextView) findViewById(R.id.text3);
