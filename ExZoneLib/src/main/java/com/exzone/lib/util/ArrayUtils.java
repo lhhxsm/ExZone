@@ -36,6 +36,48 @@ public class ArrayUtils {
     }
 
     /**
+     * 在数组source中替换索引index中的元素为element
+     *
+     * @param source  待操作的数组
+     * @param index   被替换位置的索引
+     * @param element 等待替换的元素
+     */
+    public static <V> boolean replace(V[] source, int index, V element) {
+        if (source == null) {
+            return false;
+        }
+        if (source.length == 0 && index == 0) {
+            source[0] = element;
+            return true;
+        }
+        if (source.length > 0 && index >= 0 && index <= source.length - 1) {
+            source[index] = element;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 在数组source中替换某一个元素
+     *
+     * @param source  待操作的数组
+     * @param index   被替换的元素
+     * @param element 等待替换的元素
+     */
+    public static <V> boolean replace(V[] source, V index, V element) {
+        if (source == null || source.length == 0 || index == null || element == null) {
+            return false;
+        }
+        for (int i = 0; i < source.length; i++) {
+            if (source[i].equals(index)) {
+                source[i] = element;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 将给定的数组转换成字符串
      *
      * @param source       给定的数组
