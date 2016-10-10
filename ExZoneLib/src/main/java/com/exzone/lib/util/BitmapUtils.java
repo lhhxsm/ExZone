@@ -562,8 +562,7 @@ public class BitmapUtils {
     public static Bitmap reverseByVertical(Bitmap bitmap) {
         Matrix matrix = new Matrix();
         matrix.preScale(1, -1);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
-                bitmap.getHeight(), matrix, false);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
     }
 
 }

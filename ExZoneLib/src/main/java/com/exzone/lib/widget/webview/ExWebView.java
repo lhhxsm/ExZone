@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.exzone.lib.util.NetUtils;
+import com.exzone.lib.util.NetWorkUtils;
 
 /**
  * 作者:李鸿浩
@@ -35,7 +35,7 @@ public class ExWebView extends WebView {
     @SuppressLint({"NewApi", "SetJavaScriptEnabled"})
     private void init(Context context) {
         WebSettings settings = getSettings();
-        if (NetUtils.isConnected(context)) {
+        if (NetWorkUtils.isConnected(context)) {
             settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         } else {
             settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
