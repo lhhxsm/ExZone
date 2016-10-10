@@ -7,4 +7,8 @@ package com.exzone.lib.util;
  */
 public class XmlUtils {
 
+    private XmlUtils() {
+        throw new AssertionError();
+    }
+
 }

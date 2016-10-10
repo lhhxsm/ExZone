@@ -1,4 +1,4 @@
-package com.exzone.lib.view;
+package com.exzone.lib.widget.webview;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -168,6 +168,15 @@ public class StringUtils {
     }
 
     /**
+     * 为给定的字符串添加HTML红色标记，当使用Html.fromHtml()方式显示到TextView 的时候其将是红色的
+     * @param source 给定的字符串
+     * @return
+     */
+    public static String addHtmlRedFlag(String source){
+        return "<font color=\"red\">"+source+"</font>";
+    }
+
+    /**
      * 将给定的字符串中所有给定的关键字标红
      *
      * @param source  给定的字符串
