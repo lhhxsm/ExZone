@@ -846,7 +846,7 @@ public class FileUtils {
     }
 
     /**
-     * get suffix of file from path
+     * 从文件路径中获取文件后缀名
      * <p>
      * <pre>
      *      getFileExtension(null)               =   ""
@@ -878,6 +878,18 @@ public class FileUtils {
             return "";
         }
         return (filePosi >= extenPosi) ? "" : filePath.substring(extenPosi + 1);
+    }
+
+    /**
+     * 从文件中获取文件后缀名
+     */
+    public static String getFileExtension(File file) {
+        String name = file.getName();
+        try {
+            return name.substring(name.lastIndexOf(FILE_EXTENSION_SEPARATOR) + 1);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     /**

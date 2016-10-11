@@ -2,6 +2,9 @@ package com.exzone.lib.util;
 
 import android.text.TextUtils;
 
+import com.android.internal.util.Predicate;
+
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -20,7 +23,7 @@ public class CollectionUtils {
      * @param endSymbols   结束符号
      * @return 例如开始符号为"{"，分隔符为", "，结束符号为"}"，那么结果为：{1, 2, 3}
      */
-    public static String toString(Collection<?> source, String startSymbols, String separator, String endSymbols) {
+    public static <T> String toString(Collection<T> source, String startSymbols, String separator, String endSymbols) {
         boolean addSeparator = false;
         StringBuilder sb = new StringBuilder();
         //如果开始符号不为null且不空
@@ -28,13 +31,13 @@ public class CollectionUtils {
             sb.append(startSymbols);
         }
         //循环所有的对象
-        for (Object object : source) {
+        for (T t : source) {
             //如果需要添加分隔符
             if (addSeparator) {
                 sb.append(separator);
                 addSeparator = false;
             }
-            sb.append(object);
+            sb.append(t);
             addSeparator = true;
         }
         //如果结束符号不为null且不空
@@ -51,7 +54,17 @@ public class CollectionUtils {
      * @param separator 分隔符
      * @return 例如分隔符为", "那么结果为：1, 2, 3
      */
-    public static String toString(Collection<?> source, String separator) {
+    public static <T> String toString(Collection<T> source, String separator) {
         return toString(source, null, separator, null);
+    }
+
+    public static <T> Collection<T> filter(Collection<T> target, Predicate<T> predicate) {
+        Collection<T> result = new ArrayList<T>();
+        for (T element : target) {
+            if (predicate.apply(element)) {
+                result.add(element);
+            }
+        }
+        return result;
     }
 }

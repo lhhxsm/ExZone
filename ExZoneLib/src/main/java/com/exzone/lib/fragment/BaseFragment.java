@@ -1,4 +1,4 @@
-package com.exzone.lib.base;
+package com.exzone.lib.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import butterknife.ButterKnife;
 
@@ -40,4 +42,16 @@ public abstract class BaseFragment extends Fragment {
     protected abstract int layoutResID();
 
     protected abstract void onViewCreated(Bundle savedInstanceState);
+
+    protected void fadeIn(View view) {
+        Animation bottomUp = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
+        view.startAnimation(bottomUp);
+        view.setVisibility(View.VISIBLE);
+    }
+
+    protected void fadeOut(View view) {
+        Animation bottomUp = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
+        view.startAnimation(bottomUp);
+        view.setVisibility(View.GONE);
+    }
 }

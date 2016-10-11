@@ -36,6 +36,16 @@ public class ArrayUtils {
     }
 
     /**
+     * 数字是否存在某个元素
+     */
+    public static boolean contains(String[] source, String element) {
+        for (String string : source) {
+            if (element.endsWith(string)) return true;
+        }
+        return false;
+    }
+
+    /**
      * 在数组source中替换索引index中的元素为element
      *
      * @param source  待操作的数组
@@ -121,5 +131,4 @@ public class ArrayUtils {
     public static <V> String toString(V[] source, String separator) {
         return toString(source, null, separator, null);
     }
-
 }

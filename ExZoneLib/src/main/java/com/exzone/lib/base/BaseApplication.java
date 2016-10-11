@@ -7,7 +7,7 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Process;
 
-import com.exzone.lib.exception.UncaughtException;
+import com.exzone.lib.fresco.FrescoManager;
 import com.exzone.lib.util.Logger;
 
 /**
@@ -29,6 +29,7 @@ public class BaseApplication extends Application {
         sMainTid = Process.myTid();
         initWidthAndHeight();
         super.onCreate();
+        FrescoManager.init(this);
     }
 
     /**
