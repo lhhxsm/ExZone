@@ -14,6 +14,5 @@ public class MyApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        NetWorkUtils.startNetService(this,"com.exzone.demo");
     }
 }

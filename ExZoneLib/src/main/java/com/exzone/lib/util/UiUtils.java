@@ -17,21 +17,6 @@ public class UIUtils {
     }
 
     /**
-     * 移除自身布局
-     *
-     * @param v 被移除的View
-     */
-    public static void removeParent(View v) {
-        // 先找到爹 在通过爹去移除孩子
-        ViewParent parent = v.getParent();
-        // 所有的控件 都有爹 爹一般情况下 就是ViewGroup
-        if (parent instanceof ViewGroup) {
-            ViewGroup group = (ViewGroup) parent;
-            group.removeView(v);
-        }
-    }
-
-    /**
      * 把Runnable 方法提交到主线程运行
      */
     public static void runOnUiThread(Runnable runnable, long delayMillis) {
