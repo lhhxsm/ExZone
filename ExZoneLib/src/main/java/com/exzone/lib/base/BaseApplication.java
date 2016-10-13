@@ -29,7 +29,7 @@ public class BaseApplication extends Application {
         sMainTid = Process.myTid();
         initWidthAndHeight();
         super.onCreate();
-        FrescoManager.init(this);
+//        FrescoManager.init(this);
     }
 
     /**

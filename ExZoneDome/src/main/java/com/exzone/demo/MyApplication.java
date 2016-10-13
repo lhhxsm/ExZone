@@ -1,5 +1,8 @@
 package com.exzone.demo;
 
+import android.content.Context;
+import android.support.multidex.MultiDex;
+
 import com.exzone.lib.base.BaseApplication;
 import com.exzone.lib.util.NetWorkUtils;
 
@@ -14,5 +17,11 @@ public class MyApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

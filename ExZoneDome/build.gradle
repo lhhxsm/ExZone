@@ -4,22 +4,31 @@ apply plugin: 'com.neenbedankt.android-apt'
 def debugTime() {
     return new Date().format("HH-mm-ss", TimeZone.getTimeZone("UTC"))
 }
+
 def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
+
 Properties props = new Properties()
 props.load(new FileInputStream(file("config.properties")))
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.3"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.exzone.demo"
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+    }
+    dexOptions {
+        preDexLibraries false
+        javaMaxHeapSize "4g"
+        incremental true
+        jumboMode = true
     }
     signingConfigs {//签名的配置
         release {
@@ -33,7 +42,7 @@ android {
 //            keyAlias '签名文件别名'
 //            keyPassword '密码'
         }
-        debug{
+        debug {
             keyAlias props['KEY_ALIAS']
             keyPassword props['KEY_PASSWORD']
             storeFile file(props['KEYSTORE_FILE'])
@@ -90,8 +99,10 @@ android {
     }
 }
 
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:multidex:1.0.1'
     compile project(':ExZoneLib')
 }
