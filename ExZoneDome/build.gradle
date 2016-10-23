@@ -27,7 +27,7 @@ android {
     dexOptions {
         preDexLibraries false
         javaMaxHeapSize "4g"
-        incremental true
+//        incremental true
         jumboMode = true
     }
     signingConfigs {//签名的配置

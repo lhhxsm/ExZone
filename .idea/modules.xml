@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/ExZone.iml" filepath="$PROJECT_DIR$/ExZone.iml" />
       <module fileurl="file://$PROJECT_DIR$/ExZoneDome/ExZoneDome.iml" filepath="$PROJECT_DIR$/ExZoneDome/ExZoneDome.iml" />
       <module fileurl="file://$PROJECT_DIR$/ExZoneLib/ExZoneLib.iml" filepath="$PROJECT_DIR$/ExZoneLib/ExZoneLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Library/Library.iml" filepath="$PROJECT_DIR$/Library/Library.iml" />
     </modules>
   </component>
 </project>

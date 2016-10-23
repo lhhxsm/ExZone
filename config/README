@@ -14,3 +14,8 @@
     style="@style/Widget.AppCompat.Button.Borderless"
     style="@style/Widget.AppCompat.Button.Borderless.Colored"
     style="@style/Widget.AppCompat.Button.Small"
+2.ClearableCookieJar cookieJar =new PersistentCookieJar
+(new SetCookieCache(), new SharedPrefsCookiePersistor(context));
+OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .cookieJar(cookieJar)
+                .build();

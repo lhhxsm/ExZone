@@ -1,4 +1,4 @@
-package com.exzone.lib.widget.glide;
+package com.exzone.lib.glide;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -11,9 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.exzone.demo.R;
 import com.exzone.lib.view.FoldableLayout;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,12 +41,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     public void onBindViewHolder(final PhotoViewHolder holder, int position) {
         final String path = "content://com.exzone.demo.foldable/demo-pictures/" + mDataSet[position];
 
-        // Bind data
-//        FrescoFactory.getLoader().showImage(holder.mImageViewCover,path,);
-        Glide.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewCover);
-        Glide.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewDetail);
-//        Picasso.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewCover);
-//        Picasso.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewDetail);
+        Picasso.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewCover);
+        Picasso.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewDetail);
         holder.mTextViewCover.setText(mDataSet[position].replace(".jpg", ""));
 
         // Bind state
@@ -140,11 +136,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             mFoldableLayout = foldableLayout;
             foldableLayout.setupViews(R.layout.list_item_cover, R.layout.list_item_detail, R.dimen.card_cover_height, itemView.getContext());
 
-            mImageViewDetail= (ImageView) mFoldableLayout.getDetailView().findViewById(R.id.imageview_detail);
+            mImageViewDetail = (ImageView) mFoldableLayout.getDetailView().findViewById(R.id.imageview_detail);
 
-            mImageViewCover= (ImageView) mFoldableLayout.getCoverView().findViewById(R.id.imageview_cover);
-            mTextViewCover= (TextView) mFoldableLayout.getCoverView().findViewById(R.id.textview_cover);
-            mButtonShare= (Button) mFoldableLayout.getCoverView().findViewById(R.id.share_button);
+            mImageViewCover = (ImageView) mFoldableLayout.getCoverView().findViewById(R.id.imageview_cover);
+            mTextViewCover = (TextView) mFoldableLayout.getCoverView().findViewById(R.id.textview_cover);
+            mButtonShare = (Button) mFoldableLayout.getCoverView().findViewById(R.id.share_button);
         }
     }
 }

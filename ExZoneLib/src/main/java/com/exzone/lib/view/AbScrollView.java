@@ -76,10 +76,12 @@ public class AbScrollView extends ScrollView {
                 if (isNeedMove()) {
                     if (normal.isEmpty()) {
                         // 保存正常的布局位置
-                        normal.set(inner.getLeft(), inner.getTop(), inner.getRight(), inner.getBottom());
+                        normal.set(inner.getLeft(), inner.getTop(), inner.getRight(), inner
+                                .getBottom());
                     }
                     // 移动布局
-                    inner.layout(inner.getLeft(), inner.getTop() - deltaY, inner.getRight(), inner.getBottom() - deltaY);
+                    inner.layout(inner.getLeft(), inner.getTop() - deltaY, inner.getRight(),
+                            inner.getBottom() - deltaY);
                 }
                 break;
             default:
@@ -108,10 +110,10 @@ public class AbScrollView extends ScrollView {
     public boolean isNeedMove() {
         int offset = inner.getMeasuredHeight() - getHeight();
         int scrollY = getScrollY();
-//        if (scrollY == 0 || scrollY == offset) {
-//            return true;
-//        }
-//        return false;
+        //        if (scrollY == 0 || scrollY == offset) {
+        //            return true;
+        //        }
+        //        return false;
         return (scrollY == 0 || scrollY == offset);
     }
 
