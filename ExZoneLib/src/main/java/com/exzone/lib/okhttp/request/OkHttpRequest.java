@@ -1,8 +1,8 @@
 package com.exzone.lib.okhttp.request;
 
-import java.util.concurrent.ConcurrentHashMap;
+import com.exzone.lib.okhttp.callback.Callback;
 
-import okhttp3.Callback;
+import java.util.concurrent.ConcurrentHashMap;
 import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -53,7 +53,7 @@ public abstract class OkHttpRequest {
         return new RequestCall(this);
     }
 
-    public Request request(Callback callback) {
+    public Request createRequest(Callback callback) {
         RequestBody requestBody = buildRequestBody();
         RequestBody wrapRequestBody = wrapRequestBody(requestBody);
         return buildRequest(wrapRequestBody);
