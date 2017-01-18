@@ -4,10 +4,15 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Process;
+import android.support.multidex.MultiDex;
 
+import com.exzone.lib.exception.CrashHandler;
 import com.exzone.lib.util.Logger;
+
+import java.io.File;
 
 /**
  * 作者:李鸿浩
@@ -28,6 +33,30 @@ public class BaseApplication extends Application {
         sMainTid = Process.myTid();
         initWidthAndHeight();
         super.onCreate();
+        //设置异常处理
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(this);
+    }
+
+    /**
+     * 分包
+     */
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
+
+    @Override
+    public File getCacheDir() {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            File cacheDir = getExternalCacheDir();
+            if (cacheDir != null && (cacheDir.exists() || cacheDir.mkdirs())) {
+                return cacheDir;
+            }
+        }
+        return super.getCacheDir();
     }
 
     /**

@@ -11,9 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.exzone.demo.R;
 import com.exzone.lib.view.FoldableLayout;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,8 +41,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     public void onBindViewHolder(final PhotoViewHolder holder, int position) {
         final String path = "content://com.exzone.demo.foldable/demo-pictures/" + mDataSet[position];
 
-        Picasso.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewCover);
-        Picasso.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewDetail);
+        Glide.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewCover);
+        Glide.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewDetail);
         holder.mTextViewCover.setText(mDataSet[position].replace(".jpg", ""));
 
         // Bind state

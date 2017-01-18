@@ -13,13 +13,13 @@ Properties props = new Properties()
 props.load(new FileInputStream(file("config.properties")))
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.exzone.demo"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -106,3 +106,8 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile project(':ExZoneLib')
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
