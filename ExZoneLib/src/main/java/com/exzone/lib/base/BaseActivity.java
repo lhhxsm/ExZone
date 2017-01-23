@@ -1,13 +1,11 @@
 package com.exzone.lib.base;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.exzone.lib.R;
-
-import butterknife.ButterKnife;
+import com.exzone.lib.manager.ActManager;
 
 
 /**

@@ -1,8 +1,7 @@
 package com.exzone.lib.rxjava;
-
 import android.support.annotation.NonNull;
 
-import com.xmhhx.lib.util.Logger;
+import com.exzone.lib.util.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;

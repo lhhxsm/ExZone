@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
-import com.exzone.lib.util.DensityUtils;
 
 import java.util.List;
 

@@ -51,24 +51,21 @@ public class IOUtils {
     /**
      * 文本的写入操作
      *
-     * @param filePath
-     *            文件路径。一定要加上文件名字 <br>
-     *            例如：../a/a.txt
-     * @param content
-     *            写入内容
+     * @param filePath 文件路径。一定要加上文件名字 <br>
+     *                 例如：../a/a.txt
+     * @param content  写入内容
      */
     public static void write(String filePath, String content) {
-        BufferedWriter bufw = null;
+        BufferedWriter bw = null;
         try {
-            bufw = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(filePath)));
-            bufw.write(content);
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath)));
+            bw.write(content);
         } catch (Exception e1) {
             e1.printStackTrace();
         } finally {
-            if (bufw != null) {
+            if (bw != null) {
                 try {
-                    bufw.close();
+                    bw.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -79,28 +76,26 @@ public class IOUtils {
     /**
      * 文本的读取操作
      *
-     * @param path
-     *            文件路径,一定要加上文件名字<br>
-     *            例如：../a/a.txt
+     * @param path 文件路径,一定要加上文件名字<br>
+     *             例如：../a/a.txt
      * @return
      */
     public static String read(String path) {
-        BufferedReader bufr = null;
+        BufferedReader br = null;
         try {
-            bufr = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(path)));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
             StringBuffer sb = new StringBuffer();
             String str = null;
-            while ((str = bufr.readLine()) != null) {
+            while ((str = br.readLine()) != null) {
                 sb.append(str);
             }
             return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (bufr != null) {
+            if (br != null) {
                 try {
-                    bufr.close();
+                    br.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -112,27 +107,26 @@ public class IOUtils {
     /**
      * 文本的读取操作
      *
-     * @param is
-     *            文件路径,一定要加上文件名字<br>
-     *            例如：../a/a.txt
+     * @param is 文件路径,一定要加上文件名字<br>
+     *           例如：../a/a.txt
      * @return
      */
     public static String read(InputStream is) {
-        BufferedReader bufr = null;
+        BufferedReader br = null;
         try {
-            bufr = new BufferedReader(new InputStreamReader(is));
+            br = new BufferedReader(new InputStreamReader(is));
             StringBuffer sb = new StringBuffer();
             String str = null;
-            while ((str = bufr.readLine()) != null) {
+            while ((str = br.readLine()) != null) {
                 sb.append(str);
             }
             return sb.toString();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (bufr != null) {
+            if (br != null) {
                 try {
-                    bufr.close();
+                    br.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

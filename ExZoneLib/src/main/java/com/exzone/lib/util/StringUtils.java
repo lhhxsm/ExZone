@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.UUID;
@@ -159,6 +161,9 @@ public class StringUtils {
         return string;
     }
 
+    /**
+     * 时间转换
+     */
     public static String generateTime(long time) {
         int totalSeconds = (int) (time / 1000);
         int seconds = totalSeconds % 60;
@@ -169,11 +174,11 @@ public class StringUtils {
 
     /**
      * 为给定的字符串添加HTML红色标记，当使用Html.fromHtml()方式显示到TextView 的时候其将是红色的
+     *
      * @param source 给定的字符串
-     * @return
      */
-    public static String addHtmlRedFlag(String source){
-        return "<font color=\"red\">"+source+"</font>";
+    public static String addHtmlRedFlag(String source) {
+        return "<font color=\"red\">" + source + "</font>";
     }
 
     /**
@@ -393,7 +398,7 @@ public class StringUtils {
     /**
      * 判断给定的字符串是否以一个特定的字符串结尾，忽略大小写
      *
-     * @param source    给定的字符串
+     * @param source 给定的字符串
      * @param target 一个特定的字符串
      */
     public static boolean endsWithIgnoreCase(String source, String target) {
@@ -409,5 +414,65 @@ public class StringUtils {
             return false;
         }
     }
+
+    /**
+     * 将byte数组加密成字符串
+     */
+    public static String encodeToString(byte[] input) {
+        try {
+            return new String(Base64Utils.encode(input, 0, input.length), "US-ASCII");
+        } catch (UnsupportedEncodingException e) {
+            // US-ASCII is guaranteed to be available.
+            throw new AssertionError(e);
+        }
+    }
+
+    /**
+     * 将加密的字符串解密成byte数组
+     */
+    public static byte[] decode(String str) {
+        byte[] bytes = str.getBytes();
+        return Base64Utils.decode(bytes, 0, bytes.length);
+    }
+
+    /**
+     * encoded in utf-8
+     * <p>
+     * <pre>
+     * utf8Encode(null)        =   null
+     * utf8Encode("")          =   "";
+     * utf8Encode("aa")        =   "aa";
+     * utf8Encode("啊啊啊啊")   = "%E5%95%8A%E5%95%8A%E5%95%8A%E5%95%8A";
+     * </pre>
+     */
+    public static String utf8Encode(String str) {
+        if (!TextUtils.isEmpty(str) && str.getBytes().length != str.length()) {
+            try {
+                return URLEncoder.encode(str, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("UnsupportedEncodingException occurred. ", e);
+            }
+        }
+        return str;
+    }
+
+    /**
+     * encoded in utf-8, if exception, return defaultReturn
+     *
+     * @param str
+     * @param defaultReturn
+     * @return
+     */
+    public static String utf8Encode(String str, String defaultReturn) {
+        if (!TextUtils.isEmpty(str) && str.getBytes().length != str.length()) {
+            try {
+                return URLEncoder.encode(str, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                return defaultReturn;
+            }
+        }
+        return str;
+    }
+
 
 }

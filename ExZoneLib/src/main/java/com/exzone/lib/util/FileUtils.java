@@ -900,9 +900,8 @@ public class FileUtils {
         if (TextUtils.isEmpty(folderName)) {
             return false;
         }
-
         File folder = new File(folderName);
-        return (folder.exists() && folder.isDirectory()) ? true : folder.mkdirs();
+        return (folder.exists() && folder.isDirectory()) || folder.mkdirs();
     }
 
     /**

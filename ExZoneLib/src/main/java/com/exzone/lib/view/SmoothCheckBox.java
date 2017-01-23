@@ -18,7 +18,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Checkable;
 
 import com.exzone.lib.R;
-import com.exzone.lib.util.DensityUtils;
 
 
 /**

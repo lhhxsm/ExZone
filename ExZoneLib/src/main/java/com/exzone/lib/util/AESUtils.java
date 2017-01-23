@@ -18,7 +18,6 @@ public class AESUtils {
      * 加密
      */
     public static String Encrypt(String sSrc, String sKey) throws Exception {
-
         if (sKey == null) {
             Logger.e("Key为空null");
             return null;
@@ -34,7 +33,7 @@ public class AESUtils {
         IvParameterSpec iv = new IvParameterSpec("1234567890123456".getBytes());//使用CBC模式，需要一个向量iv，可增加加密算法的强度
         cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
         byte[] encrypted = cipher.doFinal(sSrc.getBytes());
-        return Base64Utils.encode(encrypted);//此处使用BASE64做转码功能，同时能起到2次加密的作用。
+        return StringUtils.encodeToString(encrypted);//此处使用BASE64做转码功能，同时能起到2次加密的作用。
     }
 
 

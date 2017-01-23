@@ -29,7 +29,7 @@ public class ListUtils {
     }
 
     /**
-     * 两个集合比较
+     * 集合是否相等
      */
     public static <V> boolean isEquals(ArrayList<V> actual, ArrayList<V> expected) {
         if (actual == null) {
@@ -43,16 +43,26 @@ public class ListUtils {
         }
 
         for (int i = 0; i < actual.size(); i++) {
-            if (!actual.get(i).equals(expected.get(i))) {
+            if (actual.get(i) != expected.get(i)) {
                 return false;
             }
         }
         return true;
     }
 
+    /**
+     * 添加不同的条目到列表
+     *
+     * @return 如果entry在sourceList中已存在，则返回false，否则添加它并返回true。
+     */
+    public static <V> boolean addDistinctEntry(List<V> sourceList, V entry) {
+        return (sourceList != null && !sourceList.contains(entry)) && sourceList.add(entry);
+    }
 
     /**
-     * 两个集合相加,没有相同的项
+     * 从entryList向sourceList添加所有不同的条目
+     *
+     * @return 添加条目的个数
      */
     public static <V> int addDistinctList(List<V> sourceList, List<V> entryList) {
         if (sourceList == null || isEmpty(entryList)) {
@@ -69,7 +79,9 @@ public class ListUtils {
     }
 
     /**
-     * 删除列表中的重复项
+     * 删除列表中的重复条目
+     *
+     * @return 删除条目的个数
      */
     public static <V> int distinctList(List<V> sourceList) {
         if (isEmpty(sourceList)) {
@@ -90,5 +102,26 @@ public class ListUtils {
         return sourceCount - sourceList.size();
     }
 
+    /**
+     * 向列表中添加不为null的条目
+     */
+    public static <V> boolean addListNotNullValue(List<V> sourceList, V value) {
+        return (sourceList != null && value != null) && sourceList.add(value);
+    }
 
+
+    /**
+     * 反转列表
+     */
+    public static <V> List<V> invertList(List<V> sourceList) {
+        if (isEmpty(sourceList)) {
+            return sourceList;
+        }
+
+        List<V> invertList = new ArrayList<V>(sourceList.size());
+        for (int i = sourceList.size() - 1; i >= 0; i--) {
+            invertList.add(sourceList.get(i));
+        }
+        return invertList;
+    }
 }

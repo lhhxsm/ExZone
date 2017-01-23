@@ -5,16 +5,20 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
-import android.view.Display;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 
 /**
  * 作者:李鸿浩
- * 描述:屏幕工具类
+ * 描述:屏幕工具类:屏幕宽高,截屏,单位转换等
  * 时间：2016/10/10.
  */
 public class ScreenUtils {
+
+    private ScreenUtils() {
+        throw new AssertionError();
+    }
 
     /**
      * 获得屏幕高度
@@ -92,5 +96,55 @@ public class ScreenUtils {
         bp = Bitmap.createBitmap(bmp, 0, statusBarHeight, width, height - statusBarHeight);
         view.destroyDrawingCache();
         return bp;
+    }
+
+
+    /**
+     * dp转px
+     */
+    public static int dp2px(Context context, float dp) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
+    /**
+     * dp转px
+     */
+    public static int dp2Px(Context context, float dp) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
+    }
+
+    /**
+     * px转dp
+     */
+    public static int px2dp(Context context, float px) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (px / scale + 0.5f);
+    }
+
+
+    /**
+     * sp转px
+     */
+    public static int sp2px(Context context, float sp) {
+        float scale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (sp * scale + 0.5f);
+    }
+
+    /**
+     * sp转px
+     */
+    public static int sp2Px(Context context, float sp) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, metrics);
+    }
+
+    /**
+     * px转sp
+     */
+    public static int px2sp(Context context, float px) {
+        float scale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (px / scale + 0.5f);
     }
 }

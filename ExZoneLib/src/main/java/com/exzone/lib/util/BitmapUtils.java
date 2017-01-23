@@ -1,6 +1,5 @@
 package com.exzone.lib.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,8 +21,6 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.media.ExifInterface;
 import android.view.View;
 
-import com.exzone.lib.constant.SysEnv;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,7 +37,17 @@ public class BitmapUtils {
     }
 
     /**
-     * 读取本地资源的图片
+     * 从资源文件中获取图片
+     *
+     * @param context    上下文
+     * @param drawableId 资源文件id
+     */
+    public static Bitmap getBitmap(Context context, int drawableId) {
+        return BitmapFactory.decodeResource(context.getResources(), drawableId);
+    }
+
+    /**
+     * 读取raw的图片
      */
     public static Bitmap readBitmapById(Context context, int resId) {
         BitmapFactory.Options opt = new BitmapFactory.Options();
@@ -53,7 +60,7 @@ public class BitmapUtils {
     }
 
     /***
-     * 根据资源文件获取Bitmap
+     * 读取raw的图片
      */
     public static Bitmap readBitmapById(Context context, int drawableId, int targetWidth) {
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -86,25 +93,6 @@ public class BitmapUtils {
         return bitmap.getRowBytes() * bitmap.getHeight();
     }
 
-    /**
-     * 截取应用程序界面（去除状态栏）
-     *
-     * @param activity 界面Activity
-     * @return Bitmap对象
-     */
-    public static Bitmap takeScreenShot(Activity activity) {
-        View view = activity.getWindow().getDecorView();
-        view.setDrawingCacheEnabled(true);
-        view.buildDrawingCache();
-        Bitmap bitmap = view.getDrawingCache();
-        Rect rect = new Rect();
-        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-        int statusBarHeight = rect.top;
-
-        Bitmap bitmap2 = Bitmap.createBitmap(bitmap, 0, statusBarHeight, SysEnv.SCREEN_WIDTH, SysEnv.SCREEN_HEIGHT - statusBarHeight);
-        view.destroyDrawingCache();
-        return bitmap2;
-    }
 
     /**
      * 读取图片属性：旋转的角度
@@ -130,24 +118,10 @@ public class BitmapUtils {
                     break;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw (e);
         }
         return degree;
-    }
-
-    /**
-     * 旋转图片
-     *
-     * @param angle  角度
-     * @param bitmap 源bitmap
-     * @return Bitmap 旋转角度之后的bitmap
-     */
-    public static Bitmap rotaingBitmap(int angle, Bitmap bitmap) {
-        //旋转图片 动作
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        //重新构建Bitmap
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
     /**
@@ -167,6 +141,27 @@ public class BitmapUtils {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Bitmap转成Drawable
+     */
+    public static Drawable bitmapToDrawable(Bitmap bitmap) {
+        return bitmap == null ? null : new BitmapDrawable(bitmap);
+    }
+
+    /**
+     * Drawable转成Byte数组
+     */
+    public static byte[] drawableToByte(Drawable drawable) {
+        return bitmapToBytes(drawableToBitmap(drawable));
+    }
+
+    /**
+     * Byte数组转成Drawable
+     */
+    public static Drawable byteToDrawable(byte[] b) {
+        return bitmapToDrawable(bytesToBitmap(b));
     }
 
     /**
@@ -208,15 +203,6 @@ public class BitmapUtils {
         return bitmap;
     }
 
-    /**
-     * 从资源文件中获取图片
-     *
-     * @param context    上下文
-     * @param drawableId 资源文件id
-     */
-    public static Bitmap getBitmap(Context context, int drawableId) {
-        return BitmapFactory.decodeResource(context.getResources(), drawableId);
-    }
 
     /**
      * 灰白图片（去色）
@@ -239,21 +225,17 @@ public class BitmapUtils {
     /**
      * 将bitmap转成 byte数组
      */
-    public static byte[] toBtyeArray(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        return baos.toByteArray();
+    public static byte[] bitmapToBytes(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
     }
 
     /**
      * 将byte数组转成 bitmap
      */
-    public static Bitmap bytesToBimap(byte[] b) {
-        if (b.length != 0) {
-            return BitmapFactory.decodeByteArray(b, 0, b.length);
-        } else {
-            return null;
-        }
+    public static Bitmap bytesToBitmap(byte[] b) {
+        return (b == null || b.length == 0) ? null : BitmapFactory.decodeByteArray(b, 0, b.length);
     }
 
     /**
@@ -324,7 +306,8 @@ public class BitmapUtils {
      * @param newH 需要缩放成的图片高度
      * @return 缩放后的图片
      */
-    public static Bitmap zoomBitmap(Bitmap bmp, int newW, int newH) {
+    public static Bitmap scaleBitmap(Bitmap bmp, int newW, int newH) {
+        if (bmp == null) return null;
         // 获得图片的宽高
         int width = bmp.getWidth();
         int height = bmp.getHeight();
@@ -338,22 +321,19 @@ public class BitmapUtils {
         return Bitmap.createBitmap(bmp, 0, 0, width, height, matrix, true);
     }
 
-    public static Drawable zoomDrawable(Drawable drawable, int w, int h) {
+    public static Drawable scaleDrawable(Drawable drawable, int w, int h) {
+        if (drawable == null) return null;
         int width = drawable.getIntrinsicWidth();
         int height = drawable.getIntrinsicHeight();
-        Bitmap oldbmp = drawableToBitmap(drawable); // drawable转换成bitmap
+        Bitmap oldBitmap = drawableToBitmap(drawable); // drawable转换成bitmap
         Matrix matrix = new Matrix(); // 创建操作图片用的Matrix对象
         float scaleWidth = ((float) w / width); // 计算缩放比例
         float scaleHeight = ((float) h / height);
         matrix.postScale(scaleWidth, scaleHeight); // 设置缩放比例
-        Bitmap newbmp = Bitmap.createBitmap(oldbmp, 0, 0, width, height, matrix, true); // 建立新的bitmap，其内容是对原bitmap的缩放后的图
-        return new BitmapDrawable(newbmp); // 把bitmap转换成drawable并返回
+        Bitmap newBitmap = Bitmap.createBitmap(oldBitmap, 0, 0, width, height, matrix, true); // 建立新的bitmap，其内容是对原bitmap的缩放后的图
+        return new BitmapDrawable(newBitmap); // 把bitmap转换成drawable并返回
     }
 
-    public static Drawable bitmap2Drawable(Bitmap bitmap) {
-        Drawable drawable = new BitmapDrawable(bitmap);
-        return drawable;
-    }
 
     /**
      * 获得倒影的图片
@@ -372,10 +352,10 @@ public class BitmapUtils {
         Bitmap reflectionImage = Bitmap.createBitmap(bitmap, 0, height / 2, width, height / 2, matrix, false);
         Bitmap bitmapWithReflection = Bitmap.createBitmap(width, (height + height / 2), Bitmap.Config.ARGB_8888);
 
-        Paint deafalutPaint = new Paint();
+        Paint defaultPaint = new Paint();
         Canvas canvas = new Canvas(bitmapWithReflection);
         canvas.drawBitmap(bitmap, 0, 0, null);
-        canvas.drawRect(0, height, width, height + reflectionGap, deafalutPaint);
+        canvas.drawRect(0, height, width, height + reflectionGap, defaultPaint);
         canvas.drawBitmap(reflectionImage, 0, height + reflectionGap, null);
 
         Paint paint = new Paint();
@@ -477,10 +457,10 @@ public class BitmapUtils {
         int height = bgd.getHeight() < fg.getHeight() ? bgd.getHeight() : fg.getHeight();
 
         if (fg.getWidth() != width && fg.getHeight() != height) {
-            fg = zoomBitmap(fg, width, height);
+            fg = scaleBitmap(fg, width, height);
         }
         if (bgd.getWidth() != width && bgd.getHeight() != height) {
-            bgd = zoomBitmap(bgd, width, height);
+            bgd = scaleBitmap(bgd, width, height);
         }
 
         bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -513,6 +493,13 @@ public class BitmapUtils {
         return BitmapFactory.decodeStream(isBm, null, null);// 把ByteArrayInputStream数据生成图片
     }
 
+    /**
+     * 压缩图片(质量压缩)
+     *
+     * @param image   原图
+     * @param maxSize 压缩后最大值
+     * @return
+     */
     public static Bitmap compress(Bitmap image, double maxSize) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, stream);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到stream中
@@ -536,8 +523,7 @@ public class BitmapUtils {
     public static Bitmap rotate(Bitmap bitmap, int angle) {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
-                bitmap.getHeight(), matrix, true);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
     /**
@@ -565,10 +551,20 @@ public class BitmapUtils {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
     }
 
+    /**
+     * 获取圆形
+     */
     public static Bitmap getCircleBitmap(Bitmap bitmap) {
         return getCircleBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight());
     }
 
+    /**
+     * 获取椭圆
+     *
+     * @param bitmap 原图
+     * @param width  目标宽度
+     * @param height 目标高度
+     */
     public static Bitmap getCircleBitmap(Bitmap bitmap, int width, int height) {
         Bitmap croppedBitmap = scaleCenterCrop(bitmap, width, height);
         Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -578,7 +574,6 @@ public class BitmapUtils {
         final Paint paint = new Paint();
 
         final Rect rect = new Rect(0, 0, width, height);
-        final RectF rectF = new RectF(rect);
 
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
@@ -598,7 +593,14 @@ public class BitmapUtils {
         return output;
     }
 
-    public static Bitmap scaleCenterCrop(Bitmap source, int newHeight, int newWidth) {
+    /**
+     * 截取中间部分的图片
+     *
+     * @param source    原图
+     * @param newWidth  截取之后的宽度
+     * @param newHeight 截取之后的高度
+     */
+    public static Bitmap scaleCenterCrop(Bitmap source, int newWidth, int newHeight) {
         int sourceWidth = source.getWidth();
         int sourceHeight = source.getHeight();
 
@@ -617,8 +619,32 @@ public class BitmapUtils {
         Bitmap dest = Bitmap.createBitmap(newWidth, newHeight, source.getConfig());
         Canvas canvas = new Canvas(dest);
         canvas.drawBitmap(source, null, targetRect, null);
-
         return dest;
+    }
+
+    /**
+     * Bitmap转成String
+     */
+    public static String bitmapToString(Bitmap bitmap) {
+        return StringUtils.encodeToString(bitmap2Bytes(bitmap));
+    }
+
+    /**
+     * String转成Bitmap
+     */
+    public static Bitmap string2Bitmap(String string) {
+        byte[] bytes = Base64Utils.decode(string);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+
+    /**
+     * Bitmap转成Byte数组
+     */
+    private static byte[] bitmap2Bytes(Bitmap bm) {
+        if (bm == null) return null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
     }
 
 }

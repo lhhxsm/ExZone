@@ -6,6 +6,7 @@ import com.android.internal.util.Predicate;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 作者:李鸿浩
@@ -13,6 +14,14 @@ import java.util.Collection;
  * 时间: 2016/10/10.
  */
 public class CollectionUtils {
+
+
+    /**
+     * 集合是否为空,或者大小为0
+     */
+    public static <V> boolean isEmpty(Collection<V> source) {
+        return (source == null || source.size() == 0);
+    }
 
     /**
      * 将给定的集合转换成字符串
