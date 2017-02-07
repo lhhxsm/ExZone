@@ -246,17 +246,17 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
         return mTitles;
     }
 
+    public void setTitles(final String... titles) {
+        for (int i = 0; i < titles.length; i++) titles[i] = titles[i].toUpperCase();
+        mTitles = titles;
+        requestLayout();
+    }
+
     public void setTitles(final int... titleResIds) {
         final String[] titles = new String[titleResIds.length];
         for (int i = 0; i < titleResIds.length; i++)
             titles[i] = getResources().getString(titleResIds[i]);
         setTitles(titles);
-    }
-
-    public void setTitles(final String... titles) {
-        for (int i = 0; i < titles.length; i++) titles[i] = titles[i].toUpperCase();
-        mTitles = titles;
-        requestLayout();
     }
 
     public int getStripColor() {
@@ -277,6 +277,11 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
         return mStripGravity;
     }
 
+    public void setStripGravity(final StripGravity stripGravity) {
+        mStripGravity = stripGravity;
+        requestLayout();
+    }
+
     private void setStripGravity(final int index) {
         switch (index) {
             case StripGravity.TOP_INDEX:
@@ -288,13 +293,13 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
         }
     }
 
-    public void setStripGravity(final StripGravity stripGravity) {
-        mStripGravity = stripGravity;
-        requestLayout();
-    }
-
     public StripType getStripType() {
         return mStripType;
+    }
+
+    public void setStripType(final StripType stripType) {
+        mStripType = stripType;
+        requestLayout();
     }
 
     private void setStripType(final int index) {
@@ -306,11 +311,6 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
             default:
                 setStripType(StripType.LINE);
         }
-    }
-
-    public void setStripType(final StripType stripType) {
-        mStripType = stripType;
-        requestLayout();
     }
 
     public float getStripFactor() {
@@ -325,6 +325,12 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
         return mTypeface;
     }
 
+    public void setTypeface(final Typeface typeface) {
+        mTypeface = typeface;
+        mTitlePaint.setTypeface(typeface);
+        postInvalidate();
+    }
+
     public void setTypeface(final String typeface) {
         Typeface tempTypeface;
         try {
@@ -335,12 +341,6 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
         }
 
         setTypeface(tempTypeface);
-    }
-
-    public void setTypeface(final Typeface typeface) {
-        mTypeface = typeface;
-        mTitlePaint.setTypeface(typeface);
-        postInvalidate();
     }
 
     public int getActiveColor() {
@@ -734,39 +734,6 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
         return savedState;
     }
 
-    // Save current index instance
-    private static class SavedState extends BaseSavedState {
-        int index;
-
-        public SavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        private SavedState(Parcel in) {
-            super(in);
-            index = in.readInt();
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            super.writeToParcel(dest, flags);
-            dest.writeInt(index);
-        }
-
-        @SuppressWarnings("UnusedDeclaration")
-        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
-            @Override
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
-
-            @Override
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
-    }
-
     @Override
     protected void onConfigurationChanged(final Configuration newConfig) {
         // Config view on rotate etc.
@@ -784,21 +751,58 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
         });
     }
 
-    // Custom scroller with custom scroll duration
-    private class ResizeViewPagerScroller extends Scroller {
+    // NTS strip type
+    public enum StripType {
+        LINE, POINT;
 
-        public ResizeViewPagerScroller(Context context) {
-            super(context, new AccelerateDecelerateInterpolator());
+        private final static int LINE_INDEX = 0;
+        private final static int POINT_INDEX = 1;
+    }
+
+    // NTS strip gravity
+    public enum StripGravity {
+        BOTTOM, TOP;
+
+        private final static int BOTTOM_INDEX = 0;
+        private final static int TOP_INDEX = 1;
+    }
+
+    // Out listener for selected index
+    public interface OnTabStripSelectedIndexListener {
+        void onStartTabSelected(final String title, final int index);
+
+        void onEndTabSelected(final String title, final int index);
+    }
+
+    // Save current index instance
+    private static class SavedState extends BaseSavedState {
+        @SuppressWarnings("UnusedDeclaration")
+        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+        int index;
+
+        public SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            index = in.readInt();
         }
 
         @Override
-        public void startScroll(int startX, int startY, int dx, int dy, int duration) {
-            super.startScroll(startX, startY, dx, dy, mAnimationDuration);
-        }
-
-        @Override
-        public void startScroll(int startX, int startY, int dx, int dy) {
-            super.startScroll(startX, startY, dx, dy, mAnimationDuration);
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeInt(index);
         }
     }
 
@@ -831,26 +835,21 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
         }
     }
 
-    // NTS strip type
-    public enum StripType {
-        LINE, POINT;
+    // Custom scroller with custom scroll duration
+    private class ResizeViewPagerScroller extends Scroller {
 
-        private final static int LINE_INDEX = 0;
-        private final static int POINT_INDEX = 1;
-    }
+        public ResizeViewPagerScroller(Context context) {
+            super(context, new AccelerateDecelerateInterpolator());
+        }
 
-    // NTS strip gravity
-    public enum StripGravity {
-        BOTTOM, TOP;
+        @Override
+        public void startScroll(int startX, int startY, int dx, int dy, int duration) {
+            super.startScroll(startX, startY, dx, dy, mAnimationDuration);
+        }
 
-        private final static int BOTTOM_INDEX = 0;
-        private final static int TOP_INDEX = 1;
-    }
-
-    // Out listener for selected index
-    public interface OnTabStripSelectedIndexListener {
-        void onStartTabSelected(final String title, final int index);
-
-        void onEndTabSelected(final String title, final int index);
+        @Override
+        public void startScroll(int startX, int startY, int dx, int dy) {
+            super.startScroll(startX, startY, dx, dy, mAnimationDuration);
+        }
     }
 }

@@ -12,11 +12,11 @@
 
     <com.exzone.lib.view.OutlineTextView
         android:id="@+id/text"
-        android:textSize="25sp"
-        android:textColor="@color/md_white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"/>
+        android:text="@string/app_name"
+        android:textColor="@color/md_white"
+        android:textSize="25sp"/>
 
     <com.exzone.lib.view.CenterLayout
         android:layout_width="match_parent"
@@ -39,9 +39,9 @@
 
         <com.exzone.lib.view.OutlineTextView
             android:id="@+id/text0"
-            android:textSize="50sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"/>
+            android:text="@string/app_name"
+            android:textSize="50sp"/>
     </com.exzone.lib.view.CenterLayout>
 </LinearLayout>

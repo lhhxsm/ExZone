@@ -6,7 +6,6 @@ import com.android.internal.util.Predicate;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 作者:李鸿浩

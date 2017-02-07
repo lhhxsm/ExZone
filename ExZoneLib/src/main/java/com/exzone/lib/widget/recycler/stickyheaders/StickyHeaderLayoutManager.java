@@ -1,7 +1,6 @@
 package com.exzone.lib.widget.recycler.stickyheaders;
 
 
-
 import android.content.Context;
 import android.graphics.PointF;
 import android.os.Parcel;
@@ -25,54 +24,20 @@ import java.util.Set;
  */
 public class StickyHeaderLayoutManager extends RecyclerView.LayoutManager {
 
-    public enum HeaderPosition {
-        NONE,
-        NATURAL,
-        STICKY,
-        TRAILING
-    }
-
-    /**
-     * Callback interface for monitoring when header positions change between members of HeaderPosition enum values.
-     * This can be useful if client code wants to change appearance for headers in HeaderPosition.STICKY vs normal positioning.
-     *
-     * @see HeaderPosition
-     */
-    public interface HeaderPositionChangedCallback {
-        /**
-         * Called when a sections header positioning approach changes. The position can be HeaderPosition.NONE, HeaderPosition.NATURAL, HeaderPosition.STICKY or HeaderPosition.TRAILING
-         *
-         * @param sectionIndex the sections [0...n)
-         * @param header       the header view
-         * @param oldPosition  the previous positioning of the header (NONE, NATURAL, STICKY or TRAILING)
-         * @param newPosition  the new positioning of the header (NATURAL, STICKY or TRAILING)
-         */
-        void onHeaderPositionChanged(int sectionIndex, View header, HeaderPosition oldPosition, HeaderPosition newPosition);
-    }
-
     private static final String TAG = StickyHeaderLayoutManager.class.getSimpleName();
-
     SectioningAdapter adapter;
-
     // holds all the visible section headers
     HashSet<View> headerViews = new HashSet<>();
-
     // holds the HeaderPosition for each header
     HashMap<Integer, HeaderPosition> headerPositionsBySection = new HashMap<>();
-
     HeaderPositionChangedCallback headerPositionChangedCallback;
-
     // adapter position of first (lowest-y-value) visible item.
     int firstViewAdapterPosition;
-
     // top of first (lowest-y-value) visible item.
     int firstViewTop;
-
     // adapter position (iff >= 0) of the item selected in scrollToPosition
     int scrollTargetAdapterPosition = -1;
-
     SavedState pendingSavedState;
-
 
     public StickyHeaderLayoutManager() {
     }
@@ -135,10 +100,10 @@ public class StickyHeaderLayoutManager extends RecyclerView.LayoutManager {
         }
 
         if (state instanceof SavedState) {
-            pendingSavedState = (SavedState)state;
+            pendingSavedState = (SavedState) state;
             requestLayout();
         } else {
-            Log.e(TAG, "onRestoreInstanceState: invalid saved state class, expected: " + SavedState.class.getCanonicalName() + " got: " + state.getClass().getCanonicalName() );
+            Log.e(TAG, "onRestoreInstanceState: invalid saved state class, expected: " + SavedState.class.getCanonicalName() + " got: " + state.getClass().getCanonicalName());
         }
     }
 
@@ -260,7 +225,6 @@ public class StickyHeaderLayoutManager extends RecyclerView.LayoutManager {
 
         return null;
     }
-
 
     @Override
     public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
@@ -717,35 +681,44 @@ public class StickyHeaderLayoutManager extends RecyclerView.LayoutManager {
         return getViewViewHolder(view).getAdapterPosition();
     }
 
-    // https://blog.stylingandroid.com/scrolling-recyclerview-part-3/
-    class SmoothScroller extends LinearSmoothScroller {
-        private static final int TARGET_SEEK_SCROLL_DISTANCE_PX = 10000;
-        private static final float DEFAULT_DURATION = 1000;
-        private final float distanceInPixels;
-        private final float duration;
+    public enum HeaderPosition {
+        NONE,
+        NATURAL,
+        STICKY,
+        TRAILING
+    }
 
-        public SmoothScroller(Context context, int distanceInPixels) {
-            super(context);
-            this.distanceInPixels = distanceInPixels;
-            float millisecondsPerPx = calculateSpeedPerPixel(context.getResources().getDisplayMetrics());
-            this.duration = distanceInPixels < TARGET_SEEK_SCROLL_DISTANCE_PX ?
-                    (int) (Math.abs(distanceInPixels) * millisecondsPerPx) : DEFAULT_DURATION;
-        }
-
-        @Override
-        public PointF computeScrollVectorForPosition(int targetPosition) {
-            return new PointF(0, StickyHeaderLayoutManager.this.computeScrollVectorForPosition(targetPosition));
-        }
-
-        @Override
-        protected int calculateTimeForScrolling(int dx) {
-            float proportion = (float) dx / distanceInPixels;
-            return (int) (duration * proportion);
-        }
+    /**
+     * Callback interface for monitoring when header positions change between members of HeaderPosition enum values.
+     * This can be useful if client code wants to change appearance for headers in HeaderPosition.STICKY vs normal positioning.
+     *
+     * @see HeaderPosition
+     */
+    public interface HeaderPositionChangedCallback {
+        /**
+         * Called when a sections header positioning approach changes. The position can be HeaderPosition.NONE, HeaderPosition.NATURAL, HeaderPosition.STICKY or HeaderPosition.TRAILING
+         *
+         * @param sectionIndex the sections [0...n)
+         * @param header       the header view
+         * @param oldPosition  the previous positioning of the header (NONE, NATURAL, STICKY or TRAILING)
+         * @param newPosition  the new positioning of the header (NATURAL, STICKY or TRAILING)
+         */
+        void onHeaderPositionChanged(int sectionIndex, View header, HeaderPosition oldPosition, HeaderPosition newPosition);
     }
 
     static class SavedState implements Parcelable {
 
+        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
         int firstViewAdapterPosition = RecyclerView.NO_POSITION;
         int firstViewTop = 0;
 
@@ -785,17 +758,32 @@ public class StickyHeaderLayoutManager extends RecyclerView.LayoutManager {
             dest.writeInt(firstViewAdapterPosition);
             dest.writeInt(firstViewTop);
         }
+    }
 
-        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
-            @Override
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
+    // https://blog.stylingandroid.com/scrolling-recyclerview-part-3/
+    class SmoothScroller extends LinearSmoothScroller {
+        private static final int TARGET_SEEK_SCROLL_DISTANCE_PX = 10000;
+        private static final float DEFAULT_DURATION = 1000;
+        private final float distanceInPixels;
+        private final float duration;
 
-            @Override
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
+        public SmoothScroller(Context context, int distanceInPixels) {
+            super(context);
+            this.distanceInPixels = distanceInPixels;
+            float millisecondsPerPx = calculateSpeedPerPixel(context.getResources().getDisplayMetrics());
+            this.duration = distanceInPixels < TARGET_SEEK_SCROLL_DISTANCE_PX ?
+                    (int) (Math.abs(distanceInPixels) * millisecondsPerPx) : DEFAULT_DURATION;
+        }
+
+        @Override
+        public PointF computeScrollVectorForPosition(int targetPosition) {
+            return new PointF(0, StickyHeaderLayoutManager.this.computeScrollVectorForPosition(targetPosition));
+        }
+
+        @Override
+        protected int calculateTimeForScrolling(int dx) {
+            float proportion = (float) dx / distanceInPixels;
+            return (int) (duration * proportion);
+        }
     }
 }

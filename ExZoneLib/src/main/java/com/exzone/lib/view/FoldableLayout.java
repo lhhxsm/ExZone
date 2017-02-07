@@ -31,7 +31,7 @@ import com.exzone.lib.R;
 public class FoldableLayout extends RelativeLayout {
 
     private static final int ANIMATION_DURATION = 600;
-
+    private final TimeInterpolator mTimeInterpolator = new AccelerateDecelerateInterpolator();
     protected RelativeLayout mContentLayout;
     protected ImageView mImageViewBelow;
     protected ImageView mImageViewAbove;
@@ -66,8 +66,6 @@ public class FoldableLayout extends RelativeLayout {
 
         }
     };
-
-    private final TimeInterpolator mTimeInterpolator = new AccelerateDecelerateInterpolator();
 
     /**
      * Basic constructor.

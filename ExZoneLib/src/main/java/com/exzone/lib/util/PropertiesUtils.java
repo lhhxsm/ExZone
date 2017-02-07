@@ -136,14 +136,14 @@ public class PropertiesUtils extends Properties {
         }
     }
 
-    public static Properties loadConfigAssets(Context context,String fileName) {
+    public static Properties loadConfigAssets(Context context, String fileName) {
 
         Properties properties = new Properties();
         try {
             InputStream is = context.getAssets().open(fileName);
             properties.load(is);
         } catch (Exception e) {
-           Logger.e(e.toString());
+            Logger.e(e.toString());
         }
         return properties;
     }

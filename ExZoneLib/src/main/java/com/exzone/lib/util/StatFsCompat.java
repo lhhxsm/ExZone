@@ -18,6 +18,29 @@ public class StatFsCompat {
     }
 
     /**
+     * 创建一个用于查询外部存储（Environment.getExternalStorageDirectory()）容量的StatFsCompat
+     *
+     * @return null：外部存储不可用
+     */
+    @SuppressWarnings("deprecation")
+    public static StatFsCompat newByExternalStorage() {
+        if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            return null;
+        }
+        return new StatFsCompat(Environment.getExternalStorageDirectory().getPath());
+    }
+
+    /**
+     * 创建一个用于查询内部存储（/data）容量的StatFsCompat
+     *
+     * @return null：内部存储不可用
+     */
+    @SuppressWarnings("deprecation")
+    public static StatFsCompat newByInternalStorage() {
+        return new StatFsCompat("/data");
+    }
+
+    /**
      * 获取可用字节,单位byte
      */
     @SuppressWarnings("deprecation")
@@ -51,26 +74,5 @@ public class StatFsCompat {
         } else {
             return (long) mStatFs.getFreeBlocks() * mStatFs.getBlockSize();
         }
-    }
-
-    /**
-     * 创建一个用于查询外部存储（Environment.getExternalStorageDirectory()）容量的StatFsCompat
-     * @return null：外部存储不可用
-     */
-    @SuppressWarnings("deprecation")
-    public static StatFsCompat newByExternalStorage(){
-        if(!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-            return null;
-        }
-        return new StatFsCompat(Environment.getExternalStorageDirectory().getPath());
-    }
-
-    /**
-     * 创建一个用于查询内部存储（/data）容量的StatFsCompat
-     * @return null：内部存储不可用
-     */
-    @SuppressWarnings("deprecation")
-    public static StatFsCompat newByInternalStorage(){
-        return new StatFsCompat("/data");
     }
 }

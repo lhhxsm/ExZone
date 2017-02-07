@@ -18,6 +18,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Checkable;
 
 import com.exzone.lib.R;
+import com.exzone.lib.util.ScreenUtils;
 
 
 /**
@@ -65,6 +66,21 @@ public class SmoothCheckBox extends View implements Checkable {
         init(attrs);
     }
 
+    private static int getGradientColor(int startColor, int endColor, float percent) {
+        int sr = (startColor & 0xff0000) >> 0x10;
+        int sg = (startColor & 0xff00) >> 0x8;
+        int sb = (startColor & 0xff);
+
+        int er = (endColor & 0xff0000) >> 0x10;
+        int eg = (endColor & 0xff00) >> 0x8;
+        int eb = (endColor & 0xff);
+
+        int cr = (int) (sr * (1 - percent) + er * percent);
+        int cg = (int) (sg * (1 - percent) + eg * percent);
+        int cb = (int) (sb * (1 - percent) + eb * percent);
+        return Color.argb(0xff, cr, cg, cb);
+    }
+
     private void init(AttributeSet attrs) {
         TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.SmoothCheckBox);
         int tickColor = ta.getColor(R.styleable.SmoothCheckBox_color_tick, COLOR_TICK);
@@ -72,7 +88,7 @@ public class SmoothCheckBox extends View implements Checkable {
         mFloorColor = ta.getColor(R.styleable.SmoothCheckBox_color_unchecked_stroke, COLOR_FLOOR_UNCHECKED);
         mCheckedColor = ta.getColor(R.styleable.SmoothCheckBox_color_checked, COLOR_CHECKED);
         mUnCheckedColor = ta.getColor(R.styleable.SmoothCheckBox_color_unchecked, COLOR_UNCHECKED);
-        mStrokeWidth = ta.getDimensionPixelSize(R.styleable.SmoothCheckBox_stroke_width, DensityUtils.dp2px(getContext(), 0));
+        mStrokeWidth = ta.getDimensionPixelSize(R.styleable.SmoothCheckBox_stroke_width, ScreenUtils.dp2px(getContext(), 0));
         ta.recycle();
 
         mFloorUnCheckedColor = mFloorColor;
@@ -137,11 +153,6 @@ public class SmoothCheckBox extends View implements Checkable {
     }
 
     @Override
-    public void toggle() {
-        this.setChecked(!isChecked());
-    }
-
-    @Override
     public void setChecked(boolean checked) {
         mChecked = checked;
         reset();
@@ -149,6 +160,11 @@ public class SmoothCheckBox extends View implements Checkable {
         if (mListener != null) {
             mListener.onCheckedChanged(SmoothCheckBox.this, mChecked);
         }
+    }
+
+    @Override
+    public void toggle() {
+        this.setChecked(!isChecked());
     }
 
     /**
@@ -185,7 +201,7 @@ public class SmoothCheckBox extends View implements Checkable {
     }
 
     private int measureSize(int measureSpec) {
-        int defSize = DensityUtils.dp2px(getContext(), DEF_DRAW_SIZE);
+        int defSize = ScreenUtils.dp2px(getContext(), DEF_DRAW_SIZE);
         int specSize = MeasureSpec.getSize(measureSpec);
         int specMode = MeasureSpec.getMode(measureSpec);
 
@@ -373,21 +389,6 @@ public class SmoothCheckBox extends View implements Checkable {
                 postInvalidate();
             }
         }, mAnimDuration);
-    }
-
-    private static int getGradientColor(int startColor, int endColor, float percent) {
-        int sr = (startColor & 0xff0000) >> 0x10;
-        int sg = (startColor & 0xff00) >> 0x8;
-        int sb = (startColor & 0xff);
-
-        int er = (endColor & 0xff0000) >> 0x10;
-        int eg = (endColor & 0xff00) >> 0x8;
-        int eb = (endColor & 0xff);
-
-        int cr = (int) (sr * (1 - percent) + er * percent);
-        int cg = (int) (sg * (1 - percent) + eg * percent);
-        int cb = (int) (sb * (1 - percent) + eb * percent);
-        return Color.argb(0xff, cr, cg, cb);
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener l) {

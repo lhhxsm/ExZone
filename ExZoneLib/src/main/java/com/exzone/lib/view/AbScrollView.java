@@ -14,8 +14,8 @@ import android.widget.ScrollView;
  * 时间：2016/10/7.
  */
 public class AbScrollView extends ScrollView {
-    private View inner; // 孩子View
     private static final int DEFAULT_POSITION = -1;
+    private View inner; // 孩子View
     private float y = DEFAULT_POSITION;// 点击时y的坐标
     private Rect normal = new Rect();
     // 滑动距离及坐标

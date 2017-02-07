@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.exzone.lib.base.BaseApplication;
-import com.exzone.lib.util.NetWorkUtils;
 
 /**
  * 作者:李鸿浩

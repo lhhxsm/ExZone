@@ -26,18 +26,22 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
  */
 public class FrescoLoader extends BaseImageLoader<DraweeView, FrescoLoader.FrescoOption> {
 
-    public static class FrescoOption implements ImageLoaderWrapper.ImageOption {
-        private ResizeOptions mResizeOptions;
+    public static void requestImage(Context context, Uri uri, final float currentPosition, final RequestCallback callback) {
+        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri).setProgressiveRenderingEnabled(true).build();
+        ImagePipeline pipeline = Fresco.getImagePipeline();
+        DataSource<CloseableReference<CloseableImage>> source = pipeline.fetchDecodedImage(request, context);
+        source.subscribe(new BaseBitmapDataSubscriber() {
+            @Override
+            protected void onNewResultImpl(@Nullable Bitmap bitmap) {
+                callback.onSuccess(bitmap, currentPosition);
+            }
 
-        public ResizeOptions getResizeOptions() {
-            return mResizeOptions;
-        }
+            @Override
+            protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
 
-        public void setResizeOptions(ResizeOptions resizeOptions) {
-            mResizeOptions = resizeOptions;
-        }
+            }
+        }, CallerThreadExecutor.getInstance());
     }
-
 
     @SuppressWarnings("deprecation")
     @Override
@@ -89,20 +93,15 @@ public class FrescoLoader extends BaseImageLoader<DraweeView, FrescoLoader.Fresc
         void onSuccess(Bitmap bitmap, float currentPosition);
     }
 
-    public static void requestImage(Context context, Uri uri, final float currentPosition, final RequestCallback callback) {
-        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri).setProgressiveRenderingEnabled(true).build();
-        ImagePipeline pipeline = Fresco.getImagePipeline();
-        DataSource<CloseableReference<CloseableImage>> source = pipeline.fetchDecodedImage(request, context);
-        source.subscribe(new BaseBitmapDataSubscriber() {
-            @Override
-            protected void onNewResultImpl(@Nullable Bitmap bitmap) {
-                callback.onSuccess(bitmap, currentPosition);
-            }
+    public static class FrescoOption implements ImageLoaderWrapper.ImageOption {
+        private ResizeOptions mResizeOptions;
 
-            @Override
-            protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
+        public ResizeOptions getResizeOptions() {
+            return mResizeOptions;
+        }
 
-            }
-        }, CallerThreadExecutor.getInstance());
+        public void setResizeOptions(ResizeOptions resizeOptions) {
+            mResizeOptions = resizeOptions;
+        }
     }
 }

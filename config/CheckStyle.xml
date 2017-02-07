@@ -8,9 +8,9 @@
     <property name="charset" value="UTF-8"/>
     <property name="severity" value="error"/>
 
-     <module name="FileTabCharacter">
-            <property name="eachLine" value="true"/>
-     </module>
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
 
     <!-- 检查文件的长度（行） default max=2500 -->
     <module name="FileLength">
@@ -43,16 +43,18 @@
         <!-- 通用代码风格 -->
         <module name="LineLength">
             <property name="max" value="100"/>
-            <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+            <property name="ignorePattern"
+                      value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
         </module>
 
         <module name="EmptyBlock">
             <property name="option" value="TEXT"/>
-            <property name="tokens" value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH"/>
+            <property name="tokens"
+                      value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH"/>
         </module
 
 
-        <!-- Checks for whitespace
+            <!-- Checks for whitespace
         <module name="EmptyForIteratorPad"/>
         <module name="MethodParamPad"/>
         <module name="NoWhitespaceAfter"/>
@@ -64,7 +66,7 @@
         <module name="WhitespaceAround"/>
         -->
 
-        <!-- 检查类和接口的javadoc 默认不检查author 和version tags
+            <!-- 检查类和接口的javadoc 默认不检查author 和version tags
           authorFormat: 检查author标签的格式
                 versionFormat: 检查version标签的格式
                 scope: 可以检查的类的范围，例如：public只能检查public修饰的类，private可以检查所有的类
@@ -141,7 +143,7 @@
         </module>
 
         <!-- packages -->
-        <module name="PackageName" >
+        <module name="PackageName">
             <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
         </module>
 

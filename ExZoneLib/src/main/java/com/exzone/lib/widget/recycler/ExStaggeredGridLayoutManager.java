@@ -12,15 +12,14 @@ import android.view.ViewGroup;
  */
 public class ExStaggeredGridLayoutManager extends StaggeredGridLayoutManager {
 
+    // 尺寸的数组，[0]是宽，[1]是高
+    private int[] measuredDimension = new int[2];
+    // 用来比较同行/列那个item罪宽/高
+    private int[] dimension;
+
     public ExStaggeredGridLayoutManager(int spanCount, int orientation) {
         super(spanCount, orientation);
     }
-
-    // 尺寸的数组，[0]是宽，[1]是高
-    private int[] measuredDimension = new int[2];
-
-    // 用来比较同行/列那个item罪宽/高
-    private int[] dimension;
 
     @Override
     public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {

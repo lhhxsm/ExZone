@@ -61,7 +61,7 @@ public class WebViewManager {
      * 开启JavaScript
      */
     @SuppressLint("SetJavaScriptEnabled")
-    public WebViewManager enableJavaScript(){
+    public WebViewManager enableJavaScript() {
         mWebSettings.setJavaScriptEnabled(true);
         return this;
     }
@@ -69,7 +69,7 @@ public class WebViewManager {
     /**
      * 禁用JavaScript
      */
-    public WebViewManager disableJavaScript(){
+    public WebViewManager disableJavaScript() {
         mWebSettings.setJavaScriptEnabled(false);
         return this;
     }
@@ -77,7 +77,7 @@ public class WebViewManager {
     /**
      * 开启JavaScript自动弹窗
      */
-    public WebViewManager enableJavaScriptOpenWindowsAutomatically(){
+    public WebViewManager enableJavaScriptOpenWindowsAutomatically() {
         mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         return this;
     }
@@ -85,20 +85,21 @@ public class WebViewManager {
     /**
      * 禁用JavaScript自动弹窗
      */
-    public WebViewManager disableJavaScriptOpenWindowsAutomatically(){
+    public WebViewManager disableJavaScriptOpenWindowsAutomatically() {
         mWebSettings.setJavaScriptCanOpenWindowsAutomatically(false);
         return this;
     }
 
     /**
      * 返回
+     *
      * @return true：已经返回，false：到头了没法返回了
      */
-    public boolean goBack(){
-        if(mWebView.canGoBack()){
+    public boolean goBack() {
+        if (mWebView.canGoBack()) {
             mWebView.goBack();
             return true;
-        }else{
+        } else {
             return false;
         }
     }

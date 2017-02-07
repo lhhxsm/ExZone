@@ -1,6 +1,7 @@
 package com.exzone.lib.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -23,6 +24,9 @@ import android.view.View;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -122,6 +126,23 @@ public class BitmapUtils {
             throw (e);
         }
         return degree;
+    }
+
+    /**
+     * 将图片按照指定的角度进行旋转
+     *
+     * @param bitmap 需要旋转的图片
+     * @param degree 指定的旋转角度
+     * @return 旋转后的图片
+     */
+    public static Bitmap rotateBitmapByDegree(Bitmap bitmap, int degree) {
+        // 根据旋转角度，生成旋转矩阵
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        // 将原始图片按照旋转矩阵进行旋转，并得到新的图片
+        Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        bitmap.recycle();
+        return newBitmap;
     }
 
     /**
@@ -514,19 +535,6 @@ public class BitmapUtils {
     }
 
     /**
-     * 旋转图片
-     *
-     * @param angle  旋转角度
-     * @param bitmap 要旋转的图片
-     * @return 旋转后的图片
-     */
-    public static Bitmap rotate(Bitmap bitmap, int angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-    }
-
-    /**
      * 水平翻转处理
      *
      * @param bitmap 原图
@@ -645,6 +653,124 @@ public class BitmapUtils {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
         return baos.toByteArray();
+    }
+
+
+    /**
+     * 创建缩略图
+     */
+    public static Bitmap createBitmapThumbnail(Bitmap bitMap, boolean needRecycle) {
+        int width = bitMap.getWidth();
+        int height = bitMap.getHeight();
+        // 设置想要的大小
+        int newWidth = 120;
+        int newHeight = 120;
+        // 计算缩放比例
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // 取得想要缩放的matrix参数
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        // 得到新的图片
+        Bitmap newBitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height, matrix, true);
+        if (needRecycle) bitMap.recycle();
+        return newBitMap;
+    }
+
+    /**
+     * 保存图片
+     */
+    public static boolean saveBitmap(Bitmap bitmap, File file) {
+        if (bitmap == null) return false;
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file, false);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean saveBitmap(Bitmap bitmap, String absPath) {
+        return saveBitmap(bitmap, new File(absPath));
+    }
+
+
+    /**
+     * 将位图从资源解码并采样到请求的宽度和高度。
+     *
+     * @return 从原始图像向下采样的位图具有相同的宽高比和尺寸，等于或大于请求的宽度和高度
+     */
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
+    }
+
+    /**
+     * 将位图从文件解码并采样到所请求的宽度和高度。
+     *
+     * @param filename 要解码的文件的完整路径
+     * @return 从原始图像向下采样的位图具有相同的宽高比和尺寸，等于或大于请求的宽度和高度
+     */
+    public static Bitmap decodeSampledBitmapFromFile(String filename, int reqWidth, int reqHeight) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filename, options);
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(filename, options);
+    }
+
+    /**
+     * 将位图从文件输入流解码并采样到所请求的宽度和高度。
+     */
+    public static Bitmap decodeSampledBitmapFromDescriptor(FileDescriptor fileDescriptor, int reqWidth, int reqHeight) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+    }
+
+    /**
+     * 当使用来自的解码方法解码位图时，计算inSampleSize以在对象中使用。
+     * 该实现计算最接近的inSampleSize，其是2的幂，并且将导致最终解码的位图具有等于或大于所请求的宽度和高度的宽度和高度。
+     */
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+        if (height > reqHeight || width > reqWidth) {
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+            long totalPixels = width * height / inSampleSize;
+            final long totalReqPixelsCap = reqWidth * reqHeight * 2;
+
+            while (totalPixels > totalReqPixelsCap) {
+                inSampleSize *= 2;
+                totalPixels /= 2;
+            }
+        }
+        return inSampleSize;
     }
 
 }

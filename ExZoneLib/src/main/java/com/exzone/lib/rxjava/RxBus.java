@@ -1,4 +1,5 @@
 package com.exzone.lib.rxjava;
+
 import android.support.annotation.NonNull;
 
 import com.exzone.lib.util.Logger;
@@ -21,18 +22,22 @@ import rx.subjects.Subject;
  */
 
 public class RxBus {
-    private static  RxBus instance;
-    public static  synchronized RxBus getInstance(){
-        if (null==instance){
-            instance=new RxBus();
-        }
-        return instance;
-    }
+    private static RxBus instance;
+    private ConcurrentHashMap<Object, List<Subject>> mSubject = new ConcurrentHashMap<>();
 
     private RxBus() {
     }
 
-    private ConcurrentHashMap<Object,List<Subject>> mSubject=new ConcurrentHashMap<>();
+    public static synchronized RxBus getInstance() {
+        if (null == instance) {
+            instance = new RxBus();
+        }
+        return instance;
+    }
+
+    public static boolean isEmpty(Collection<Subject> collection) {
+        return null == collection || collection.isEmpty();
+    }
 
     /**
      * 订阅事件源
@@ -50,21 +55,21 @@ public class RxBus {
     /**
      * 注册事件源
      */
-    public <T> Observable<T> register(@NonNull Object tag){
-          List<Subject> list=mSubject.get(tag);
-        if (null==list){
-            list=new ArrayList<>();
-            mSubject.put(tag,list);
+    public <T> Observable<T> register(@NonNull Object tag) {
+        List<Subject> list = mSubject.get(tag);
+        if (null == list) {
+            list = new ArrayList<>();
+            mSubject.put(tag, list);
         }
-        Subject<T,T> subject;
-        list.add(subject= PublishSubject.<T>create());
-        Logger.e("register-->"+tag+"  size:"+list.size());
+        Subject<T, T> subject;
+        list.add(subject = PublishSubject.<T>create());
+        Logger.e("register-->" + tag + "  size:" + list.size());
         return subject;
     }
 
-    public void  unRegister(@NonNull Object tag){
-        List<Subject> list=mSubject.get(tag);
-        if (null!=list){
+    public void unRegister(@NonNull Object tag) {
+        List<Subject> list = mSubject.get(tag);
+        if (null != list) {
             mSubject.remove(tag);
         }
     }
@@ -72,20 +77,20 @@ public class RxBus {
     /**
      * 取消注册
      */
-    public RxBus unRegister(@NonNull Object tag, @NonNull Observable<?> observable){
-      List<Subject> list=mSubject.get(tag);
-        if (list!=null){
-            list.remove((Subject<?,?>) observable);
-            if (isEmpty(list)){
+    public RxBus unRegister(@NonNull Object tag, @NonNull Observable<?> observable) {
+        List<Subject> list = mSubject.get(tag);
+        if (list != null) {
+            list.remove((Subject<?, ?>) observable);
+            if (isEmpty(list)) {
                 mSubject.remove(tag);
-                Logger.e("unRegister-->"+tag+"  size:"+list.size());
+                Logger.e("unRegister-->" + tag + "  size:" + list.size());
             }
         }
-         return getInstance();
+        return getInstance();
     }
 
-    public void post(@NonNull Object content){
-     post(content.getClass().getName(),content);
+    public void post(@NonNull Object content) {
+        post(content.getClass().getName(), content);
     }
 
     /**
@@ -93,17 +98,13 @@ public class RxBus {
      */
     @SuppressWarnings("unchecked")
     public void post(@NonNull Object tag, @NonNull Object content) {
-        Logger.e("post-->eventName: "+tag);
-        List<Subject> list=mSubject.get(tag);
-        if (!isEmpty(list)){
+        Logger.e("post-->eventName: " + tag);
+        List<Subject> list = mSubject.get(tag);
+        if (!isEmpty(list)) {
             for (Subject subject : list) {
                 subject.onNext(content);
-                Logger.e("post-->eventName: "+tag);
+                Logger.e("post-->eventName: " + tag);
             }
         }
-    }
-
-    public static  boolean isEmpty(Collection<Subject> collection) {
-        return null==collection||collection.isEmpty();
     }
 }

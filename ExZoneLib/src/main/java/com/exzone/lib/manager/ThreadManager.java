@@ -18,13 +18,12 @@ import java.util.Map;
  */
 
 public class ThreadManager {
+    private static ThreadManager threadManager;
     private Map<String, ThreadBean> threadMap;
 
     private ThreadManager() {
         threadMap = new HashMap<String, ThreadBean>();
     }
-
-    private static ThreadManager threadManager;
 
     public static synchronized ThreadManager getInstance() {
         if (threadManager == null) {

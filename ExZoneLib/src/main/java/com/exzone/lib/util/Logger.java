@@ -90,7 +90,7 @@ public class Logger {
             str = String.format(str, args);
         }
         StackTraceElement element = new Throwable().fillInStackTrace().getStackTrace()[2];
-       return  "(" + element.getFileName() + ":" + element.getLineNumber() + ")." + element.getMethodName() + "():" + str;
+        return "(" + element.getFileName() + ":" + element.getLineNumber() + ")." + element.getMethodName() + "():" + str;
 //        StringBuilder sb = new StringBuilder();
 //        sb.append("(")
 //                .append(element.getFileName())

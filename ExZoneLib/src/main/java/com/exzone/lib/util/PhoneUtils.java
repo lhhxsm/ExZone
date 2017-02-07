@@ -21,7 +21,6 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
@@ -346,6 +345,7 @@ public class PhoneUtils {
 
     /**
      * 判断是否存在指定的Activity
+     *
      * @param packageName 包名
      * @param className   activity全路径类名
      * @return

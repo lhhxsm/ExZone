@@ -41,10 +41,27 @@ public class RetrofitManager {
     public static final String CACHE_CONTROL_NETWORK = "max-age=0";
     private static OkHttpClient mOkHttpClient;
     private final APIService mAPIService;
-
-    public static RetrofitManager builder() {
-        return new RetrofitManager();
-    }
+    // 云端响应头拦截器，用来配置缓存策略
+    private Interceptor mRewriteCacheControlInterceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            if (!NetWorkUtils.isConnected(BaseApplication.sContext)) {
+                request = request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build();
+            }
+            Response originalResponse = chain.proceed(request);
+            if (NetWorkUtils.isConnected(BaseApplication.sContext)) {
+                //有网的时候读接口上的@Headers里的配置，你可以在这里进行统一的设置
+                String cacheControl = request.cacheControl().toString();
+                return originalResponse.newBuilder().header("Cache-Control", cacheControl)
+                        .removeHeader("Pragma").build();
+            } else {
+                return originalResponse.newBuilder()
+                        .header("Cache-Control", "public, only-if-cached, max-stale=" + CACHE_STALE_LONG)
+                        .removeHeader("Pragma").build();
+            }
+        }
+    };
 
     private RetrofitManager() {
 
@@ -57,6 +74,10 @@ public class RetrofitManager {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         mAPIService = retrofit.create(APIService.class);
+    }
+
+    public static RetrofitManager builder() {
+        return new RetrofitManager();
     }
 
     private void initOkHttpClient() {
@@ -82,28 +103,6 @@ public class RetrofitManager {
             }
         }
     }
-
-    // 云端响应头拦截器，用来配置缓存策略
-    private Interceptor mRewriteCacheControlInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            if (!NetWorkUtils.isConnected(BaseApplication.sContext)) {
-                request = request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build();
-            }
-            Response originalResponse = chain.proceed(request);
-            if (NetWorkUtils.isConnected(BaseApplication.sContext)) {
-                //有网的时候读接口上的@Headers里的配置，你可以在这里进行统一的设置
-                String cacheControl = request.cacheControl().toString();
-                return originalResponse.newBuilder().header("Cache-Control", cacheControl)
-                        .removeHeader("Pragma").build();
-            } else {
-                return originalResponse.newBuilder()
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + CACHE_STALE_LONG)
-                        .removeHeader("Pragma").build();
-            }
-        }
-    };
 
     public Observable<?> getTest() {
         return mAPIService.getTest();

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
  * 描述:正则表达式
  * 时间: 2016/9/30.
  */
-public class Validator {
+public class RegexUtils {
     /**
      * 正则表达式：验证用户名
      */
@@ -60,6 +60,18 @@ public class Validator {
      * 正则表达式:验证全网IP
      */
     public static final String REGEX_IP = "^((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))$";
+    /**
+     * 正则表达式：数字
+     */
+    public static final String REGEX_NUMERIC = "[0-9]*";
+    /**
+     * 正则表达式：整数
+     */
+    public static final String REGEX_INTEGER = "^[-\\+]?[\\d]*$";
+    /**
+     * 正则表达式：浮点数，包括double和float
+     */
+    public static final String REGEX_DOUBLE = "^[-\\+]?[.\\d]*$";
 
     /**
      * 校验用户名：用户名只能由汉字、数字、字母、下划线组成，且不能为空.
@@ -74,6 +86,10 @@ public class Validator {
     public static boolean isPassword(String password) {
         return Pattern.matches(REGEX_PASSWORD, password);
     }
+
+//    public static boolean isEmail(final @NonNull CharSequence str) {
+//        return Patterns.EMAIL_ADDRESS.matcher(str).matches();
+//    }
 
     /**
      * 校验手机号
@@ -143,5 +159,26 @@ public class Validator {
      */
     public static boolean isURL(String string) {
         return Pattern.matches(REGEX_URL, string);
+    }
+
+    /**
+     * 验证给定的字符串是否是数字
+     */
+    public static boolean isNumeric(String string) {
+        return Pattern.matches(REGEX_NUMERIC, string);
+    }
+
+    /**
+     * 验证给定的字符串是否是整数
+     */
+    public static boolean isInteger(String string) {
+        return Pattern.matches(REGEX_INTEGER, string);
+    }
+
+    /**
+     * 验证给定的字符串是否是浮点数，包括double和float
+     */
+    public static boolean isDouble(String string) {
+        return Pattern.matches(REGEX_INTEGER, string);
     }
 }

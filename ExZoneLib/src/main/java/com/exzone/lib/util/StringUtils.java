@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.UUID;
@@ -246,26 +247,6 @@ public class StringUtils {
     }
 
     /**
-     * 去掉一些特殊字符串
-     * String s = "你要去除的字符串";
-     * 1.去除空格：s = s.replace('\\s','');
-     * 2.去除回车：s = s.replace('\n','');     这样也可以把空格和回车去掉，其他也可以照这样做。
-     * 注：\n 回车(\u000a)
-     * \t 水平制表符(\u0009)
-     * \s 空格(\u0008)
-     * \r 换行(\u000d)
-     */
-    public String replaceBlank(String str) {
-        String dest = "";
-        if (str != null) {
-            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
-            Matcher m = p.matcher(str);
-            dest = m.replaceAll("");
-        }
-        return dest;
-    }
-
-    /**
      * 删除给定字符串中所有的旧的字符
      *
      * @param source 源字符串
@@ -302,7 +283,6 @@ public class StringUtils {
         return result;
     }
 
-
     /**
      * 删除给定字符串中给定位置处的字符
      *
@@ -327,7 +307,6 @@ public class StringUtils {
         return result;
     }
 
-
     /**
      * 将给定字符串中给定的区域的字符转换成小写
      *
@@ -339,7 +318,6 @@ public class StringUtils {
     public static String toLowerCase(String str, int beginIndex, int endIndex) {
         return str.replaceFirst(str.substring(beginIndex, endIndex), str.substring(beginIndex, endIndex).toLowerCase(Locale.getDefault()));
     }
-
 
     /**
      * 将给定字符串中给定的区域的字符转换成大写
@@ -362,7 +340,6 @@ public class StringUtils {
     public static String firstLetterToLowerCase(String str) {
         return toLowerCase(str, 0, 1);
     }
-
 
     /**
      * 将给定字符串的首字母转为大写
@@ -393,7 +370,6 @@ public class StringUtils {
             return false;
         }
     }
-
 
     /**
      * 判断给定的字符串是否以一个特定的字符串结尾，忽略大小写
@@ -474,5 +450,28 @@ public class StringUtils {
         return str;
     }
 
+    public static String getMoney(float cost) {
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        return "￥" + decimalFormat.format(cost);
+    }
 
+    /**
+     * 去掉一些特殊字符串
+     * String s = "你要去除的字符串";
+     * 1.去除空格：s = s.replace('\\s','');
+     * 2.去除回车：s = s.replace('\n','');     这样也可以把空格和回车去掉，其他也可以照这样做。
+     * 注：\n 回车(\u000a)
+     * \t 水平制表符(\u0009)
+     * \s 空格(\u0008)
+     * \r 换行(\u000d)
+     */
+    public String replaceBlank(String str) {
+        String dest = "";
+        if (str != null) {
+            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+            Matcher m = p.matcher(str);
+            dest = m.replaceAll("");
+        }
+        return dest;
+    }
 }

@@ -63,6 +63,31 @@ public class DeletableEditText extends EditText {
         return super.onTouchEvent(event);
     }
 
+    //隐藏或者显示右边clean的图标
+    protected void setClearDrawableVisible(boolean isVisible) {
+        Drawable rightDrawable;
+        if (isVisible) {
+            rightDrawable = mRightDrawable;
+        } else {
+            rightDrawable = null;
+        }
+        //使用代码设置该控件left, top, right, and bottom处的图标
+        setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], rightDrawable, getCompoundDrawables()[3]);
+    }
+
+    // 显示一个动画,以提示用户输入
+    public void setShakeAnimation() {
+        this.startAnimation(shakeAnimation(5));
+    }
+
+    //CycleTimes动画重复的次数
+    public Animation shakeAnimation(int CycleTimes) {
+        Animation translateAnimation = new TranslateAnimation(0, 10, 0, 10);
+        translateAnimation.setInterpolator(new CycleInterpolator(CycleTimes));
+        translateAnimation.setDuration(1000);
+        return translateAnimation;
+    }
+
     private class FocusChangeListenerImpl implements OnFocusChangeListener {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
@@ -92,30 +117,5 @@ public class DeletableEditText extends EditText {
             boolean isVisible = getText().toString().length() >= 1;
             setClearDrawableVisible(isVisible);
         }
-    }
-
-    //隐藏或者显示右边clean的图标
-    protected void setClearDrawableVisible(boolean isVisible) {
-        Drawable rightDrawable;
-        if (isVisible) {
-            rightDrawable = mRightDrawable;
-        } else {
-            rightDrawable = null;
-        }
-        //使用代码设置该控件left, top, right, and bottom处的图标
-        setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], rightDrawable, getCompoundDrawables()[3]);
-    }
-
-    // 显示一个动画,以提示用户输入
-    public void setShakeAnimation() {
-        this.startAnimation(shakeAnimation(5));
-    }
-
-    //CycleTimes动画重复的次数
-    public Animation shakeAnimation(int CycleTimes) {
-        Animation translateAnimation = new TranslateAnimation(0, 10, 0, 10);
-        translateAnimation.setInterpolator(new CycleInterpolator(CycleTimes));
-        translateAnimation.setDuration(1000);
-        return translateAnimation;
     }
 }

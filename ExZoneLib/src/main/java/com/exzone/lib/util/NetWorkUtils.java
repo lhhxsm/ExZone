@@ -7,14 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.os.IBinder;
-
-import java.util.List;
 
 /**
  * 作者:李鸿浩
@@ -29,6 +24,29 @@ public class NetWorkUtils {
     public static final String NET_BROADCAST_ACTION = "com.network.state.action";
 
     public static final String NET_STATE_NAME = "network_state";
+    //接受服务上发过来的广播
+    private static BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                int state = (int) intent.getExtras().get(NET_STATE_NAME);
+                switch (state) {
+                    case -1:
+                        Logger.e("无网络  state =" + state);
+                        break;
+                    case 1:
+                        Logger.e("WIFI网络  state=" + state);
+                        break;
+                    case 0:
+                        Logger.e("移动网络  state =" + state);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    };
 
     /**
      * 判断网络是否连接
@@ -136,28 +154,4 @@ public class NetWorkUtils {
             }
         }, Context.BIND_AUTO_CREATE);
     }
-
-    //接受服务上发过来的广播
-    private static BroadcastReceiver mReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                int state = (int) intent.getExtras().get(NET_STATE_NAME);
-                switch (state) {
-                    case -1:
-                        Logger.e("无网络  state =" + state);
-                        break;
-                    case 1:
-                        Logger.e("WIFI网络  state=" + state);
-                        break;
-                    case 0:
-                        Logger.e("移动网络  state =" + state);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-    };
 }

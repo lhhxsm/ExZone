@@ -15,6 +15,8 @@ import android.view.ViewGroup;
  */
 public class ExLinearLayoutManager extends LinearLayoutManager {
 
+    private int[] mMeasuredDimension = new int[2];
+
     public ExLinearLayoutManager(Context context) {
         super(context);
     }
@@ -26,8 +28,6 @@ public class ExLinearLayoutManager extends LinearLayoutManager {
     public ExLinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
-
-    private int[] mMeasuredDimension = new int[2];
 
     @Override
     public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {

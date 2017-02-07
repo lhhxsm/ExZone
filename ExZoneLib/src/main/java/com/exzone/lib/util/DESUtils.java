@@ -17,11 +17,11 @@ import javax.crypto.spec.IvParameterSpec;
  */
 public class DESUtils {
 
+    public static final String ALGORITHM_DES = "DES/CBC/PKCS5Padding";
+
     private DESUtils() {
         throw new AssertionError();
     }
-
-    public static final String ALGORITHM_DES = "DES/CBC/PKCS5Padding";
 
     /**
      * DES算法,加密

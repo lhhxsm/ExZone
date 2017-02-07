@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Process;
-import android.util.Log;
 
 import com.exzone.lib.util.Logger;
 
@@ -92,7 +91,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         //如果SD不存在或无法使用,则无法把异常信息写入SD卡
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             if (DEBUG) {
-                Logger.w( "sdcard unmounted,skip dump exception");
+                Logger.w("sdcard unmounted,skip dump exception");
                 return;
             }
         }

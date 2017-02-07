@@ -68,6 +68,25 @@ public class FileUtils {
         return new File(Environment.getExternalStorageDirectory().getPath() + cacheDir);
     }
 
+    public static String formatFileSize(long fileS) {
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
+        String fileSizeString = "";
+        if (fileS < 1024) {
+            fileSizeString = df.format((double) fileS) + "B";
+        } else if (fileS < 1048576) {
+            fileSizeString = df.format((double) fileS / 1024) + "KB";
+        } else if (fileS < 1073741824) {
+            fileSizeString = df.format((double) fileS / 1048576) + "MB";
+        } else {
+            fileSizeString = df.format((double) fileS / 1073741824) + "G";
+        }
+
+        if (fileSizeString.startsWith(".")) {
+            return "0B";
+        }
+        return fileSizeString;
+    }
+
     /**
      * 获取文件路径空间大小
      */

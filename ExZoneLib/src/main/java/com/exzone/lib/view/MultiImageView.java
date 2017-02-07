@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.exzone.lib.util.ScreenUtils;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class MultiImageView extends LinearLayout {
      */
     private int mOneMaxWH;//单张图片允许的最大宽高
     private int mMoreWH;//多张图片的宽高
-    private int mPadding = DensityUtils.dp2px(getContext(), 3);//图片间的间距
+    private int mPadding = ScreenUtils.dp2px(getContext(), 3);//图片间的间距
 
     private int MAX_ROW_COUNT = 3;//每行显示的最大张数
 
@@ -32,10 +33,14 @@ public class MultiImageView extends LinearLayout {
     private LayoutParams mRowParams;
 
     private OnItemClickListener mOnItemClickListener;
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.mOnItemClickListener = onItemClickListener;
-    }
+    private View.OnClickListener mImageOnClick = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(view, (Integer) view.getTag());
+            }
+        }
+    };
 
     public MultiImageView(Context context) {
         super(context);
@@ -43,6 +48,10 @@ public class MultiImageView extends LinearLayout {
 
     public MultiImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
     }
 
     public void setImages(List<String> images) {
@@ -169,15 +178,6 @@ public class MultiImageView extends LinearLayout {
         Glide.with(getContext()).load(url).centerCrop().into(imageView);
         return imageView;
     }
-
-    private View.OnClickListener mImageOnClick = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (mOnItemClickListener != null) {
-                mOnItemClickListener.onItemClick(view, (Integer) view.getTag());
-            }
-        }
-    };
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);

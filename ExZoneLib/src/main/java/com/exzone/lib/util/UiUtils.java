@@ -1,9 +1,5 @@
 package com.exzone.lib.util;
 
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-
 import com.exzone.lib.base.BaseApplication;
 
 /**

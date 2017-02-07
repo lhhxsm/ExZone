@@ -3,10 +3,7 @@ package com.exzone.demo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 
-import com.exzone.lib.util.ColorUtils;
-import com.exzone.lib.util.NetWorkUtils;
 import com.exzone.lib.view.OutlineTextView;
 
 public class MainActivity extends AppCompatActivity {

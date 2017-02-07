@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import butterknife.ButterKnife;
-
 /**
  * 作者:李鸿浩
  * 描述:
@@ -30,7 +28,6 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
         onViewCreated(savedInstanceState);
     }
 

@@ -20,115 +20,15 @@ import java.util.HashMap;
 
 public class SectioningAdapter extends RecyclerView.Adapter<SectioningAdapter.ViewHolder> {
 
-    private static final String TAG = "SectioningAdapter";
-
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_GHOST_HEADER = 1;
     public static final int TYPE_ITEM = 2;
     public static final int TYPE_FOOTER = 3;
-
-    private static class Section {
-        int adapterPosition;    // adapterPosition of first item (the header) of this sections
-        int numberOfItems;      // number of items (not including header or footer)
-        int length;             // total number of items in sections including header and footer
-        boolean hasHeader;      // if true, sections has a header
-        boolean hasFooter;      // if true, sections has a footer
-    }
-
+    private static final String TAG = "SectioningAdapter";
     private ArrayList<Section> sections;
     private HashMap<Integer, Boolean> collapsedSections = new HashMap<>();
     private int[] sectionIndicesByAdapterPosition;
     private int totalNumberOfItems;
-
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private int section;
-        private int numberOfItemsInSection;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        public boolean isHeader() {
-            return false;
-        }
-
-        public boolean isGhostHeader() {
-            return false;
-        }
-
-        public boolean isFooter() {
-            return false;
-        }
-
-        public int getSection() {
-            return section;
-        }
-
-        private void setSection(int section) {
-            this.section = section;
-        }
-
-        public int getNumberOfItemsInSection() {
-            return numberOfItemsInSection;
-        }
-
-        void setNumberOfItemsInSection(int numberOfItemsInSection) {
-            this.numberOfItemsInSection = numberOfItemsInSection;
-        }
-    }
-
-    public static class ItemViewHolder extends ViewHolder {
-        private int positionInSection;
-
-        public ItemViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        public int getPositionInSection() {
-            return positionInSection;
-        }
-
-        private void setPositionInSection(int positionInSection) {
-            this.positionInSection = positionInSection;
-        }
-    }
-
-    public static class HeaderViewHolder extends ViewHolder {
-
-        public HeaderViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        @Override
-        public boolean isHeader() {
-            return true;
-        }
-    }
-
-    public static class GhostHeaderViewHolder extends ViewHolder {
-        public GhostHeaderViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        @Override
-        public boolean isGhostHeader() {
-            return true;
-        }
-    }
-
-
-    public static class FooterViewHolder extends ViewHolder {
-        public FooterViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        @Override
-        public boolean isFooter() {
-            return true;
-        }
-    }
-
 
     /**
      * @return Number of sections
@@ -690,6 +590,101 @@ public class SectioningAdapter extends RecyclerView.Adapter<SectioningAdapter.Vi
     void tagViewHolderItemView(ViewHolder holder, int section, int adapterPosition) {
         View view = holder.itemView;
         view.setTag(R.id.sectioning_adapter_tag_key_view_view_holder, holder);
+    }
+
+    private static class Section {
+        int adapterPosition;    // adapterPosition of first item (the header) of this sections
+        int numberOfItems;      // number of items (not including header or footer)
+        int length;             // total number of items in sections including header and footer
+        boolean hasHeader;      // if true, sections has a header
+        boolean hasFooter;      // if true, sections has a footer
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private int section;
+        private int numberOfItemsInSection;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        public boolean isHeader() {
+            return false;
+        }
+
+        public boolean isGhostHeader() {
+            return false;
+        }
+
+        public boolean isFooter() {
+            return false;
+        }
+
+        public int getSection() {
+            return section;
+        }
+
+        private void setSection(int section) {
+            this.section = section;
+        }
+
+        public int getNumberOfItemsInSection() {
+            return numberOfItemsInSection;
+        }
+
+        void setNumberOfItemsInSection(int numberOfItemsInSection) {
+            this.numberOfItemsInSection = numberOfItemsInSection;
+        }
+    }
+
+    public static class ItemViewHolder extends ViewHolder {
+        private int positionInSection;
+
+        public ItemViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        public int getPositionInSection() {
+            return positionInSection;
+        }
+
+        private void setPositionInSection(int positionInSection) {
+            this.positionInSection = positionInSection;
+        }
+    }
+
+    public static class HeaderViewHolder extends ViewHolder {
+
+        public HeaderViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public boolean isHeader() {
+            return true;
+        }
+    }
+
+    public static class GhostHeaderViewHolder extends ViewHolder {
+        public GhostHeaderViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public boolean isGhostHeader() {
+            return true;
+        }
+    }
+
+    public static class FooterViewHolder extends ViewHolder {
+        public FooterViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public boolean isFooter() {
+            return true;
+        }
     }
 
 }

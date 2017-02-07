@@ -22,6 +22,12 @@ import java.io.InputStream;
 
 public class LargeImageView extends View {
 
+    private static final BitmapFactory.Options options = new BitmapFactory.Options();
+
+    static {
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+    }
+
     private BitmapRegionDecoder mDecoder;
     /**
      * 图片的宽度和高度
@@ -31,14 +37,11 @@ public class LargeImageView extends View {
      * 绘制的区域
      */
     private volatile Rect mRect = new Rect();
-
     private MoveGestureDetector mDetector;
 
-
-    private static final BitmapFactory.Options options = new BitmapFactory.Options();
-
-    static {
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
+    public LargeImageView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
     }
 
     public void setInputStream(InputStream is) {
@@ -66,7 +69,6 @@ public class LargeImageView extends View {
         }
     }
 
-
     public void init() {
         mDetector = new MoveGestureDetector(getContext(), new MoveGestureDetector.SimpleMoveGestureDetector() {
             @Override
@@ -90,7 +92,6 @@ public class LargeImageView extends View {
         });
     }
 
-
     private void checkWidth() {
         Rect rect = mRect;
         int imageWidth = mImageWidth;
@@ -107,7 +108,6 @@ public class LargeImageView extends View {
         }
     }
 
-
     private void checkHeight() {
         Rect rect = mRect;
         int imageWidth = mImageWidth;
@@ -122,12 +122,6 @@ public class LargeImageView extends View {
             rect.top = 0;
             rect.bottom = getHeight();
         }
-    }
-
-
-    public LargeImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
     }
 
     @Override

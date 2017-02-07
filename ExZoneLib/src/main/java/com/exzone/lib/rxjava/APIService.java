@@ -21,11 +21,11 @@ import retrofit2.http.Headers;
  * 时间:2016/7/6.
  */
 public interface APIService {
+    String ENDPOINT = "https://api.ribot.io/";
+
     @Headers(RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_STALE_SHORT)
     @GET("")
     Observable<Test> getTest();
-
-    String ENDPOINT = "https://api.ribot.io/";
 
     @GET("")
     Observable<List<?>> getRibots();
@@ -34,7 +34,6 @@ public interface APIService {
      * Helper class that sets up a new services
      *******/
     class Creator {
-
         public static APIService newAPIService() {
             Gson gson = new GsonBuilder()
 //                    .registerTypeAdapterFactory(new AutoValueGsonTypeAdapterFactory())

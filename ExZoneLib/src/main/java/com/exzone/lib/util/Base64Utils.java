@@ -1,7 +1,5 @@
 package com.exzone.lib.util;
 
-import java.io.ByteArrayOutputStream;
-
 /**
  * 作者:李鸿浩
  * 描述:Base64加密解密
@@ -138,7 +136,7 @@ public class Base64Utils {
          */
         private static final int SKIP = -1;
         private static final int EQUALS = -2;
-
+        final private int[] alphabet;
         /**
          * States 0-3 are reading through the next input tuple.
          * State 4 is having read one '=' and expecting exactly one more.
@@ -147,8 +145,6 @@ public class Base64Utils {
          */
         private int state;   // state number (0 to 6)
         private int value;
-
-        final private int[] alphabet;
 
         public Decoder(int flags, byte[] output) {
             this.output = output;
@@ -383,15 +379,13 @@ public class Base64Utils {
                 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
                 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '_',
         };
-
-        final private byte[] tail;
-        int tailLen;
-        private int count;
-
         final public boolean do_padding;
         final public boolean do_newline;
         final public boolean do_cr;
+        final private byte[] tail;
         final private byte[] alphabet;
+        int tailLen;
+        private int count;
 
         public Encoder(int flags, byte[] output) {
             this.output = output;

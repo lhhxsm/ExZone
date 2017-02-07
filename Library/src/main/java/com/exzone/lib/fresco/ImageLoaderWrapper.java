@@ -11,10 +11,6 @@ import java.io.File;
  * 时间: 2016/10/11.
  */
 public interface ImageLoaderWrapper<TARGET extends Object, OPTION extends ImageLoaderWrapper.ImageOption> {
-    interface ImageOption {
-    }
-
-
     void showImage(TARGET imageView, Uri uri, OPTION option);
 
     void showImage(TARGET imageView, String url, OPTION option);
@@ -24,4 +20,7 @@ public interface ImageLoaderWrapper<TARGET extends Object, OPTION extends ImageL
     void showImage(TARGET imageView, @DrawableRes int id, OPTION option);
 
     OPTION newOption(int resizeW, int resizeH);
+
+    interface ImageOption {
+    }
 }

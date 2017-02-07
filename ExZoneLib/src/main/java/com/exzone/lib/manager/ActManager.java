@@ -24,7 +24,7 @@ public class ActManager {
      */
     public static ActManager getInstance() {
         if (sInstance == null) {
-            synchronized (ActManager.class){
+            synchronized (ActManager.class) {
                 if (sInstance == null) {
                     sInstance = new ActManager();
                 }

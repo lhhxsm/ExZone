@@ -2,7 +2,6 @@ package com.exzone.lib.util;
 
 import android.os.Environment;
 import android.os.StatFs;
-import android.util.Log;
 
 import java.io.File;
 
@@ -63,6 +62,7 @@ public class SDCardUtils {
 
     /**
      * 获取指定路径所在空间的剩余可用容量字节数，单位byte
+     *
      * @return 容量字节 SDCard可用空间，内部存储可用空间
      */
     public static long getFreeBytes(String filePath) {

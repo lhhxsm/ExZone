@@ -5,15 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.exzone.demo.R;
 
 import java.io.IOException;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 作者:李鸿浩
@@ -27,7 +23,7 @@ public class FoldableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_foldable);
-        mRecyclerView= (RecyclerView) findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         String[] dataSet = null;
         try {

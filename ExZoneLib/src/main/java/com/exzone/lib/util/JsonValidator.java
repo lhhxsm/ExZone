@@ -11,10 +11,10 @@ import java.text.StringCharacterIterator;
 
 public class JsonValidator {
     private CharacterIterator it;
-    private char              c;
-    private int               col;
+    private char c;
+    private int col;
 
-    public JsonValidator(){
+    public JsonValidator() {
     }
 
     /**
@@ -85,7 +85,7 @@ public class JsonValidator {
             return true;
         }
 
-        for (;;) {
+        for (; ; ) {
             if (prefix) {
                 int start = col;
                 if (!string()) return error("string", start);
