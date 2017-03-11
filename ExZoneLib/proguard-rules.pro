@@ -35,7 +35,7 @@
   **[] $VALUES;
   public *;
 }
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 #################### Glide混淆 ####################
 
 #################### 不需混淆的Android类 ####################
@@ -85,11 +85,17 @@
 ####################RxJava RxAndroid混淆####################
 
 ####################Gson混淆####################
--keepattributes Signature-keepattributes *Annotation*
+-keepattributes Signature
 -keep class sun.misc.Unsafe { *; }
--keep class com.google.gson.stream.** { *; }
-# Application classes that will be serialized/deserialized over Gson 下面替换成自己的实体类
--keep class com.example.bean.** { *; }
+-keep class com.google.**{*;}
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
 ####################Gson混淆####################
 
 ####################OkHttp3混淆####################

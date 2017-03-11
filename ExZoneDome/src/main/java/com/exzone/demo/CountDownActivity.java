@@ -59,6 +59,8 @@ public class CountDownActivity extends AppCompatActivity implements View.OnClick
             case R.id.text4:
                 mCountDown4.start();
                 break;
+            default:
+                break;
         }
     }
 }

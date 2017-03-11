@@ -27,6 +27,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     private Map<Integer, Boolean> mFoldStates = new HashMap<>();
     private Context mContext;
 
+    /**
+     * @param context 上下文
+     * @param dataSet 数据
+     */
     public PhotoAdapter(String[] dataSet, Context context) {
         mDataSet = dataSet;
         mContext = context;
@@ -119,6 +123,9 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
         return mDataSet.length;
     }
 
+    /**
+     *
+     */
     protected static class PhotoViewHolder extends RecyclerView.ViewHolder {
 
         protected FoldableLayout mFoldableLayout;
@@ -131,10 +138,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
         protected Button mButtonShare;
 
+        /**
+         * @param foldableLayout 自定义控件
+         */
         public PhotoViewHolder(FoldableLayout foldableLayout) {
             super(foldableLayout);
             mFoldableLayout = foldableLayout;
-            foldableLayout.setupViews(R.layout.list_item_cover, R.layout.list_item_detail, R.dimen.card_cover_height, itemView.getContext());
+            foldableLayout.setupViews(R.layout.list_item_cover, R.layout.list_item_detail, R.dimen.card_cover_height,
+                    itemView.getContext());
 
             mImageViewDetail = (ImageView) mFoldableLayout.getDetailView().findViewById(R.id.imageview_detail);
 

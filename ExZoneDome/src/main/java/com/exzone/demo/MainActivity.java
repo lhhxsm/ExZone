@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.exzone.lib.view.OutlineTextView;
-
+/**
+ * 作者:李鸿浩
+ * 描述:
+ * 时间：2016/10/7.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private OutlineTextView mOutlineTextView;

@@ -11,15 +11,20 @@ import android.os.CancellationSignal;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * 作者:李鸿浩
+ * 描述:
+ * 时间：2016/10/7.
+ */
 public class AssetProvider extends ContentProvider {
 
     @Override
     public AssetFileDescriptor openAssetFile(Uri uri, String mode) throws FileNotFoundException {
         AssetManager am = getContext().getAssets();
-        String file_name = "demo-pictures/" + uri.getLastPathSegment();
+        String fileName = "demo-pictures/" + uri.getLastPathSegment();
         AssetFileDescriptor afd = null;
         try {
-            afd = am.openFd(file_name);
+            afd = am.openFd(fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,7 +47,8 @@ public class AssetProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder, CancellationSignal cancellationSignal) {
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+                        String sortOrder, CancellationSignal cancellationSignal) {
         return super.query(uri, projection, selection, selectionArgs, sortOrder, cancellationSignal);
     }
 

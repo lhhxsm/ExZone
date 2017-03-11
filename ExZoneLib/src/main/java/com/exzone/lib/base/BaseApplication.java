@@ -11,6 +11,7 @@ import android.support.multidex.MultiDex;
 
 import com.exzone.lib.exception.CrashHandler;
 import com.exzone.lib.util.Logger;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
 
@@ -33,6 +34,10 @@ public class BaseApplication extends Application {
         sMainTid = Process.myTid();
         initWidthAndHeight();
         super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
         //设置异常处理
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);

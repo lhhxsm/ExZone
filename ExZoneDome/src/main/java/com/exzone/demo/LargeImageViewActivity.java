@@ -7,7 +7,11 @@ import com.exzone.lib.view.largeimage.LargeImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
-
+/**
+ * 作者:李鸿浩
+ * 描述:
+ * 时间：2016/10/7.
+ */
 public class LargeImageViewActivity extends AppCompatActivity {
     private LargeImageView mLargeImageView;
 

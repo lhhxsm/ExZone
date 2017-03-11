@@ -11,6 +11,11 @@ import android.widget.ImageView;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * 作者:李鸿浩
+ * 描述:
+ * 时间：2016/10/7.
+ */
 public class LargeImageViewSimpleBak extends AppCompatActivity {
     private ImageView mImageView;
 
@@ -34,7 +39,8 @@ public class LargeImageViewSimpleBak extends AppCompatActivity {
             BitmapRegionDecoder bitmapRegionDecoder = BitmapRegionDecoder.newInstance(inputStream, false);
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.RGB_565;
-            Bitmap bitmap = bitmapRegionDecoder.decodeRegion(new Rect(width / 2 - 100, height / 2 - 100, width / 2 + 100, height / 2 + 100), options);
+            Bitmap bitmap = bitmapRegionDecoder.decodeRegion(new Rect(width / 2 - 100,
+                    height / 2 - 100, width / 2 + 100, height / 2 + 100), options);
             mImageView.setImageBitmap(bitmap);
 
 
