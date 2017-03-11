@@ -350,6 +350,9 @@
     <color name="debug_background">#EE222222</color>
     <!-- 分割线 -->
     <color name="divider_gray">#CBCBCB</color>
+    <!-- position bar -->
+    <color name="bg_position_bar_up">#0D8BC34A</color>
+    <color name="bg_position_bar_down">#1A8BC34A</color>
 
 
 </resources>
