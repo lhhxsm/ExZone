@@ -3,6 +3,7 @@ package com.exzone.lib.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -14,7 +15,7 @@ import com.exzone.lib.R;
  * 时间: 2017/2/7.
  */
 
-public class DrawableTextView extends TextView {
+public class DrawableTextView extends AppCompatTextView {
 
     private final int widthPx;
     private final int heightPx;

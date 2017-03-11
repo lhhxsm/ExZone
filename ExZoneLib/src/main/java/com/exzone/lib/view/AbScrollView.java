@@ -31,6 +31,7 @@ public class AbScrollView extends ScrollView {
      */
     @Override
     protected void onFinishInflate() {
+        super.onFinishInflate();
         if (getChildCount() > 0) {
             inner = getChildAt(0);
         }

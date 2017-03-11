@@ -17,8 +17,6 @@ public class AssetProvider extends ContentProvider {
     public AssetFileDescriptor openAssetFile(Uri uri, String mode) throws FileNotFoundException {
         AssetManager am = getContext().getAssets();
         String file_name = "demo-pictures/" + uri.getLastPathSegment();
-        if (file_name == null)
-            throw new FileNotFoundException();
         AssetFileDescriptor afd = null;
         try {
             afd = am.openFd(file_name);

@@ -62,7 +62,7 @@ public class RxBus {
             mSubject.put(tag, list);
         }
         Subject<T, T> subject;
-        list.add(subject = PublishSubject.<T>create());
+        list.add(subject = PublishSubject.create());
         Logger.e("register-->" + tag + "  size:" + list.size());
         return subject;
     }
@@ -80,7 +80,7 @@ public class RxBus {
     public RxBus unRegister(@NonNull Object tag, @NonNull Observable<?> observable) {
         List<Subject> list = mSubject.get(tag);
         if (list != null) {
-            list.remove((Subject<?, ?>) observable);
+            list.remove(observable);
             if (isEmpty(list)) {
                 mSubject.remove(tag);
                 Logger.e("unRegister-->" + tag + "  size:" + list.size());

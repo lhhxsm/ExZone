@@ -2,6 +2,7 @@ package com.exzone.lib.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -17,7 +18,7 @@ import android.widget.EditText;
  * 描述:可以自带删除按键的EditText,图标设置方法是drawableRight
  * 时间：2016/10/6.
  */
-public class DeletableEditText extends EditText {
+public class DeletableEditText extends AppCompatEditText {
     private Drawable mRightDrawable;
 
     public DeletableEditText(Context context) {

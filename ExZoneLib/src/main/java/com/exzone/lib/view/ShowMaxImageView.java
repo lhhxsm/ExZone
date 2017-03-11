@@ -1,12 +1,11 @@
 package com.exzone.lib.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.exzone.lib.util.ScreenUtils;
@@ -17,15 +16,15 @@ import com.exzone.lib.util.ScreenUtils;
  * 时间: 2017/2/7.
  */
 
-public class ShowMaxImageView extends ImageView {
+public class ShowMaxImageView extends AppCompatImageView {
     private float mHeight = 0;
 
     public ShowMaxImageView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public ShowMaxImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public ShowMaxImageView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -62,8 +61,8 @@ public class ShowMaxImageView extends ImageView {
 
             int resultHeight = (int) Math.max(mHeight, sizeHeight);
 
-            if (resultHeight >= ScreenUtils.getScreenHeight((Activity) getContext())) {
-                resultHeight = ScreenUtils.getScreenHeight((Activity) getContext()) / 3;
+            if (resultHeight >= ScreenUtils.getScreenHeight(getContext())) {
+                resultHeight = ScreenUtils.getScreenHeight(getContext()) / 3;
             }
 
             setMeasuredDimension(sizeWidth, resultHeight);

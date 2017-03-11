@@ -9,9 +9,9 @@ import android.support.v4.app.Fragment;
  */
 public interface FragmentNavigatorAdapter {
 
-    public Fragment onCreateFragment(int position);
+    Fragment onCreateFragment(int position);
 
-    public String getTag(int position);
+    String getTag(int position);
 
-    public int getCount();
+    int getCount();
 }

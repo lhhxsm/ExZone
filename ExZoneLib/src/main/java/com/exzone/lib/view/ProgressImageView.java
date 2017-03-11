@@ -2,6 +2,7 @@ package com.exzone.lib.view;
 
 import android.content.Context;
 import android.graphics.drawable.Animatable;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,7 +13,7 @@ import android.widget.ImageView;
  * 时间: 2017/2/8.
  */
 
-public class ProgressImageView extends ImageView {
+public class ProgressImageView extends AppCompatImageView {
 
     public ProgressImageView(Context context) {
         super(context);

@@ -3,6 +3,7 @@ package com.exzone.lib.view;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,7 +14,7 @@ import android.widget.ImageView;
  * 描述:实现图像根据按下抬起动作变化颜色
  * 时间: 2016/10/10.
  */
-public class ColorFilterImageView extends ImageView implements View.OnTouchListener {
+public class ColorFilterImageView extends AppCompatImageView implements View.OnTouchListener {
 
     public ColorFilterImageView(Context context) {
         this(context, null, 0);

@@ -1,17 +1,15 @@
 package com.exzone.lib.view;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Build;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.widget.RadioButton;
 
 import com.exzone.lib.R;
 
@@ -21,7 +19,7 @@ import com.exzone.lib.R;
  * 时间: 2017/2/7.
  */
 
-public class BottomTabRadioButton extends RadioButton {
+public class BottomTabRadioButton extends AppCompatRadioButton {
 
     /**
      * 提示模式 - 无提示
@@ -113,12 +111,6 @@ public class BottomTabRadioButton extends RadioButton {
 
     public BottomTabRadioButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView(attrs);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public BottomTabRadioButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
         initView(attrs);
     }
 

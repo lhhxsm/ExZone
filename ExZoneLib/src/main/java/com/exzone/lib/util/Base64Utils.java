@@ -434,7 +434,6 @@ public class Base64Utils {
                         v = ((tail[0] & 0xff) << 16) | ((input[p++] & 0xff) << 8) | (input[p++] & 0xff);
                         tailLen = 0;
                     }
-                    ;
                     break;
 
                 case 2:

@@ -62,5 +62,4 @@ public class ToastUtils {
         showLong(context, context.getResources().getText(resId));
     }
 
-
 }

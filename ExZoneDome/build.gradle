@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply from: '../config/quality.gradle'
 
 def debugTime() {
@@ -9,9 +8,6 @@ def debugTime() {
 def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
-
-Properties props = new Properties()
-props.load(new FileInputStream(file("config.properties")))
 
 android {
     compileSdkVersion 25
@@ -33,10 +29,10 @@ android {
     }
     signingConfigs {//签名的配置
         release {
-            keyAlias props['KEY_ALIAS']
-            keyPassword props['KEY_PASSWORD']
-            storeFile file(props['KEYSTORE_FILE'])
-            storePassword props['KEYSTORE_PASSWORD']
+            keyAlias "${KEY_ALIAS}"
+            keyPassword "${KEY_PASSWORD}"
+            storeFile file("${KEYSTORE_FILE}")
+            storePassword "${KEYSTORE_PASSWORD}"
 
 //            storeFile file("签名文件名称.jks")
 //            storePassword '密码'
@@ -44,10 +40,14 @@ android {
 //            keyPassword '密码'
         }
         debug {
-            keyAlias props['KEY_ALIAS']
-            keyPassword props['KEY_PASSWORD']
-            storeFile file(props['KEYSTORE_FILE'])
-            storePassword props['KEYSTORE_PASSWORD']
+//            keyAlias props['KEY_ALIAS']
+//            keyPassword props['KEY_PASSWORD']
+//            storeFile file(props['KEYSTORE_FILE'])
+//            storePassword props['KEYSTORE_PASSWORD']
+            keyAlias "${KEY_ALIAS}"
+            keyPassword "${KEY_PASSWORD}"
+            storeFile file("${KEYSTORE_FILE}")
+            storePassword "${KEYSTORE_PASSWORD}"
         }
     }
     buildTypes {
@@ -57,19 +57,19 @@ android {
             shrinkResources true//是否移除无用的resource文件
             signingConfig signingConfigs.debug//打包命令行：gradlew assembleDebug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationVariants.all { variant ->
-                if (variant.buildType.name.equals('debug')) {
-                    variant.outputs.each { output ->
-                        def outputFile = output.outputFile
-                        if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                            def fileName = "${debugTime()}_ExZone_${defaultConfig.versionName}_debug.apk"
-                            //output.outputFile = new File(outputFile.parent, fileName)
-                            //自定义APK的输出路径
-                            output.outputFile = new File(props['OUTPUT_FILE'], fileName)
-                        }
-                    }
-                }
-            }
+//            applicationVariants.all { variant ->
+//                if (variant.buildType.name == 'debug') {
+//                    variant.outputs.each { output ->
+//                        def outputFile = output.outputFile
+//                        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                            def fileName = "${debugTime()}_ExZone_${defaultConfig.versionName}_debug.apk"
+//                            //output.outputFile = new File(outputFile.parent, fileName)
+//                            //自定义APK的输出路径
+//                            output.outputFile = new File(file("${OUTPUT_FILE}"), fileName)
+//                        }
+//                    }
+//                }
+//            }
         }
         release {
             minifyEnabled true//是否启动混淆
@@ -78,14 +78,14 @@ android {
             signingConfig signingConfigs.release//打包命令行：gradlew assembleRelease
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationVariants.all { variant ->
-                if (variant.buildType.name.equals('release')) {
+                if (variant.buildType.name == 'release') {
                     variant.outputs.each { output ->
                         def outputFile = output.outputFile
                         if (outputFile != null && outputFile.name.endsWith('.apk')) {
                             def fileName = "${releaseTime()}_ExZone_${defaultConfig.versionName}_release.apk"
                             //output.outputFile = new File(outputFile.parent, fileName)
                             //自定义APK的输出路径
-                            output.outputFile = new File(props['OUTPUT_FILE'], fileName)
+                            output.outputFile = new File(file("${OUTPUT_FILE}"), fileName)
                         }
                     }
                 }

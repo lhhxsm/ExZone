@@ -45,7 +45,7 @@ public final class Transformers {
     }
 
     /**
-     * Prevents an observable from erroring by chaining `onErrorResumeNext`,
+     * Prevents an observable from error by chaining `onErrorResumeNext`,
      * and any errors that occur will be piped into the supplied errors publish
      * subject. `null` values will never be sent to the publish subject.
      *
@@ -62,7 +62,7 @@ public final class Transformers {
     }
 
     /**
-     * Prevents an observable from erroring by chaining `onErrorResumeNext`,
+     * Prevents an observable from error by chaining `onErrorResumeNext`,
      * and any errors that occur will be piped into the supplied errors action.
      * `null` values will never be sent to the publish subject.
      *

@@ -132,7 +132,7 @@ public class AppUtils {
      */
     public static String getMacAddress(Context context) {
         if (context == null) return null;
-        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         return wifiInfo.getMacAddress();
     }
