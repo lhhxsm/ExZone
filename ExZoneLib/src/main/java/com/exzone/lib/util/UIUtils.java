@@ -19,15 +19,15 @@ public class UIUtils {
         // 在主线程运行
         if (android.os.Process.myTid() == BaseApplication.sMainTid) {
             if (delayMillis > 0)
-                BaseApplication.sHandler.postDelayed(runnable, delayMillis);
+                BaseApplication.sMainHandler.postDelayed(runnable, delayMillis);
             else
                 runnable.run();
         } else { // 获取handler
-            if (BaseApplication.sHandler != null) {
+            if (BaseApplication.sMainHandler != null) {
                 if (delayMillis == 0)
-                    BaseApplication.sHandler.post(runnable);
+                    BaseApplication.sMainHandler.post(runnable);
                 else
-                    BaseApplication.sHandler.postDelayed(runnable, delayMillis);
+                    BaseApplication.sMainHandler.postDelayed(runnable, delayMillis);
             }
         }
     }

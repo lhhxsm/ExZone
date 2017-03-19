@@ -2,9 +2,11 @@ package com.exzone.lib.util;
 
 import android.database.Cursor;
 import android.os.ParcelFileDescriptor;
+import android.support.annotation.NonNull;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -133,5 +135,14 @@ public class IOUtils {
             }
         }
         return null;
+    }
+
+    public static byte[] readFully(final @NonNull InputStream inputStream) throws IOException {
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        final byte[] buffer = new byte[1024];
+        for (int count; (count = inputStream.read(buffer)) != -1; ) {
+            out.write(buffer, 0, count);
+        }
+        return out.toByteArray();
     }
 }
