@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import com.exzone.lib.util.Logger;
+
 import java.util.Stack;
 
 /**
@@ -12,7 +14,7 @@ import java.util.Stack;
  * 时间:2016/11/17.
  */
 public class ActManager {
-    private static Stack<Activity> sActivities;
+    private static Stack<Activity> sStack;
 
     private volatile static ActManager sInstance;
 
@@ -37,17 +39,17 @@ public class ActManager {
      * 添加Activity到堆栈中
      */
     public void addActivity(Activity activity) {
-        if (sActivities == null) {
-            sActivities = new Stack<Activity>();
+        if (sStack == null) {
+            sStack = new Stack<>();
         }
-        sActivities.add(activity);
+        sStack.add(activity);
     }
 
     /**
      * 获取当前的Activity,即堆栈中的最后一个
      */
     public Activity currentActivity() {
-        Activity activity = sActivities.lastElement();
+        Activity activity = sStack.lastElement();
         return activity;
     }
 
@@ -58,7 +60,7 @@ public class ActManager {
      */
     public void finishActivity(Activity activity) {
         if (activity != null) {
-            sActivities.remove(activity);
+            sStack.remove(activity);
             activity.finish();
             activity = null;
         }
@@ -70,7 +72,7 @@ public class ActManager {
      * @param clazz
      */
     public void finishActivity(Class<?> clazz) {
-        for (Activity activity : sActivities) {
+        for (Activity activity : sStack) {
             if (activity.getClass().equals(clazz)) {
                 finishActivity(activity);
             }
@@ -89,12 +91,12 @@ public class ActManager {
      * 结束所有Activity
      */
     public void finishAllActivity() {
-        for (int i = 0, size = sActivities.size(); i < size; i++) {
-            if (null != sActivities.get(i)) {
-                sActivities.get(i).finish();
+        for (int i = 0, size = sStack.size(); i < size; i++) {
+            if (null != sStack.get(i)) {
+                sStack.get(i).finish();
             }
         }
-        sActivities.clear();
+        sStack.clear();
     }
 
     /**
@@ -108,6 +110,34 @@ public class ActManager {
             System.exit(0); // 注意，如果您有后台程序运行，请不要支持此句子
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 结束所有Activity，但保留最后一个
+     */
+    public synchronized void keepLastOne() {
+        for (int i = 0, size = sStack.size() - 1; i < size; i++) {
+            sStack.get(0).finish();
+            sStack.remove(0);
+        }
+    }
+
+    /**
+     * 堆栈中activity的个数
+     *
+     * @return
+     */
+    public synchronized int activitySize() {
+        return sStack.size();
+    }
+
+    /**
+     * 打印信息
+     */
+    public synchronized void printActStack() {
+        for (int i = 0; i < sStack.size(); i++) {
+            Logger.i("activity-->" + sStack.get(i).getClass().getSimpleName());
         }
     }
 }

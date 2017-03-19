@@ -23,14 +23,14 @@ import java.io.File;
 public class BaseApplication extends Application {
 
     public static Context sContext;
-    public static Handler sHandler;
+    public static Handler sMainHandler;
     public static int sMainTid;
 
     @Override
     public void onCreate() {
         Logger.initLog(true);// 打开Log输出
         sContext = getApplicationContext();
-        sHandler = new Handler();
+        sMainHandler = new Handler();
         sMainTid = Process.myTid();
         initWidthAndHeight();
         super.onCreate();
@@ -41,6 +41,20 @@ public class BaseApplication extends Application {
         //设置异常处理
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
+    }
+
+    public static long getMainThreadId() {
+        return sMainTid;
+    }
+
+    public static Handler getMainHandler() {
+        return sMainHandler;
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        System.gc();
     }
 
     /**
