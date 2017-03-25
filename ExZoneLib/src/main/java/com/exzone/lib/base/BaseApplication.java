@@ -2,18 +2,23 @@ package com.exzone.lib.base;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Process;
 import android.support.multidex.MultiDex;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.exzone.lib.exception.CrashHandler;
+import com.exzone.lib.rxjava.ServiceFactory;
 import com.exzone.lib.util.Logger;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
+import java.io.InputStream;
+
+import okhttp3.OkHttpClient;
 
 /**
  * 作者:李鸿浩
@@ -21,19 +26,17 @@ import java.io.File;
  * 时间:2016/7/5.
  */
 public class BaseApplication extends Application {
-
-    public static Context sContext;
-    public static Handler sMainHandler;
-    public static int sMainTid;
+    private static BaseApplication sInstance;
+    private static Handler sMainHandler;
+    private static int sMainTid;
 
     @Override
     public void onCreate() {
+        super.onCreate();
         Logger.initLog(true);// 打开Log输出
-        sContext = getApplicationContext();
         sMainHandler = new Handler();
         sMainTid = Process.myTid();
-        initWidthAndHeight();
-        super.onCreate();
+        sInstance = this;
         if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
         }
@@ -41,20 +44,24 @@ public class BaseApplication extends Application {
         //设置异常处理
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
+        initGlide();
     }
 
-    public static long getMainThreadId() {
+    /**
+     * 图片加载框架Glide,使用OkHttp处理网络请求
+     */
+    private void initGlide() {
+        OkHttpClient okHttpClient = ServiceFactory.getCacheOkHttpClient();
+        Glide.get(this).register(GlideUrl.class, InputStream.class,
+                new OkHttpUrlLoader.Factory(okHttpClient));
+    }
+
+    public long getMainThreadId() {
         return sMainTid;
     }
 
-    public static Handler getMainHandler() {
+    public Handler getMainHandler() {
         return sMainHandler;
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        System.gc();
     }
 
     /**
@@ -78,14 +85,7 @@ public class BaseApplication extends Application {
         return super.getCacheDir();
     }
 
-    /**
-     * 获取屏幕长度高度
-     */
-    private void initWidthAndHeight() {
-        // 防止被系统字体改变默认得字体大小
-        Resources resource = getResources();
-        Configuration c = resource.getConfiguration();
-        c.fontScale = 1.0f;
-        resource.updateConfiguration(c, resource.getDisplayMetrics());
+    public synchronized static BaseApplication getInstance() {
+        return sInstance;
     }
 }

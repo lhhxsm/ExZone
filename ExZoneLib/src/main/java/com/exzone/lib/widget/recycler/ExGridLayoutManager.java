@@ -64,6 +64,7 @@ public class ExGridLayoutManager extends GridLayoutManager {
         }
 
         switch (widthMode) {
+            default:
             case View.MeasureSpec.EXACTLY:
                 width = widthSize;
             case View.MeasureSpec.AT_MOST:
@@ -71,6 +72,7 @@ public class ExGridLayoutManager extends GridLayoutManager {
         }
 
         switch (heightMode) {
+            default:
             case View.MeasureSpec.EXACTLY:
                 height = heightSize;
             case View.MeasureSpec.AT_MOST:

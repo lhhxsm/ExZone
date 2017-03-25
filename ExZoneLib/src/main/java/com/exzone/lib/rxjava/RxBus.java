@@ -42,7 +42,7 @@ public class RxBus {
     /**
      * 订阅事件源
      */
-    public RxBus OnEvent(Observable<?> observable, Action1<Object> action1) {
+    public RxBus onEvent(Observable<?> observable, Action1<Object> action1) {
         observable.observeOn(AndroidSchedulers.mainThread()).subscribe(action1, new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {

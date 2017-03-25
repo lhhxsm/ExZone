@@ -94,6 +94,9 @@ public class SDCardUtils {
             //如果是目录则递归计算其内容的总大小
             if (file.isDirectory()) {
                 File[] children = file.listFiles();
+                if (children == null || children.length <= 0) {
+                    return 0;
+                }
                 double size = 0;
                 for (File f : children)
                     size += getDirSize(f);

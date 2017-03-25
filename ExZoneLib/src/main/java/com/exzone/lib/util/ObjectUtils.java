@@ -2,6 +2,7 @@ package com.exzone.lib.util;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import rx.functions.Func1;
 
@@ -45,7 +46,7 @@ public final class ObjectUtils {
                 return ObjectUtils.coalesce(value, theDefault);
             }
         };
-//        return (value) -> ObjectUtils.coalesce(value, theDefault);
+        //        return (value) -> ObjectUtils.coalesce(value, theDefault);
     }
 
     /**
@@ -54,11 +55,10 @@ public final class ObjectUtils {
     public static
     @Nullable
     Boolean toBoolean(final @Nullable String s) {
-        if (s != null) {
+        if (!TextUtils.isEmpty(s)) {
             return Boolean.parseBoolean(s);
         }
-
-        return null;
+        return Boolean.FALSE;
     }
 
     /**

@@ -158,6 +158,8 @@ public class PhoneUtils {
                             case 2:
                                 phoneResult = phoneNumber;
                                 break;
+                            default:
+                                break;
                         }
                     }
                     if (!phones.isClosed()) {
@@ -308,7 +310,7 @@ public class PhoneUtils {
             }
             //检查是否安装WPS
             String wpsPackageEng = "cn.wps.moffice_eng";//普通版与英文版一样
-//			String wpsActivity = "cn.wps.moffice.documentmanager.PreStartActivity";
+            //			String wpsActivity = "cn.wps.moffice.documentmanager.PreStartActivity";
             String wpsActivity2 = "cn.wps.moffice.documentmanager.PreStartActivity2";//默认第三方程序启动
             Intent intent = new Intent();
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

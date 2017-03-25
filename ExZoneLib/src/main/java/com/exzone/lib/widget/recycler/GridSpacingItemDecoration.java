@@ -162,7 +162,7 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
             return this;
         }
 
-        public Builder setmDivider(Drawable mDivider) {
+        public Builder setDivider(Drawable mDivider) {
             this.mDivider = mDivider;
             return this;
         }

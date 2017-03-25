@@ -6,6 +6,7 @@ import com.exzone.lib.base.BaseApplication;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -23,7 +24,7 @@ public class PropertiesUtils extends Properties {
     public static String readAssetsProp(String fileName, String key) {
         String value = "";
         try {
-            InputStream in = BaseApplication.sContext.getAssets().open(fileName);
+            InputStream in = BaseApplication.getInstance().getAssets().open(fileName);
             property.load(in);
             value = property.getProperty(key);
         } catch (Exception e1) {
@@ -49,7 +50,7 @@ public class PropertiesUtils extends Properties {
     public static String readAssetsProp(String fileName, String key, String defaultValue) {
         String value = "";
         try {
-            InputStream in = BaseApplication.sContext.getAssets().open(fileName);
+            InputStream in = BaseApplication.getInstance().getAssets().open(fileName);
             property.load(in);
             value = property.getProperty(key, defaultValue);
         } catch (Exception e1) {
@@ -87,11 +88,21 @@ public class PropertiesUtils extends Properties {
      */
     public static Properties loadConfig(String file) {
         Properties properties = new Properties();
+        FileInputStream s = null;
         try {
-            FileInputStream s = new FileInputStream(file);
+            s = new FileInputStream(file);
             properties.load(s);
         } catch (Exception e) {
+            e.printStackTrace();
             Logger.e(e.toString());
+        } finally {
+            if (s != null) {
+                try {
+                    s.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return properties;
     }
@@ -100,11 +111,21 @@ public class PropertiesUtils extends Properties {
      * 保存Properties(指定目录)
      */
     public static void saveConfig(String file, Properties properties) {
+        FileOutputStream s = null;
         try {
-            FileOutputStream s = new FileOutputStream(file, false);
+            s = new FileOutputStream(file, false);
             properties.store(s, "");
         } catch (Exception e) {
+            e.printStackTrace();
             Logger.e(e.toString());
+        } finally {
+            if (s != null) {
+                try {
+                    s.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -137,7 +158,6 @@ public class PropertiesUtils extends Properties {
     }
 
     public static Properties loadConfigAssets(Context context, String fileName) {
-
         Properties properties = new Properties();
         try {
             InputStream is = context.getAssets().open(fileName);

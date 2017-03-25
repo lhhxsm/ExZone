@@ -48,6 +48,7 @@ public class WrapHeightLinearLayoutManager extends LinearLayoutManager {
             }
         }
         switch (widthMode) {
+            default:
             case View.MeasureSpec.EXACTLY:
                 width = widthSize;
             case View.MeasureSpec.AT_MOST:

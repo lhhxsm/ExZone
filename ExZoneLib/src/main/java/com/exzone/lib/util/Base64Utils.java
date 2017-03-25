@@ -1,5 +1,7 @@
 package com.exzone.lib.util;
 
+import java.nio.charset.Charset;
+
 /**
  * 作者:李鸿浩
  * 描述:Base64加密解密
@@ -20,7 +22,7 @@ public class Base64Utils {
      * 解密
      */
     public static byte[] decode(String str) {
-        byte[] bytes = str.getBytes();
+        byte[] bytes = str.getBytes(Charset.forName("UTF-8"));
         return decode(bytes, 0, bytes.length);
     }
 
@@ -62,6 +64,7 @@ public class Base64Utils {
             }
         } else {
             switch (len % 3) {
+                default:
                 case 0:
                     break;
                 case 1:

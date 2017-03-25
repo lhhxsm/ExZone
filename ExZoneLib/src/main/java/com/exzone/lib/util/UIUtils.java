@@ -17,17 +17,17 @@ public class UIUtils {
      */
     public static void runOnUiThread(Runnable runnable, long delayMillis) {
         // 在主线程运行
-        if (android.os.Process.myTid() == BaseApplication.sMainTid) {
+        if (android.os.Process.myTid() == BaseApplication.getInstance().getMainThreadId()) {
             if (delayMillis > 0)
-                BaseApplication.sMainHandler.postDelayed(runnable, delayMillis);
+                BaseApplication.getInstance().getMainHandler().postDelayed(runnable, delayMillis);
             else
                 runnable.run();
         } else { // 获取handler
-            if (BaseApplication.sMainHandler != null) {
+            if (BaseApplication.getInstance().getMainHandler() != null) {
                 if (delayMillis == 0)
-                    BaseApplication.sMainHandler.post(runnable);
+                    BaseApplication.getInstance().getMainHandler().post(runnable);
                 else
-                    BaseApplication.sMainHandler.postDelayed(runnable, delayMillis);
+                    BaseApplication.getInstance().getMainHandler().postDelayed(runnable, delayMillis);
             }
         }
     }

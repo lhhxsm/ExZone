@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 
 /**
  * 作者:李鸿浩
@@ -44,7 +45,8 @@ public class IOUtils {
 
     public static void close(Cursor cursor) {
         try {
-            if (cursor != null) cursor.close();
+            if (cursor != null)
+                cursor.close();
         } catch (Throwable t) {
             Logger.e("fail to close:" + t);
         }
@@ -60,7 +62,7 @@ public class IOUtils {
     public static void write(String filePath, String content) {
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath)));
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath),Charset.forName("UTF-8")));
             bw.write(content);
         } catch (Exception e1) {
             e1.printStackTrace();
@@ -85,7 +87,7 @@ public class IOUtils {
     public static String read(String path) {
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(path),Charset.forName("UTF-8")));
             StringBuffer sb = new StringBuffer();
             String str = null;
             while ((str = br.readLine()) != null) {
@@ -116,7 +118,7 @@ public class IOUtils {
     public static String read(InputStream is) {
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new InputStreamReader(is));
+            br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             StringBuffer sb = new StringBuffer();
             String str = null;
             while ((str = br.readLine()) != null) {

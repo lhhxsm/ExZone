@@ -214,6 +214,8 @@ public class SmoothCheckBox extends View implements Checkable {
             case MeasureSpec.EXACTLY:
                 result = specSize;
                 break;
+            default:
+                break;
         }
         return result;
     }

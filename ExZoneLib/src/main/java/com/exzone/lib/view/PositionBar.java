@@ -35,7 +35,7 @@ public class PositionBar extends LinearLayout {
     }
 
     public void setItems(String[] items) {
-        mItems = items;
+        this.mItems = items;
         for (CharSequence s : mItems) {
             TextView t = new TextView(getContext());
             t.setText(s);
@@ -81,6 +81,8 @@ public class PositionBar extends LinearLayout {
                 if (listener != null) {
                     listener.onPositionSelected("");
                 }
+                break;
+            default:
                 break;
         }
 

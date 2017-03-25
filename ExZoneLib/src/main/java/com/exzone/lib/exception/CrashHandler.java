@@ -98,15 +98,16 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
         File dir = new File(PATH);
         if (!dir.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            dir.mkdirs();
+            boolean mkdirs = dir.mkdirs();
+            if (!mkdirs) {
+                return;
+            }
         }
         long current = System.currentTimeMillis();
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(current));
 
         File file = new File(PATH + FILE_NAME + time + FILE_NAME_SUFFIX);
         Logger.e(PATH + FILE_NAME + time + FILE_NAME_SUFFIX);
-
         try {
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
             pw.println(time);
@@ -115,6 +116,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             ex.printStackTrace(pw);
             pw.close();
         } catch (Exception e) {
+            e.printStackTrace();
             Logger.e("dump crash info failed");
         }
     }

@@ -51,11 +51,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
         // Bind state
         if (mFoldStates.containsKey(position)) {
-            if (mFoldStates.get(position) == Boolean.TRUE) {
+            if (mFoldStates.get(position)) {
                 if (!holder.mFoldableLayout.isFolded()) {
                     holder.mFoldableLayout.foldWithoutAnimation();
                 }
-            } else if (mFoldStates.get(position) == Boolean.FALSE) {
+            } else if (!mFoldStates.get(position)) {
                 if (holder.mFoldableLayout.isFolded()) {
                     holder.mFoldableLayout.unfoldWithoutAnimation();
                 }

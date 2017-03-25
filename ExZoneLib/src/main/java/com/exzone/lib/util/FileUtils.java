@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -52,7 +53,6 @@ public class FileUtils {
     /**
      * 获取可以使用的缓存目录
      *
-     * @param context
      * @param uniqueName 目录名称
      */
     public static File getDiskCacheDir(Context context, String uniqueName) {
@@ -175,7 +175,7 @@ public class FileUtils {
      *
      * @param filePath 文件路径
      */
-    public static String readFileByLines(String filePath) throws IOException {
+    public static String readFileByLines(String filePath) {
         BufferedReader reader = null;
         StringBuilder sb = new StringBuilder();
         try {
@@ -190,7 +190,11 @@ public class FileUtils {
             e.printStackTrace();
         } finally {
             if (reader != null) {
-                reader.close();
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return sb.toString();
@@ -203,12 +207,12 @@ public class FileUtils {
      * @param filePath 文件路径
      * @param encoding 写文件编码
      */
-    public static String readFileByLines(String filePath, String encoding) throws IOException {
+    public static String readFileByLines(String filePath, String encoding) {
         BufferedReader reader = null;
         StringBuilder sb = new StringBuilder();
         try {
             reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), encoding));
-            String tempString = null;
+            String tempString;
             while ((tempString = reader.readLine()) != null) {
                 sb.append(tempString);
                 sb.append("\n");
@@ -218,7 +222,11 @@ public class FileUtils {
             e.printStackTrace();
         } finally {
             if (reader != null) {
-                reader.close();
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -231,9 +239,8 @@ public class FileUtils {
      *
      * @param filePath 文件路径
      * @param content  保存的内容
-     * @throws IOException
      */
-    public static void saveToFile(String filePath, String content) throws IOException {
+    public static void saveToFile(String filePath, String content) {
         saveToFile(filePath, content, System.getProperty("file.encoding"));
     }
 
@@ -243,20 +250,28 @@ public class FileUtils {
      * @param filePath 文件路径
      * @param content  保存的内容
      * @param encoding 写文件编码
-     * @throws IOException
      */
-    public static void saveToFile(String filePath, String content, String encoding) throws IOException {
+    public static void saveToFile(String filePath, String content, String encoding) {
         BufferedWriter writer = null;
         File file = new File(filePath);
         try {
             if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
+                boolean mkdirs = file.getParentFile().mkdirs();
+                if (!mkdirs) {
+                    return;
+                }
             }
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), encoding));
             writer.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             if (writer != null) {
-                writer.close();
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -266,9 +281,8 @@ public class FileUtils {
      *
      * @param content 需要追加的内容
      * @param file    待追加文件源
-     * @throws IOException
      */
-    public static void appendToFile(String content, File file) throws IOException {
+    public static void appendToFile(String content, File file) {
         appendToFile(content, file, System.getProperty("file.encoding"));
     }
 
@@ -280,17 +294,26 @@ public class FileUtils {
      * @param encoding 文件编码
      * @throws IOException
      */
-    public static void appendToFile(String content, File file, String encoding) throws IOException {
+    public static void appendToFile(String content, File file, String encoding) {
         BufferedWriter writer = null;
         try {
             if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
+                boolean mkdirs = file.getParentFile().mkdirs();
+                if (!mkdirs) {
+                    return;
+                }
             }
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, true), encoding));
             writer.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             if (writer != null) {
-                writer.close();
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -300,9 +323,8 @@ public class FileUtils {
      *
      * @param filePath 文件路径
      * @return 是否存在
-     * @throws Exception
      */
-    public static Boolean isExsit(String filePath) {
+    public static Boolean isExist(String filePath) {
         Boolean flag = false;
         try {
             File file = new File(filePath);
@@ -312,7 +334,6 @@ public class FileUtils {
         } catch (Exception e) {
             Logger.e("判断文件失败-->" + e.getMessage());
         }
-
         return flag;
     }
 
@@ -322,18 +343,25 @@ public class FileUtils {
      * @param context  上下文
      * @param filename 文件名称
      * @return 文件内容
-     * @throws IOException
      */
-    public static String read(Context context, String filename) throws IOException {
-        FileInputStream inStream = context.openFileInput(filename);
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int len = 0;
-        while ((len = inStream.read(buffer)) != -1) {
-            outStream.write(buffer, 0, len);
+    public static String read(Context context, String filename) {
+        String content = null;
+        FileInputStream inStream = null;
+        try {
+            inStream = context.openFileInput(filename);
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = inStream.read(buffer)) != -1) {
+                outStream.write(buffer, 0, len);
+            }
+            byte[] data = outStream.toByteArray();
+            content = new String(data, Charset.forName("UTF-8"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        byte[] data = outStream.toByteArray();
-        return new String(data);
+
+        return content;
     }
 
     /**
@@ -341,18 +369,32 @@ public class FileUtils {
      *
      * @param fileName 文件名称
      * @return 文件内容
-     * @throws Exception
      */
-    public static String read(String fileName) throws IOException {
-        FileInputStream inStream = new FileInputStream(fileName);
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int len = 0;
-        while ((len = inStream.read(buffer)) != -1) {
-            outStream.write(buffer, 0, len);
+    public static String read(String fileName) {
+        String content = null;
+        FileInputStream inStream = null;
+        try {
+            inStream = new FileInputStream(fileName);
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = inStream.read(buffer)) != -1) {
+                outStream.write(buffer, 0, len);
+            }
+            byte[] data = outStream.toByteArray();
+            content = new String(data, Charset.forName("UTF-8"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (inStream != null) {
+                try {
+                    inStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        byte[] data = outStream.toByteArray();
-        return new String(data);
+        return content;
     }
 
     /***
@@ -436,9 +478,11 @@ public class FileUtils {
      */
     public static List<String> readAssetsListValue(Context context, String fileName) {
         List<String> list = new ArrayList<String>();
+        InputStream in = null;
+        BufferedReader br = null;
         try {
-            InputStream in = context.getResources().getAssets().open(fileName);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+            in = context.getResources().getAssets().open(fileName);
+            br = new BufferedReader(new InputStreamReader(in, Charset.forName("UTF-8")));
             String str = null;
             while ((str = br.readLine()) != null) {
                 list.add(str);
@@ -446,6 +490,18 @@ public class FileUtils {
 
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
         }
         return list;
     }
@@ -504,7 +560,7 @@ public class FileUtils {
     public static void write(Context context, String fileName, String content) {
         try {
             FileOutputStream outStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-            outStream.write(content.getBytes());
+            outStream.write(content.getBytes(Charset.forName("UTF-8")));
             outStream.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -553,20 +609,28 @@ public class FileUtils {
      * @param target   目标文件
      * @param content  文件内容
      * @param encoding 写入文件编码
-     * @throws Exception
      */
-    public static void write(File target, String content, String encoding) throws IOException {
+    public static void write(File target, String content, String encoding){
         BufferedWriter writer = null;
         try {
             if (!target.getParentFile().exists()) {
-                target.getParentFile().mkdirs();
+                boolean mkdirs = target.getParentFile().mkdirs();
+                if (!mkdirs) {
+                    return;
+                }
             }
             writer = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(target, false), encoding));
             writer.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             if (writer != null) {
-                writer.close();
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -576,23 +640,29 @@ public class FileUtils {
      *
      * @param filePath 文件路径+文件名
      * @param content  文件内容
-     * @throws IOException
      */
-    public static void write(String filePath, byte[] content)
-            throws IOException {
+    public static void write(String filePath, byte[] content) {
         FileOutputStream fos = null;
-
         try {
             File file = new File(filePath);
             if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
+                boolean mkdirs = file.getParentFile().mkdirs();
+                if (!mkdirs) {
+                    return;
+                }
             }
             fos = new FileOutputStream(file);
             fos.write(content);
             fos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             if (fos != null) {
-                fos.close();
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -602,33 +672,41 @@ public class FileUtils {
      *
      * @param inputStream 下载文件的字节流对象
      * @param filePath    文件的存放路径(带文件名称)
-     * @throws IOException
      */
-    public static File write(InputStream inputStream, String filePath) throws IOException {
-        OutputStream outputStream = null;
+    public static File write(InputStream inputStream, String filePath) {
         // 在指定目录创建一个空文件并获取文件对象
         File mFile = new File(filePath);
-        if (!mFile.getParentFile().exists())
-            mFile.getParentFile().mkdirs();
+        if (!mFile.getParentFile().exists()) {
+            boolean mkdirs = mFile.getParentFile().mkdirs();
+            if (!mkdirs) {
+                return null;
+            }
+        }
+        OutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(mFile);
             byte buffer[] = new byte[4 * 1024];
-            int lenght = 0;
+            int lenght;
             while ((lenght = inputStream.read(buffer)) > 0) {
                 outputStream.write(buffer, 0, lenght);
             }
             outputStream.flush();
-            return mFile;
         } catch (IOException e) {
-            Logger.e("写入文件失败，原因：" + e.getMessage());
-            throw e;
+            e.printStackTrace();
+            Logger.e("写入文件失败,原因:" + e.getMessage());
         } finally {
             try {
-                inputStream.close();
-                outputStream.close();
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+                if (inputStream != null) {
+                    inputStream.close();
+                }
             } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+        return mFile;
     }
 
     /**
@@ -636,21 +714,29 @@ public class FileUtils {
      *
      * @param filePath 文件路径+文件名
      * @param bitmap   文件内容
-     * @throws IOException
      */
-    public static void saveAsJPEG(Bitmap bitmap, String filePath) throws IOException {
+    public static void saveAsJPEG(Bitmap bitmap, String filePath) {
         FileOutputStream fos = null;
         try {
             File file = new File(filePath);
             if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
+                boolean mkdirs = file.getParentFile().mkdirs();
+                if (!mkdirs) {
+                    return;
+                }
             }
             fos = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             if (fos != null) {
-                fos.close();
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -660,21 +746,29 @@ public class FileUtils {
      *
      * @param filePath 文件路径+文件名
      * @param bitmap   文件内容
-     * @throws IOException
      */
-    public static void saveAsPNG(Bitmap bitmap, String filePath) throws IOException {
+    public static void saveAsPNG(Bitmap bitmap, String filePath) {
         FileOutputStream fos = null;
         try {
             File file = new File(filePath);
             if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
+                boolean mkdirs = file.getParentFile().mkdirs();
+                if (!mkdirs) {
+                    return;
+                }
             }
             fos = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             if (fos != null) {
-                fos.close();
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -698,7 +792,10 @@ public class FileUtils {
             }
             // 刷新此缓冲的输出流
             outBuff.flush();
-            sourceFile.delete();
+            boolean delete = sourceFile.delete();
+            if (!delete) {
+                return;
+            }
             sourceFile.deleteOnExit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -710,6 +807,7 @@ public class FileUtils {
                 if (outBuff != null)
                     outBuff.close();
             } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -726,7 +824,6 @@ public class FileUtils {
         if (TextUtils.isEmpty(path)) {
             return true;
         }
-
         File file = new File(path);
         if (!file.exists()) {
             return true;
@@ -737,9 +834,16 @@ public class FileUtils {
         if (!file.isDirectory()) {
             return false;
         }
-        for (File f : file.listFiles()) {
+        File[] files = file.listFiles();
+        if (files == null || files.length <= 0) {
+            return false;
+        }
+        for (File f : files) {
             if (f.isFile()) {
-                f.delete();
+                boolean delete = f.delete();
+                if (!delete) {
+                    return false;
+                }
             } else if (f.isDirectory()) {
                 deleteFile(f.getAbsolutePath());
             }
@@ -754,7 +858,6 @@ public class FileUtils {
         if (TextUtils.isEmpty(filePath)) {
             return false;
         }
-
         File file = new File(filePath);
         return (file.exists() && file.isFile());
     }
@@ -766,7 +869,6 @@ public class FileUtils {
         if (TextUtils.isEmpty(directoryPath)) {
             return false;
         }
-
         File dire = new File(directoryPath);
         return (dire.exists() && dire.isDirectory());
     }
@@ -793,16 +895,15 @@ public class FileUtils {
         if (TextUtils.isEmpty(filePath)) {
             return filePath;
         }
-
-        int extenPosi = filePath.lastIndexOf(FILE_EXTENSION_SEPARATOR);
-        int filePosi = filePath.lastIndexOf(File.separator);
-        if (filePosi == -1) {
-            return (extenPosi == -1 ? filePath : filePath.substring(0, extenPosi));
+        int extensionPosition = filePath.lastIndexOf(FILE_EXTENSION_SEPARATOR);
+        int filePosition = filePath.lastIndexOf(File.separator);
+        if (filePosition == -1) {
+            return (extensionPosition == -1 ? filePath : filePath.substring(0, extensionPosition));
         }
-        if (extenPosi == -1) {
-            return filePath.substring(filePosi + 1);
+        if (extensionPosition == -1) {
+            return filePath.substring(filePosition + 1);
         }
-        return (filePosi < extenPosi ? filePath.substring(filePosi + 1, extenPosi) : filePath.substring(filePosi + 1));
+        return (filePosition < extensionPosition ? filePath.substring(filePosition + 1, extensionPosition) : filePath.substring(filePosition + 1));
     }
 
     /**
@@ -830,9 +931,8 @@ public class FileUtils {
         if (TextUtils.isEmpty(filePath)) {
             return filePath;
         }
-
-        int filePosi = filePath.lastIndexOf(File.separator);
-        return (filePosi == -1) ? filePath : filePath.substring(filePosi + 1);
+        int filePosition = filePath.lastIndexOf(File.separator);
+        return (filePosition == -1) ? filePath : filePath.substring(filePosition + 1);
     }
 
     /**
@@ -855,13 +955,11 @@ public class FileUtils {
      * </pre>
      */
     public static String getFolderName(String filePath) {
-
         if (TextUtils.isEmpty(filePath)) {
             return filePath;
         }
-
-        int filePosi = filePath.lastIndexOf(File.separator);
-        return (filePosi == -1) ? "" : filePath.substring(0, filePosi);
+        int filePosition = filePath.lastIndexOf(File.separator);
+        return (filePosition == -1) ? "" : filePath.substring(0, filePosition);
     }
 
     /**
@@ -890,13 +988,12 @@ public class FileUtils {
         if (TextUtils.isEmpty(filePath)) {
             return filePath;
         }
-
-        int extenPosi = filePath.lastIndexOf(FILE_EXTENSION_SEPARATOR);
-        int filePosi = filePath.lastIndexOf(File.separator);
-        if (extenPosi == -1) {
+        int extensionPosition = filePath.lastIndexOf(FILE_EXTENSION_SEPARATOR);
+        int filePosition = filePath.lastIndexOf(File.separator);
+        if (extensionPosition == -1) {
             return "";
         }
-        return (filePosi >= extenPosi) ? "" : filePath.substring(extenPosi + 1);
+        return (filePosition >= extensionPosition) ? "" : filePath.substring(extensionPosition + 1);
     }
 
     /**
@@ -931,6 +1028,4 @@ public class FileUtils {
     public static boolean makeFolders(String filePath) {
         return makeDirs(filePath);
     }
-
-
 }

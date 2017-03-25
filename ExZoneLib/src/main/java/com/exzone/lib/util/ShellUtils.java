@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -103,7 +104,7 @@ public class ShellUtils {
                 }
 
                 // 不能使用os.writeBytes(commmand), 避免字符串编码错误
-                os.write(command.getBytes());
+                os.write(command.getBytes(Charset.forName("UTF-8")));
                 os.writeBytes(COMMAND_LINE_END);
                 os.flush();
             }
@@ -115,8 +116,8 @@ public class ShellUtils {
             if (isNeedResultMsg) {
                 successMsg = new StringBuilder();
                 errorMsg = new StringBuilder();
-                successResult = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                errorResult = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                successResult = new BufferedReader(new InputStreamReader(process.getInputStream(), Charset.forName("UTF-8")));
+                errorResult = new BufferedReader(new InputStreamReader(process.getErrorStream(), Charset.forName("UTF-8")));
                 String s;
                 while ((s = successResult.readLine()) != null) {
                     successMsg.append(s);

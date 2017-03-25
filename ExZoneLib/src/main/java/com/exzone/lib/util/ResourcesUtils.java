@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +30,11 @@ public class ResourcesUtils {
         if (context == null || TextUtils.isEmpty(fileName)) {
             return null;
         }
-
         StringBuilder s = new StringBuilder("");
+        BufferedReader br = null;
         try {
-            InputStreamReader in = new InputStreamReader(context.getResources().getAssets().open(fileName));
-            BufferedReader br = new BufferedReader(in);
+            InputStreamReader in = new InputStreamReader(context.getResources().getAssets().open(fileName), Charset.forName("UTF-8"));
+            br = new BufferedReader(in);
             String line;
             while ((line = br.readLine()) != null) {
                 s.append(line);
@@ -42,6 +43,14 @@ public class ResourcesUtils {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -52,7 +61,7 @@ public class ResourcesUtils {
 
         List<String> fileContent = new ArrayList<String>();
         try {
-            InputStreamReader in = new InputStreamReader(context.getResources().getAssets().open(fileName));
+            InputStreamReader in = new InputStreamReader(context.getResources().getAssets().open(fileName), Charset.forName("UTF-8"));
             BufferedReader br = new BufferedReader(in);
             String line;
             while ((line = br.readLine()) != null) {
@@ -123,11 +132,11 @@ public class ResourcesUtils {
         if (context == null) {
             return null;
         }
-
         StringBuilder s = new StringBuilder();
+        BufferedReader br = null;
         try {
-            InputStreamReader in = new InputStreamReader(context.getResources().openRawResource(resId));
-            BufferedReader br = new BufferedReader(in);
+            InputStreamReader in = new InputStreamReader(context.getResources().openRawResource(resId), Charset.forName("UTF-8"));
+            br = new BufferedReader(in);
             String line;
             while ((line = br.readLine()) != null) {
                 s.append(line);
@@ -136,6 +145,14 @@ public class ResourcesUtils {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -147,7 +164,7 @@ public class ResourcesUtils {
         List<String> fileContent = new ArrayList<String>();
         BufferedReader reader = null;
         try {
-            InputStreamReader in = new InputStreamReader(context.getResources().openRawResource(resId));
+            InputStreamReader in = new InputStreamReader(context.getResources().openRawResource(resId), Charset.forName("UTF-8"));
             reader = new BufferedReader(in);
             String line = null;
             while ((line = reader.readLine()) != null) {

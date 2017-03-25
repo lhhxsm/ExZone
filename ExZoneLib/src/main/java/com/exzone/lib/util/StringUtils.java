@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -140,7 +141,7 @@ public class StringUtils {
      * @throws Exception
      */
     public static String convertStreamToString(InputStream is) throws Exception {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
@@ -407,7 +408,7 @@ public class StringUtils {
      * 将加密的字符串解密成byte数组
      */
     public static byte[] decode(String str) {
-        byte[] bytes = str.getBytes();
+        byte[] bytes = str.getBytes(Charset.forName("UTF-8"));
         return Base64Utils.decode(bytes, 0, bytes.length);
     }
 
@@ -422,7 +423,7 @@ public class StringUtils {
      * </pre>
      */
     public static String utf8Encode(String str) {
-        if (!TextUtils.isEmpty(str) && str.getBytes().length != str.length()) {
+        if (!TextUtils.isEmpty(str) && str.getBytes(Charset.forName("UTF-8")).length != str.length()) {
             try {
                 return URLEncoder.encode(str, "UTF-8");
             } catch (UnsupportedEncodingException e) {
@@ -440,7 +441,7 @@ public class StringUtils {
      * @return
      */
     public static String utf8Encode(String str, String defaultReturn) {
-        if (!TextUtils.isEmpty(str) && str.getBytes().length != str.length()) {
+        if (!TextUtils.isEmpty(str) && str.getBytes(Charset.forName("UTF-8")).length != str.length()) {
             try {
                 return URLEncoder.encode(str, "UTF-8");
             } catch (UnsupportedEncodingException e) {

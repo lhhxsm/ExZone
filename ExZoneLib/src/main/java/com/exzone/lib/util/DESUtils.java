@@ -2,6 +2,7 @@ package com.exzone.lib.util;
 
 import android.util.Base64;
 
+import java.nio.charset.Charset;
 import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
 
@@ -31,7 +32,7 @@ public class DESUtils {
      * @return 加密后的字节数组, 一般结合Base64编码使用
      */
     public static String encode(String key, String data) throws Exception {
-        return encode(key, data.getBytes());
+        return encode(key, data.getBytes(Charset.forName("UTF-8")));
     }
 
     /**
@@ -43,12 +44,12 @@ public class DESUtils {
      */
     private static String encode(String key, byte[] data) throws Exception {
         try {
-            DESKeySpec dks = new DESKeySpec(key.getBytes());
+            DESKeySpec dks = new DESKeySpec(key.getBytes(Charset.forName("UTF-8")));
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
             // key的长度不能够小于8位字节
             Key secretKey = keyFactory.generateSecret(dks);
             Cipher cipher = Cipher.getInstance(ALGORITHM_DES);
-            IvParameterSpec iv = new IvParameterSpec("12345678".getBytes());
+            IvParameterSpec iv = new IvParameterSpec("12345678".getBytes(Charset.forName("UTF-8")));
             AlgorithmParameterSpec paramSpec = iv;
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, paramSpec);
             byte[] bytes = cipher.doFinal(data);
@@ -67,12 +68,12 @@ public class DESUtils {
      */
     private static byte[] decode(String key, byte[] data) throws Exception {
         try {
-            DESKeySpec dks = new DESKeySpec(key.getBytes());
+            DESKeySpec dks = new DESKeySpec(key.getBytes(Charset.forName("UTF-8")));
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
             // key的长度不能够小于8位字节
             Key secretKey = keyFactory.generateSecret(dks);
             Cipher cipher = Cipher.getInstance(ALGORITHM_DES);
-            IvParameterSpec iv = new IvParameterSpec("12345678".getBytes());
+            IvParameterSpec iv = new IvParameterSpec("12345678".getBytes(Charset.forName("UTF-8")));
             AlgorithmParameterSpec paramSpec = iv;
             cipher.init(Cipher.DECRYPT_MODE, secretKey, paramSpec);
             return cipher.doFinal(data);
@@ -88,14 +89,14 @@ public class DESUtils {
         byte[] datas;
         String value = null;
         try {
-            if (System.getProperty("os.name") != null
-                    && (System.getProperty("os.name").equalsIgnoreCase("sunos") || System
-                    .getProperty("os.name").equalsIgnoreCase("linux"))) {
-                datas = decode(key, Base64.decode(data, 0));
-            } else {
-                datas = decode(key, Base64.decode(data, 0));
-            }
-            value = new String(datas);
+            //            if (System.getProperty("os.name") != null
+            //                    && (System.getProperty("os.name").equalsIgnoreCase("sunos") || System
+            //                    .getProperty("os.name").equalsIgnoreCase("linux"))) {
+            //                datas = decode(key, Base64.decode(data, 0));
+            //            } else {
+            datas = decode(key, Base64.decode(data, 0));
+            //            }
+            value = new String(datas, Charset.forName("UTF-8"));
         } catch (Exception e) {
             value = "";
         }

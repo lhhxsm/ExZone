@@ -126,8 +126,8 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         /**
          * 放大和缩小的系数
          */
-        private final float BIGGER = 1.07f;
-        private final float SMALL = 0.93f;
+        private static final float BIGGER = 1.07f;
+        private static final float SMALL = 0.93f;
 
         private float tmpScale;
 
