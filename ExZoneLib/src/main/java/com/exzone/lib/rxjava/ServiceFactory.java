@@ -64,6 +64,10 @@ public class ServiceFactory {
                 .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                 .cache(cache)
                 //                .authenticator(new TokenAuthenticator())
+                //                .sslSocketFactory(...)
+                //                .hostnameVerifier(...)
+                //失败重连
+                .retryOnConnectionFailure(true)
                 .build();
     }
 

@@ -129,7 +129,7 @@ public class ImageUtils {
     }
 
     /**
-     * 亚索图片
+     * 压缩图片
      *
      * @param context
      * @param uri     图片uri

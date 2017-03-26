@@ -3,6 +3,8 @@ package com.exzone.lib.util;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.ParameterizedType;
@@ -16,6 +18,22 @@ import java.util.List;
  */
 
 public class GsonUtils {
+
+    /**
+     * 判断是否为合法的json
+     *
+     * @param jsonContent 需判断的字串
+     */
+    public static boolean isJsonFormat(String jsonContent) {
+        try {
+            new JsonParser().parse(jsonContent);
+            return true;
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+            Logger.e("bad json: " + jsonContent);
+            return false;
+        }
+    }
 
 
     public static <T> List<T> convertList(String jsonStr) {

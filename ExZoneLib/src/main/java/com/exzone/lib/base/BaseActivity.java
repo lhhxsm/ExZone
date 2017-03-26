@@ -32,12 +32,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.initView();
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ActManager.getInstance().finishActivity(this);
     }
+
 
     @Override
     public void finish() {
