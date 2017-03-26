@@ -81,7 +81,8 @@ public class DimenTool {
                 }
                 line++;
             }
-            reader.close();
+            //            reader.close();
+            IOUtils.close(reader);
             System.out.println("<!--  sw320land -->");
             System.out.println(sw480land);
             System.out.println("<!--  sw320land -->");
@@ -141,13 +142,14 @@ public class DimenTool {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
+            IOUtils.close(reader);
+            //            if (reader != null) {
+            //                try {
+            //                    reader.close();
+            //                } catch (IOException e1) {
+            //                    e1.printStackTrace();
+            //                }
+            //            }
         }
     }
 
@@ -162,9 +164,10 @@ public class DimenTool {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (out != null) {
-            out.close();
-        }
+        IOUtils.close(out);
+        //        if (out != null) {
+        //            out.close();
+        //        }
     }
 
     public static void main(String[] args) {

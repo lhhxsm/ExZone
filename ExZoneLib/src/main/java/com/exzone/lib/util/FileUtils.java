@@ -185,17 +185,18 @@ public class FileUtils {
                 sb.append(tempString);
                 sb.append("\n");
             }
-            reader.close();
+            //            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (reader != null) {
+            //                try {
+            //                    reader.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(reader);
         }
         return sb.toString();
 
@@ -217,17 +218,18 @@ public class FileUtils {
                 sb.append(tempString);
                 sb.append("\n");
             }
-            reader.close();
+            //            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (reader != null) {
+            //                try {
+            //                    reader.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(reader);
         }
 
         return sb.toString();
@@ -266,13 +268,14 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (writer != null) {
+            //                try {
+            //                    writer.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(writer);
         }
     }
 
@@ -308,13 +311,14 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (writer != null) {
+            //                try {
+            //                    writer.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(writer);
         }
     }
 
@@ -386,13 +390,14 @@ public class FileUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (inStream != null) {
-                try {
-                    inStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (inStream != null) {
+            //                try {
+            //                    inStream.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(inStream);
         }
         return content;
     }
@@ -417,9 +422,10 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (reader != null) {
-                reader.close();
-            }
+            //            if (reader != null) {
+            //                reader.close();
+            //            }
+            IOUtils.close(reader);
         }
 
         return sb.toString();
@@ -434,15 +440,21 @@ public class FileUtils {
      */
     public static String readRawValue(Context context, int rawFileId) {
         String result = "";
+        InputStream is = null;
         try {
-            InputStream is = context.getResources().openRawResource(rawFileId);
+            is = context.getResources().openRawResource(rawFileId);
             int len = is.available();
             byte[] buffer = new byte[len];
-            is.read(buffer);
+            int read = is.read(buffer);
+            if (read <= 0) {
+                return null;
+            }
             result = new String(buffer, "UTF-8");
-            is.close();
+            //            is.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            IOUtils.close(is);
         }
         return result;
     }
@@ -456,15 +468,18 @@ public class FileUtils {
      */
     public static String readAssetsValue(Context context, String fileName) {
         String result = "";
+        InputStream is = null;
         try {
-            InputStream is = context.getResources().getAssets().open(fileName);
+            is = context.getResources().getAssets().open(fileName);
             int len = is.available();
             byte[] buffer = new byte[len];
             is.read(buffer);
             result = new String(buffer, "UTF-8");
-            is.close();
+            //            is.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            IOUtils.close(is);
         }
         return result;
     }
@@ -491,17 +506,18 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
-                if (in != null) {
-                    in.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-
-            }
+            //            try {
+            //                if (br != null) {
+            //                    br.close();
+            //                }
+            //                if (in != null) {
+            //                    in.close();
+            //                }
+            //            } catch (IOException e) {
+            //                e.printStackTrace();
+            //            }
+            IOUtils.close(br);
+            IOUtils.close(in);
         }
         return list;
     }
@@ -558,12 +574,15 @@ public class FileUtils {
      * @param content  文件内容
      */
     public static void write(Context context, String fileName, String content) {
+        FileOutputStream outStream = null;
         try {
-            FileOutputStream outStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            outStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             outStream.write(content.getBytes(Charset.forName("UTF-8")));
-            outStream.close();
+            //            outStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            IOUtils.close(outStream);
         }
     }
 
@@ -575,12 +594,15 @@ public class FileUtils {
      * @param content  文件内容
      */
     public static void write(Context context, String fileName, byte[] content) {
+        FileOutputStream outStream = null;
         try {
-            FileOutputStream outStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            outStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             outStream.write(content);
-            outStream.close();
+            //            outStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            IOUtils.close(outStream);
         }
     }
 
@@ -594,12 +616,15 @@ public class FileUtils {
      * @param content  文件内容
      */
     public static void write(Context context, String fileName, byte[] content, int modeType) {
+        FileOutputStream outStream = null;
         try {
-            FileOutputStream outStream = context.openFileOutput(fileName, modeType);
+            outStream = context.openFileOutput(fileName, modeType);
             outStream.write(content);
-            outStream.close();
+            //            outStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            IOUtils.close(outStream);
         }
     }
 
@@ -610,7 +635,7 @@ public class FileUtils {
      * @param content  文件内容
      * @param encoding 写入文件编码
      */
-    public static void write(File target, String content, String encoding){
+    public static void write(File target, String content, String encoding) {
         BufferedWriter writer = null;
         try {
             if (!target.getParentFile().exists()) {
@@ -625,13 +650,14 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (writer != null) {
+            //                try {
+            //                    writer.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(writer);
         }
     }
 
@@ -657,13 +683,14 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (fos != null) {
+            //                try {
+            //                    fos.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(fos);
         }
     }
 
@@ -695,16 +722,18 @@ public class FileUtils {
             e.printStackTrace();
             Logger.e("写入文件失败,原因:" + e.getMessage());
         } finally {
-            try {
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //            try {
+            //                if (outputStream != null) {
+            //                    outputStream.close();
+            //                }
+            //                if (inputStream != null) {
+            //                    inputStream.close();
+            //                }
+            //            } catch (IOException e) {
+            //                e.printStackTrace();
+            //            }
+            IOUtils.close(outputStream);
+            IOUtils.close(inputStream);
         }
         return mFile;
     }
@@ -731,13 +760,14 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (fos != null) {
+            //                try {
+            //                    fos.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(fos);
         }
     }
 
@@ -763,13 +793,14 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (fos != null) {
+            //                try {
+            //                    fos.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(fos);
         }
     }
 
@@ -801,14 +832,16 @@ public class FileUtils {
             e.printStackTrace();
         } finally {
             // 关闭流
-            try {
-                if (inBuff != null)
-                    inBuff.close();
-                if (outBuff != null)
-                    outBuff.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //            try {
+            //                if (inBuff != null)
+            //                    inBuff.close();
+            //                if (outBuff != null)
+            //                    outBuff.close();
+            //            } catch (IOException e) {
+            //                e.printStackTrace();
+            //            }
+            IOUtils.close(inBuff);
+            IOUtils.close(outBuff);
         }
     }
 

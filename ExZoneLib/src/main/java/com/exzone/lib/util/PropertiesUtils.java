@@ -6,7 +6,6 @@ import com.exzone.lib.base.BaseApplication;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -96,13 +95,14 @@ public class PropertiesUtils extends Properties {
             e.printStackTrace();
             Logger.e(e.toString());
         } finally {
-            if (s != null) {
-                try {
-                    s.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (s != null) {
+            //                try {
+            //                    s.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(s);
         }
         return properties;
     }
@@ -119,13 +119,14 @@ public class PropertiesUtils extends Properties {
             e.printStackTrace();
             Logger.e(e.toString());
         } finally {
-            if (s != null) {
-                try {
-                    s.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (s != null) {
+            //                try {
+            //                    s.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(s);
         }
     }
 

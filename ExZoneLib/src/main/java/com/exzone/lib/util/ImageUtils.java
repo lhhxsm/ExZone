@@ -193,8 +193,8 @@ public class ImageUtils {
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
         // outputX outputY 是裁剪后生成图片的宽高
-//		intent.putExtra("outputX", 300);
-//		intent.putExtra("outputY", 100);
+        //		intent.putExtra("outputX", 300);
+        //		intent.putExtra("outputY", 100);
 
         // return-data为true时,会直接返回bitmap数据,但是大图裁剪时会出现OOM,推荐下面为false时的方式
         // return-data为false时,不会返回bitmap,但需要指定一个MediaStore.EXTRA_OUTPUT保存图片uri
@@ -296,8 +296,9 @@ public class ImageUtils {
                 return cursor.getString(index);
             }
         } finally {
-            if (cursor != null)
-                cursor.close();
+            //            if (cursor != null)
+            //                cursor.close();
+            IOUtils.close(cursor);
         }
         return null;
     }

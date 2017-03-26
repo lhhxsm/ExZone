@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Process;
 
+import com.exzone.lib.util.IOUtils;
 import com.exzone.lib.util.Logger;
 
 import java.io.BufferedWriter;
@@ -114,7 +115,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             dumpPhoneInfo(pw);
             pw.println();
             ex.printStackTrace(pw);
-            pw.close();
+            //            pw.close();
+            IOUtils.close(pw);
         } catch (Exception e) {
             e.printStackTrace();
             Logger.e("dump crash info failed");

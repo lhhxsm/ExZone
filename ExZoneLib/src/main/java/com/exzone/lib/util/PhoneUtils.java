@@ -162,13 +162,15 @@ public class PhoneUtils {
                                 break;
                         }
                     }
-                    if (!phones.isClosed()) {
-                        phones.close();
-                    }
+                    //                    if (!phones.isClosed()) {
+                    //                        phones.close();
+                    //                    }
+                    IOUtils.close(phones);
                 }
             }
             //关闭游标
-            mCursor.close();
+            //            mCursor.close();
+            IOUtils.close(mCursor);
         }
 
         return phoneResult;
@@ -208,13 +210,14 @@ public class PhoneUtils {
         // 外界的程序访问ContentProvider所提供数据 可以通过ContentResolver接口
         ContentResolver resolver = activity.getContentResolver();
         // 此处的用于判断接收的Activity是不是你想要的那个
+        Cursor cursor = null;
         try {
             Uri originalUri = data.getData(); // 获得图片的uri
             bm = MediaStore.Images.Media.getBitmap(resolver, originalUri); // 显得到bitmap图片
             // 这里开始的第二部分，获取图片的路径：
             String[] proj = {MediaStore.Images.Media.DATA};
             // 好像是android多媒体数据库的封装接口，具体的看Android文档
-            Cursor cursor = activity.managedQuery(originalUri, proj, null, null, null);
+            cursor = activity.managedQuery(originalUri, proj, null, null, null);
             // 按我个人理解 这个是获得用户选择的图片的索引值
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             // 将光标移至开头 ，这个很重要，不小心很容易引起越界
@@ -222,9 +225,11 @@ public class PhoneUtils {
             // 最后根据索引值获取图片路径
             String path = cursor.getString(column_index);
             //不用了关闭游标
-            cursor.close();
+            //            cursor.close();
         } catch (Exception e) {
             Logger.e(e.getMessage());
+        } finally {
+            IOUtils.close(cursor);
         }
         return bm;
     }

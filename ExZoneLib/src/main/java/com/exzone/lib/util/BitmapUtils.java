@@ -700,13 +700,14 @@ public class BitmapUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            IOUtils.close(fos);
+            //            if (fos != null) {
+            //                try {
+            //                    fos.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
         }
         return false;
     }

@@ -174,13 +174,14 @@ public class StringUtils {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (fis != null) {
+            //                try {
+            //                    fis.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(fis);
         }
         return string;
     }

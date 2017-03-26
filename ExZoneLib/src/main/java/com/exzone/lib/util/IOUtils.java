@@ -29,6 +29,7 @@ public class IOUtils {
         try {
             c.close();
         } catch (Throwable t) {
+            t.printStackTrace();
             Logger.e("fail to close:" + t);
         }
     }
@@ -62,18 +63,19 @@ public class IOUtils {
     public static void write(String filePath, String content) {
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath),Charset.forName("UTF-8")));
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), Charset.forName("UTF-8")));
             bw.write(content);
         } catch (Exception e1) {
             e1.printStackTrace();
         } finally {
-            if (bw != null) {
-                try {
-                    bw.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (bw != null) {
+            //                try {
+            //                    bw.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            close(bw);
         }
     }
 
@@ -87,7 +89,7 @@ public class IOUtils {
     public static String read(String path) {
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(path),Charset.forName("UTF-8")));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(path), Charset.forName("UTF-8")));
             StringBuffer sb = new StringBuffer();
             String str = null;
             while ((str = br.readLine()) != null) {
@@ -97,13 +99,14 @@ public class IOUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (br != null) {
+            //                try {
+            //                    br.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            close(br);
         }
         return null;
     }
@@ -128,13 +131,14 @@ public class IOUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (br != null) {
+            //                try {
+            //                    br.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            close(br);
         }
         return null;
     }

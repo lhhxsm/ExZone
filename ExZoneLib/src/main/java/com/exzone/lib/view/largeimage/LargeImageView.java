@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.exzone.lib.util.Logger;
+import com.exzone.lib.util.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,13 +59,13 @@ public class LargeImageView extends View {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-
-            try {
-                if (is != null) is.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-                Logger.e(e.getMessage());
-            }
+            IOUtils.close(is);
+            //            try {
+            //                if (is != null) is.close();
+            //            } catch (Exception e) {
+            //                e.printStackTrace();
+            //                Logger.e(e.getMessage());
+            //            }
         }
     }
 

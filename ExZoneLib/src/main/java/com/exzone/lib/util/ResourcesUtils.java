@@ -44,13 +44,14 @@ public class ResourcesUtils {
             e.printStackTrace();
             return null;
         } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (br != null) {
+            //                try {
+            //                    br.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(br);
         }
     }
 
@@ -60,19 +61,23 @@ public class ResourcesUtils {
         }
 
         List<String> fileContent = new ArrayList<String>();
+        InputStreamReader in = null;
+        BufferedReader br = null;
         try {
-            InputStreamReader in = new InputStreamReader(context.getResources().getAssets().open(fileName), Charset.forName("UTF-8"));
-            BufferedReader br = new BufferedReader(in);
+            in = new InputStreamReader(context.getResources().getAssets().open(fileName), Charset.forName("UTF-8"));
+            br = new BufferedReader(in);
             String line;
             while ((line = br.readLine()) != null) {
                 fileContent.add(line);
             }
-            br.close();
-            return fileContent;
+            //            br.close();
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+        } finally {
+            IOUtils.close(br);
+            IOUtils.close(in);
         }
+        return fileContent;
     }
 
     /**
@@ -111,14 +116,15 @@ public class ResourcesUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                    is = null;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (is != null) {
+            //                try {
+            //                    is.close();
+            //                    is = null;
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(is);
         }
 
         return buffer;
@@ -146,13 +152,14 @@ public class ResourcesUtils {
             e.printStackTrace();
             return null;
         } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (br != null) {
+            //                try {
+            //                    br.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(br);
         }
     }
 
@@ -162,20 +169,23 @@ public class ResourcesUtils {
         }
 
         List<String> fileContent = new ArrayList<String>();
+        InputStreamReader in = null;
         BufferedReader reader = null;
         try {
-            InputStreamReader in = new InputStreamReader(context.getResources().openRawResource(resId), Charset.forName("UTF-8"));
+            in = new InputStreamReader(context.getResources().openRawResource(resId), Charset.forName("UTF-8"));
             reader = new BufferedReader(in);
             String line = null;
             while ((line = reader.readLine()) != null) {
                 fileContent.add(line);
             }
-            reader.close();
-            return fileContent;
+            //            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+        } finally {
+            IOUtils.close(reader);
+            IOUtils.close(in);
         }
+        return fileContent;
     }
 
     /**
@@ -214,14 +224,14 @@ public class ResourcesUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                    is = null;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //            if (is != null) {
+            //                try {
+            //                    is.close();
+            //                } catch (IOException e) {
+            //                    e.printStackTrace();
+            //                }
+            //            }
+            IOUtils.close(is);
         }
         return buffer;
     }
