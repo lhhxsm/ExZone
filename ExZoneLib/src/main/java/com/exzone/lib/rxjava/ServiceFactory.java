@@ -3,17 +3,22 @@ package com.exzone.lib.rxjava;
 import com.exzone.lib.base.BaseApplication;
 import com.exzone.lib.util.Logger;
 import com.exzone.lib.util.NetWorkUtils;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Authenticator;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
+import okhttp3.Credentials;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -29,17 +34,19 @@ public class ServiceFactory {
     private ServiceFactory() {
     }
 
-    public static <T> T createRetrofit2RxJavaService(final Class<T> service) {
+    public static <T> T createService(final Class<T> service) {
         Retrofit retrofit = new Retrofit.Builder()
-                .client(getCacheOkHttpClient())
+                .client(getOkHttpClient())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
+                        .setDateFormat("yyyy-MM-dd hh:mm:ss")
+                        .create()))
                 .baseUrl(APIService.ENDPOINT)
                 .build();
         return retrofit.create(service);
     }
 
-    public static OkHttpClient getCacheOkHttpClient() {
+    public static OkHttpClient getOkHttpClient() {
         //设置缓存路径
         final File httpCacheDirectory = new File(BaseApplication.getInstance().getCacheDir(), "Cache");
 
@@ -52,7 +59,7 @@ public class ServiceFactory {
                 .readTimeout(20 * 1000, TimeUnit.MILLISECONDS)
                 .connectTimeout(15 * 1000, TimeUnit.MILLISECONDS)
                 //设置拦截器，显示日志信息
-                .addInterceptor(httpLoggingInterceptor)
+                .addInterceptor(HTTP_LOGGING_INTERCEPTOR)
                 .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                 .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
                 .cache(cache)
@@ -60,7 +67,7 @@ public class ServiceFactory {
                 .build();
     }
 
-    private final static HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+    private final static HttpLoggingInterceptor HTTP_LOGGING_INTERCEPTOR = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
     private final static Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
@@ -106,4 +113,18 @@ public class ServiceFactory {
             }
         }
     };
+
+    /**
+     * 处理身份验证,有些网络请求是需要用户名密码登录的
+     */
+    private static class TokenAuthenticator implements Authenticator {
+        @Override
+        public Request authenticate(Route route, Response response) throws IOException {
+            String credential = Credentials.basic("UserName", "Password", Charset.forName("UTF-8"));//
+            if (credential.equals(response.request().header("Authorization"))) {
+                return null;
+            }
+            return response.request().newBuilder().header("Authorization", credential).build();
+        }
+    }
 }

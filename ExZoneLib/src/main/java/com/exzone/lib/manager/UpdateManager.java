@@ -15,18 +15,17 @@ import com.exzone.lib.base.BaseActivity;
 import com.exzone.lib.dialog.DialogUtils;
 import com.exzone.lib.entity.UpdateEntity;
 import com.exzone.lib.rxjava.APIService;
+import com.exzone.lib.rxjava.RetryWhenNetworkException;
+import com.exzone.lib.rxjava.RxSchedulers;
 import com.exzone.lib.rxjava.ServiceFactory;
 import com.exzone.lib.util.AppUtils;
 import com.exzone.lib.util.NetWorkUtils;
 import com.exzone.lib.util.ToastUtils;
 
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * 作者:李鸿浩
@@ -85,10 +84,13 @@ public class UpdateManager {
             context.showProgressDialog("");
         }
 
-        Observable<UpdateEntity> updateInfo = ServiceFactory.createRetrofit2RxJavaService(APIService.class).geUpdateInfo();
+        Observable<UpdateEntity> updateInfo = ServiceFactory.createService(APIService.class).geUpdateInfo();
 
-        updateInfo.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
-                .delay(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread())// FIXME 模拟延迟,用于观察加载框等效果
+        updateInfo
+                //.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                //.delay(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread())// FIXME 模拟延迟,用于观察加载框等效果
+                .compose(RxSchedulers.<UpdateEntity>defaultSchedulers())
+                .retryWhen(new RetryWhenNetworkException())
                 .subscribe(new Subscriber<UpdateEntity>() {
                     @Override
                     public void onCompleted() {
@@ -159,7 +161,7 @@ public class UpdateManager {
      * @param context
      * @param updateEntity
      */
-    private static void startDownload(BaseActivity context,UpdateEntity updateEntity) {
+    private static void startDownload(BaseActivity context, UpdateEntity updateEntity) {
         int status = getDownloadStatus(context, updateEntity);
         if (status != DOWNLOAD_STATUS_NEED_LOAD) {
             // 不用下载则无需下列操作
@@ -190,18 +192,14 @@ public class UpdateManager {
     }
 
     @NonNull
-    private static String getDownloadApkName(BaseActivity context,UpdateEntity updateEntity) {
+    private static String getDownloadApkName(BaseActivity context, UpdateEntity updateEntity) {
         return context.getString(R.string.app_name) + "_" + updateEntity.getVersionName() + ".apk";
     }
 
     /**
      * 判断当前版本文件下载状态
-     *
-     * @param context
-     * @param updateInfo
-     * @return
      */
-    private static int getDownloadStatus(BaseActivity context,UpdateEntity updateEntity) {
+    private static int getDownloadStatus(BaseActivity context, UpdateEntity updateEntity) {
         DownloadManager.Query query = new DownloadManager.Query();
         DownloadManager dm = (DownloadManager) context.getSystemService(Activity.DOWNLOAD_SERVICE);
         Cursor c = dm.query(query);

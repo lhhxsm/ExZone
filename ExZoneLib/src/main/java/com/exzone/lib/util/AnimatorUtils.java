@@ -2,6 +2,11 @@ package com.exzone.lib.util;
 
 import android.animation.PropertyValuesHolder;
 
+/**
+ * 作者:李鸿浩
+ * 描述:属性动画工具类
+ * 时间: 2016/10/9.
+ */
 public class AnimatorUtils {
 
     public static final String ROTATION = "rotation";

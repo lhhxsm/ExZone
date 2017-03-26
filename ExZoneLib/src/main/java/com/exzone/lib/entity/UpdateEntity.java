@@ -1,7 +1,10 @@
 package com.exzone.lib.entity;
 
+
 /**
- * Created by lhh on 2017/3/25.
+ * 作者:李鸿浩
+ * 描述:版本信息实体类
+ * 时间: 2017/3/25.
  */
 
 public class UpdateEntity {

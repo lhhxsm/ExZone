@@ -10,8 +10,10 @@ import android.support.v4.app.FragmentTransaction;
  * 作者:李鸿浩
  * 描述:
  * // mNavigator = new FragmentNavigator(getSupportFragmentManager(), new FragmentAdapter(), R.id.container);
- * // mNavigator.setDefaultPosition(DEFAULT_POSITION);
+ * // mNavigator.setDefaultPosition(0);
  * // mNavigator.onCreate(savedInstanceState);
+ * <p>
+ * FragmentAdapter implements FragmentNavigatorAdapter
  * <p>
  * // @Override
  * // protected void onSaveInstanceState(Bundle outState) {

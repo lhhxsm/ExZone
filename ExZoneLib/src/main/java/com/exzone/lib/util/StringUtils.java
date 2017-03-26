@@ -1,15 +1,22 @@
 package com.exzone.lib.util;
 
+import android.content.Context;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.TextAppearanceSpan;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -138,14 +145,17 @@ public class StringUtils {
      * 将流转成字符串
      *
      * @param is 输入流
-     * @throws Exception
      */
-    public static String convertStreamToString(InputStream is) throws Exception {
+    public static String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
         StringBuilder sb = new StringBuilder();
         String line;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line).append("\n");
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return sb.toString();
     }
@@ -154,17 +164,29 @@ public class StringUtils {
      * 将文件转成字符串
      *
      * @param file 文件
-     * @throws Exception
      */
-    public static String getStringFromFile(File file) throws Exception {
-        FileInputStream fis = new FileInputStream(file);
-        String string = convertStreamToString(fis);
-        fis.close();
+    public static String getStringFromFile(File file) {
+        FileInputStream fis = null;
+        String string = null;
+        try {
+            fis = new FileInputStream(file);
+            string = convertStreamToString(fis);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return string;
     }
 
     /**
-     * 时间转换
+     * 时间转换(hh:mm:ss)
      */
     public static String generateTime(long time) {
         int totalSeconds = (int) (time / 1000);
@@ -211,10 +233,16 @@ public class StringUtils {
      * @return 替换后的字符串
      */
     public static String replace(String source, char original, char target) {
+        if (TextUtils.isEmpty(source)) {
+            return null;
+        }
         char chars[] = source.toCharArray();
-        for (char c : chars) {
-            if (c == original) {
-                c = target;
+        if (chars.length <= 0) {
+            return null;
+        }
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == original) {
+                chars[i] = target;
                 break;
             }
         }
@@ -229,6 +257,9 @@ public class StringUtils {
      * @return 分割后的字符串数组
      */
     public static String[] split(String source, char ch) {
+        if (TextUtils.isEmpty(source)) {
+            return null;
+        }
         ArrayList<String> list = new ArrayList<>();
         char chars[] = source.toCharArray();
         int nextStart = 0;
@@ -255,6 +286,9 @@ public class StringUtils {
      * @return 删除后的字符串
      */
     public static String removeChar(String source, char target) {
+        if (TextUtils.isEmpty(source)) {
+            return null;
+        }
         StringBuilder sb = new StringBuilder();
         for (char cha : source.toCharArray()) {
             if (cha != target) {
@@ -272,7 +306,10 @@ public class StringUtils {
      * @return 删除后的字符串
      */
     public static String removeChar(String source, int index) {
-        String result = null;
+        if (TextUtils.isEmpty(source)) {
+            return null;
+        }
+        String result;
         char[] chars = source.toCharArray();
         if (index == 0) {
             result = new String(chars, 1, chars.length - 1);
@@ -292,7 +329,10 @@ public class StringUtils {
      * @param target 如果同给定位置处的字符相同，则将给定位置处的字符删除
      */
     public static String removeChar(String source, int index, char target) {
-        String result = null;
+        if (TextUtils.isEmpty(source)) {
+            return null;
+        }
+        String result;
         char[] chars = source.toCharArray();
         if (chars.length > 0 && chars[index] == target) {
             if (index == 0) {
@@ -399,7 +439,7 @@ public class StringUtils {
         try {
             return new String(Base64Utils.encode(input, 0, input.length), "US-ASCII");
         } catch (UnsupportedEncodingException e) {
-            // US-ASCII is guaranteed to be available.
+            e.printStackTrace();
             throw new AssertionError(e);
         }
     }
@@ -413,7 +453,7 @@ public class StringUtils {
     }
 
     /**
-     * encoded in utf-8
+     * 使用UTF-8编码
      * <p>
      * <pre>
      * utf8Encode(null)        =   null
@@ -427,6 +467,7 @@ public class StringUtils {
             try {
                 return URLEncoder.encode(str, "UTF-8");
             } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
                 throw new RuntimeException("UnsupportedEncodingException occurred. ", e);
             }
         }
@@ -434,17 +475,17 @@ public class StringUtils {
     }
 
     /**
-     * encoded in utf-8, if exception, return defaultReturn
+     * 使用UTF-8编码
      *
-     * @param str
-     * @param defaultReturn
-     * @return
+     * @param str           需要编码的字符串
+     * @param defaultReturn 如果异常,默认的返回字符串
      */
     public static String utf8Encode(String str, String defaultReturn) {
         if (!TextUtils.isEmpty(str) && str.getBytes(Charset.forName("UTF-8")).length != str.length()) {
             try {
                 return URLEncoder.encode(str, "UTF-8");
             } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
                 return defaultReturn;
             }
         }
@@ -474,5 +515,138 @@ public class StringUtils {
             dest = m.replaceAll("");
         }
         return dest;
+    }
+
+    public static SpannableString format(Context context, String text, int style) {
+        SpannableString spannableString = new SpannableString(text);
+        spannableString.setSpan(new TextAppearanceSpan(context, style), 0, text.length(),
+                0);
+        return spannableString;
+    }
+
+
+    /**
+     * 将字符串进行md5转换
+     */
+    public static String md5(String str) {
+        if (TextUtils.isEmpty(str)) {
+            return null;
+        }
+        String cacheKey;
+        try {
+            final MessageDigest mDigest = MessageDigest.getInstance("MD5");
+            mDigest.update(str.getBytes());
+            cacheKey = bytesToHexString(mDigest.digest());
+        } catch (NoSuchAlgorithmException e) {
+            cacheKey = String.valueOf(str.hashCode());
+        }
+        return cacheKey;
+    }
+
+    /**
+     * byte数组转换成十六进制字符串
+     */
+    private static String bytesToHexString(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte aByte : bytes) {
+            String hex = Integer.toHexString(0xFF & aByte);
+            if (hex.length() == 1) {
+                sb.append('0');
+            }
+            sb.append(hex);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 清除文本里面的HTML标签
+     */
+    public static String clearHTMLTag(String htmlStr) {
+        if (TextUtils.isEmpty(htmlStr)) {
+            return null;
+        }
+        String regEx_script = "<script[^>]*?>[\\s\\S]*?<\\/script>"; // 定义script的正则表达式
+        String regEx_style = "<style[^>]*?>[\\s\\S]*?<\\/style>"; // 定义style的正则表达式
+        String regEx_html = "<[^>]+>"; // 定义HTML标签的正则表达式
+        try {
+            Pattern p_script = Pattern.compile(regEx_script, Pattern.CASE_INSENSITIVE);
+            Matcher m_script = p_script.matcher(htmlStr);
+            htmlStr = m_script.replaceAll(""); // 过滤script标签
+
+            Pattern p_style = Pattern.compile(regEx_style, Pattern.CASE_INSENSITIVE);
+            Matcher m_style = p_style.matcher(htmlStr);
+            htmlStr = m_style.replaceAll(""); // 过滤style标签
+
+            Pattern p_html = Pattern.compile(regEx_html, Pattern.CASE_INSENSITIVE);
+            Matcher m_html = p_html.matcher(htmlStr);
+            htmlStr = m_html.replaceAll(""); // 过滤html标签
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }
+        return htmlStr; // 返回文本字符串
+    }
+
+    /**
+     * 字符串转整数
+     */
+    public static int toInt(String str, int defValue) {
+        if (TextUtils.isEmpty(str)) {
+            return defValue;
+        }
+        try {
+            return Integer.parseInt(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return defValue;
+        }
+    }
+
+    /**
+     * 对象转整数
+     *
+     * @return 转换异常返回 0
+     */
+    public static int toInt(String str) {
+        if (TextUtils.isEmpty(str)) {
+            return 0;
+        }
+        return toInt(str, 0);
+    }
+
+    /**
+     * 对象转整数
+     *
+     * @return 转换异常返回 0
+     */
+    public static long toLong(String str) {
+        if (TextUtils.isEmpty(str)) {
+            return 0;
+        }
+        try {
+            return Long.parseLong(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 字符串转布尔值
+     *
+     * @return 转换异常返回 false
+     */
+    public static boolean toBool(String b) {
+        if (TextUtils.isEmpty(b)) {
+            return false;
+        }
+
+        try {
+            return Boolean.parseBoolean(b);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
