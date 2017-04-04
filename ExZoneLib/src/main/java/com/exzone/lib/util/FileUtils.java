@@ -12,6 +12,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * 作者:李鸿浩
@@ -1060,5 +1062,35 @@ public class FileUtils {
      */
     public static boolean makeFolders(String filePath) {
         return makeDirs(filePath);
+    }
+
+
+    // gzip压缩
+    public static byte[] gZip(File srcFile) throws IOException {
+        byte[] data = null;
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            FileInputStream fis = new FileInputStream(srcFile);
+            byte[] buf = new byte[1024];
+            int len = 0;
+            while ((len = fis.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            byte[] bContent = out.toByteArray();
+            out.reset();// 清空byte数组
+
+            GZIPOutputStream gOut = new GZIPOutputStream(out, bContent.length); // 压缩级别,缺省为1级
+            DataOutputStream objOut = new DataOutputStream(gOut);
+            objOut.write(bContent);
+            objOut.flush();
+            gOut.close();
+            data = out.toByteArray();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return data;
     }
 }

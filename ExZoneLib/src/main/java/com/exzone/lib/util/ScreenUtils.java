@@ -147,4 +147,50 @@ public class ScreenUtils {
         float scale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (px / scale + 0.5f);
     }
+
+    /**
+     * 获取屏幕的比例
+     *
+     * @return
+     */
+    public static float getScaledDensity(Context context) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return dm.scaledDensity;
+    }
+
+
+    /**
+     * 获取控件的高度，如果获取的高度为0，则重新计算尺寸后再返回高度
+     *
+     * @param view
+     * @return
+     */
+    public static int getViewMeasuredHeight(View view) {
+        calcViewMeasure(view);
+        return view.getMeasuredHeight();
+    }
+
+    /**
+     * 获取控件的宽度，如果获取的宽度为0，则重新计算尺寸后再返回宽度
+     *
+     * @param view
+     * @return
+     */
+    public static int getViewMeasuredWidth(View view) {
+        calcViewMeasure(view);
+        return view.getMeasuredWidth();
+    }
+
+    /**
+     * 测量控件的尺寸
+     *
+     * @param view
+     */
+    public static void calcViewMeasure(View view) {
+        int width = View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED);
+        int expandSpec = View.MeasureSpec.makeMeasureSpec(
+                Integer.MAX_VALUE >> 2, View.MeasureSpec.AT_MOST);
+        view.measure(width, expandSpec);
+    }
 }

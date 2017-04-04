@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".StickyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -21,6 +21,7 @@
         <activity android:name=".foldable.FoldableActivity"/>
         <activity android:name=".LargeImageViewActivity"/>
         <activity android:name=".LargeImageViewSimpleBak"/>
+
         <service
             android:name="com.exzone.lib.service.NetWorkService"
             android:enabled="true"

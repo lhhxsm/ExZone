@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -165,6 +166,17 @@ public class AppUtils {
         // FLAG_ACTIVITY_NEW_TASK 可以保证安装成功时可以正常打开 app
         promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(promptInstall);
+    }
+
+    /**
+     * 判断当前设备是手机还是平板，代码来自 Google I/O App for Android
+     *
+     * @param context
+     * @return 平板返回 True，手机返回 False
+     */
+    public static boolean isPad(Context context) {
+        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
 }

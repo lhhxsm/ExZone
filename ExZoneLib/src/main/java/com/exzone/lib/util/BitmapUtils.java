@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.LinearGradient;
@@ -849,4 +850,77 @@ public class BitmapUtils {
         bitmap.copyPixelsToBuffer(buffer);
         return new ByteArrayInputStream(buffer.array());
     }
+
+
+    /**
+     * 得到图片的缩略图
+     *
+     * @param pathName  路径
+     * @param reqWidth  宽
+     * @param reqHeight 高
+     * @return
+     */
+    public static Bitmap decodeSampledBitmapFromFd(String pathName,
+                                                   int reqWidth, int reqHeight) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(pathName, options);
+        options.inSampleSize = calculateInSampleSize(options, reqWidth,
+                reqHeight);
+        options.inJustDecodeBounds = false;
+        Bitmap src = BitmapFactory.decodeFile(pathName, options);
+        return createScaleBitmap(src, reqWidth, reqHeight);
+    }
+
+    // 如果是放大图片，filter决定是否平滑，如果是缩小图片，filter无影响
+    private static Bitmap createScaleBitmap(Bitmap src, int dstWidth, int dstHeight) {
+        Bitmap dst = Bitmap.createScaledBitmap(src, dstWidth, dstHeight, false);
+        if (src != dst) { // 如果没有缩放，那么不回收
+            src.recycle(); // 释放Bitmap的native像素数组
+        }
+        return dst;
+    }
+
+    /**
+     * 图片圆形处理
+     */
+    public static Bitmap getCropped2Bitmap(Bitmap bmp) {
+        int radius = 50;
+        Bitmap scaledSrcBmp;
+        int diameter = radius * 2;
+        if (bmp.getWidth() != diameter || bmp.getHeight() != diameter)
+            scaledSrcBmp = Bitmap.createScaledBitmap(bmp, diameter, diameter, false);
+        else
+            scaledSrcBmp = bmp;
+        Bitmap output = Bitmap.createBitmap(scaledSrcBmp.getWidth(), scaledSrcBmp.getHeight(), Bitmap.Config.ARGB_4444);
+        Canvas canvas = new Canvas(output);
+
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, scaledSrcBmp.getWidth(), scaledSrcBmp.getHeight());
+
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+        paint.setDither(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(Color.parseColor("#BAB399"));
+        canvas.drawCircle(scaledSrcBmp.getWidth() / 2, scaledSrcBmp.getHeight() / 2, scaledSrcBmp.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(scaledSrcBmp, rect, rect, paint);
+        return output;
+    }
+
+    /**
+     * 图片切割成正方形
+     */
+    public static Bitmap bitmapCut(Bitmap bitmap) {
+        int w = bitmap.getWidth(); // 得到图片的宽，高
+        int h = bitmap.getHeight();
+        int wh = w > h ? h : w;// 裁切后所取的正方形区域边长
+        int retX = w > h ? (w - h) / 2 : 0;// 基于原图，取正方形左上角x坐标
+        int retY = w > h ? 0 : (h - w) / 2;
+        // 生成新的图片
+        return Bitmap.createBitmap(bitmap, retX, retY, wh, wh, null, false);
+    }
+
+
 }
