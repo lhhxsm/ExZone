@@ -12,6 +12,7 @@ import java.util.HashMap;
  * @param <V>
  * @author Administrator
  */
+@SuppressWarnings("ALL")
 public class SoftMap<K, V> extends HashMap<K, V> {
     // private HashMap<K, SoftReference<V>> temp;// 占用内存较多的都被放到袋子中——引用级别降低了
     private HashMap<K, SoftValue<K, V>> temp;// 占用内存较多的都被放到袋子中——引用级别降低了
@@ -86,8 +87,8 @@ public class SoftMap<K, V> extends HashMap<K, V> {
     private class SoftValue<K, V> extends SoftReference<V> {
         private Object key;
 
-        public SoftValue(Object key, V vlaue, ReferenceQueue<V> queue) {
-            super(vlaue, queue);
+        public SoftValue(Object key, V value, ReferenceQueue<V> queue) {
+            super(value, queue);
             this.key = key;
         }
 

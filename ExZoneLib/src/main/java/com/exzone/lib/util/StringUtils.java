@@ -2110,4 +2110,23 @@ public class StringUtils {
         }
         return str;
     }
+
+    /**
+     * 判断字符串中是否有中文字符
+     * @param str 需要判断的字符串
+     * @return boolean
+     */
+    public static boolean hasChinese(String str) {
+        int count = 0;
+        String regEx = "[\\u4e00-\\u9fa5]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        while (m.find()) {
+            int size = m.groupCount();
+            for (int i = 0; i <= size; i++) {
+                count = count + 1;
+            }
+        }
+        return count > 0;
+    }
 }

@@ -102,7 +102,7 @@ public class ShellUtils {
                     continue;
                 }
 
-                // 不能使用os.writeBytes(commmand), 避免字符串编码错误
+                // 不能使用os.writeBytes(command), 避免字符串编码错误
                 os.write(command.getBytes(Charset.forName("UTF-8")));
                 os.writeBytes(COMMAND_LINE_END);
                 os.flush();
