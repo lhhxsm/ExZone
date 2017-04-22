@@ -12,9 +12,9 @@ import java.io.File;
  */
 public class CameraProxy {
 
-	/**
-	 * 相机核心类
-	 */
+    /**
+     * 相机核心类
+     */
     private CameraCore cameraCore;
 
     public CameraProxy(CameraCore.CameraResult cameraResult, Activity activity) {
@@ -23,8 +23,9 @@ public class CameraProxy {
 
     /**
      * 拍照
-     * @Description:函数描述
+     *
      * @param path
+     * @Description:函数描述
      * @author Administrator
      * @date 2016年3月14日 下午1:55:45
      * @version V1.0.0
@@ -36,8 +37,9 @@ public class CameraProxy {
 
     /**
      * 拍照截图
-     * @Description:函数描述
+     *
      * @param path
+     * @Description:函数描述
      * @author Administrator
      * @date 2016年3月14日 下午1:55:42
      * @version V1.0.0
@@ -49,8 +51,9 @@ public class CameraProxy {
 
     /**
      * 选择照片
-     * @Description:函数描述
+     *
      * @param path
+     * @Description:函数描述
      * @author Administrator
      * @date 2016年3月14日 下午1:55:19
      * @version V1.0.0
@@ -61,8 +64,9 @@ public class CameraProxy {
 
     /**
      * 选择照片，截图
-     * @Description:函数描述
+     *
      * @param path
+     * @Description:函数描述
      * @author Administrator
      * @date 2016年3月14日 下午1:55:26
      * @version V1.0.0
@@ -73,10 +77,11 @@ public class CameraProxy {
 
     /**
      * 接受ActivityResult
-     * @Description:函数描述
+     *
      * @param requestCode
      * @param resultCode
      * @param data
+     * @Description:函数描述
      * @author Administrator
      * @date 2016年3月14日 下午1:55:29
      * @version V1.0.0

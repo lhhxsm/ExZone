@@ -23,15 +23,23 @@ public class PositionBar extends LinearLayout {
 
     private OnPositionChangedListener listener;
 
-    public void setOnPositionChangedListener(OnPositionChangedListener listener) {
-        this.listener = listener;
-    }
-
     public PositionBar(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         setOrientation(VERTICAL);
         setBackgroundResource(R.drawable.cirrect_5a_primary_solid);
+    }
+
+    public PositionBar(Context context) {
+        this(context, null);
+    }
+
+    public void setOnPositionChangedListener(OnPositionChangedListener listener) {
+        this.listener = listener;
+    }
+
+    public String[] getItems() {
+        return mItems;
     }
 
     public void setItems(String[] items) {
@@ -46,14 +54,6 @@ public class PositionBar extends LinearLayout {
             t.setTextColor(getResources().getColor(R.color.black));
             addView(t);
         }
-    }
-
-    public String[] getItems() {
-        return mItems;
-    }
-
-    public PositionBar(Context context) {
-        this(context, null);
     }
 
     @Override

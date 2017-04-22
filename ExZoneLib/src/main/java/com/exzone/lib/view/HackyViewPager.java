@@ -31,11 +31,6 @@ public class HackyViewPager extends ViewPager {
 
     private ImagePageCallback mCallback;
 
-    public interface ImagePageCallback {
-        //页数回调
-        void onImagePage(int page);
-    }
-
     public HackyViewPager(Context context) {
         super(context);
         isLocked = false;
@@ -75,12 +70,17 @@ public class HackyViewPager extends ViewPager {
         isLocked = !isLocked;
     }
 
+    public boolean isLocked() {
+        return isLocked;
+    }
+
     public void setLocked(boolean isLocked) {
         this.isLocked = isLocked;
     }
 
-    public boolean isLocked() {
-        return isLocked;
+    public interface ImagePageCallback {
+        //页数回调
+        void onImagePage(int page);
     }
 
 }

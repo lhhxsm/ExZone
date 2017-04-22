@@ -64,7 +64,7 @@ public class AESUtils {
             byte[] encrypted1 = Base64Utils.decode(sSrc);//先用base64解密
             try {
                 byte[] original = cipher.doFinal(encrypted1);
-                return new String(original,Charset.forName("UTF-8"));
+                return new String(original, Charset.forName("UTF-8"));
             } catch (Exception e) {
                 Logger.e(e.toString());
                 return null;

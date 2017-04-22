@@ -23,6 +23,8 @@ import com.exzone.lib.constant.ApiCapabilities;
  */
 
 public final class StatusBarUtils {
+    public static final int DEFAULT_STATUS_BAR_ALPHA = 112;
+
     private StatusBarUtils() {
     }
 
@@ -61,8 +63,6 @@ public final class StatusBarUtils {
         final Window window = activity.getWindow();
         window.getDecorView().setSystemUiVisibility(uiFlag);
     }
-
-    public static final int DEFAULT_STATUS_BAR_ALPHA = 112;
 
     /**
      * 设置状态栏颜色

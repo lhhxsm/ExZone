@@ -22,14 +22,14 @@ import java.io.File;
  * 时间：2016/10/7.
  */
 public class CameraActivity extends AppCompatActivity implements CameraCore.CameraResult {
-    private Button choose_image;
-    private CameraProxy cameraProxy;
-    private String fileDir = "";
-    private ImageView choose_bit;
     /**
      * SD卡根目录
      */
     private final String externalStorageDirectory = Environment.getExternalStorageDirectory().getPath() + "/atest/picture/";
+    private Button choose_image;
+    private CameraProxy cameraProxy;
+    private String fileDir = "";
+    private ImageView choose_bit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

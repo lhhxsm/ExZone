@@ -91,16 +91,16 @@ public class Logger {
         }
         StackTraceElement element = new Throwable().fillInStackTrace().getStackTrace()[2];
         return "(" + element.getFileName() + ":" + element.getLineNumber() + ")." + element.getMethodName() + "():" + str;
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("(")
-//                .append(element.getFileName())
-//                .append(":")
-//                .append(element.getLineNumber())
-//                .append(").")
-//                .append(element.getMethodName())
-//                .append("():")
-//                .append(str);
-//        return sb.toString();
+        //        StringBuilder sb = new StringBuilder();
+        //        sb.append("(")
+        //                .append(element.getFileName())
+        //                .append(":")
+        //                .append(element.getLineNumber())
+        //                .append(").")
+        //                .append(element.getMethodName())
+        //                .append("():")
+        //                .append(str);
+        //        return sb.toString();
     }
 
     private static boolean isDebug() {

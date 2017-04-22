@@ -108,9 +108,9 @@ android {
         exclude 'META-INF/NOTICE'
     }
 
-    sourceSets{
-        main{
-            jniLibs.srcDirs=['libs']
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
         }
     }
 }

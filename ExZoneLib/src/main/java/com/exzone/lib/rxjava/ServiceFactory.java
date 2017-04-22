@@ -31,48 +31,7 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
  */
 
 public class ServiceFactory {
-    private ServiceFactory() {
-    }
-
-    public static <T> T createService(final Class<T> service) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(getOkHttpClient())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
-                        .setDateFormat("yyyy-MM-dd hh:mm:ss")
-                        .create()))
-                .baseUrl(APIService.ENDPOINT)
-                .build();
-        return retrofit.create(service);
-    }
-
-    public static OkHttpClient getOkHttpClient() {
-        //设置缓存路径
-        final File httpCacheDirectory = new File(BaseApplication.getInstance().getCacheDir(), "Cache");
-
-        Logger.e(TAG, httpCacheDirectory.getAbsolutePath());
-        //设置缓存 10M
-        Cache cache = new Cache(httpCacheDirectory, 10 * 1024 * 1024);   //缓存可用大小为10M
-
-        return new OkHttpClient.Builder()
-                .writeTimeout(30 * 1000, TimeUnit.MILLISECONDS)
-                .readTimeout(20 * 1000, TimeUnit.MILLISECONDS)
-                .connectTimeout(15 * 1000, TimeUnit.MILLISECONDS)
-                //设置拦截器，显示日志信息
-                .addInterceptor(HTTP_LOGGING_INTERCEPTOR)
-                .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
-                .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
-                .cache(cache)
-                //                .authenticator(new TokenAuthenticator())
-                //                .sslSocketFactory(...)
-                //                .hostnameVerifier(...)
-                //失败重连
-                .retryOnConnectionFailure(true)
-                .build();
-    }
-
     private final static HttpLoggingInterceptor HTTP_LOGGING_INTERCEPTOR = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
-
     private final static Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
@@ -117,6 +76,46 @@ public class ServiceFactory {
             }
         }
     };
+
+    private ServiceFactory() {
+    }
+
+    public static <T> T createService(final Class<T> service) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(getOkHttpClient())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
+                        .setDateFormat("yyyy-MM-dd hh:mm:ss")
+                        .create()))
+                .baseUrl(APIService.ENDPOINT)
+                .build();
+        return retrofit.create(service);
+    }
+
+    public static OkHttpClient getOkHttpClient() {
+        //设置缓存路径
+        final File httpCacheDirectory = new File(BaseApplication.getInstance().getCacheDir(), "Cache");
+
+        Logger.e(TAG, httpCacheDirectory.getAbsolutePath());
+        //设置缓存 10M
+        Cache cache = new Cache(httpCacheDirectory, 10 * 1024 * 1024);   //缓存可用大小为10M
+
+        return new OkHttpClient.Builder()
+                .writeTimeout(30 * 1000, TimeUnit.MILLISECONDS)
+                .readTimeout(20 * 1000, TimeUnit.MILLISECONDS)
+                .connectTimeout(15 * 1000, TimeUnit.MILLISECONDS)
+                //设置拦截器，显示日志信息
+                .addInterceptor(HTTP_LOGGING_INTERCEPTOR)
+                .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+                .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+                .cache(cache)
+                //                .authenticator(new TokenAuthenticator())
+                //                .sslSocketFactory(...)
+                //                .hostnameVerifier(...)
+                //失败重连
+                .retryOnConnectionFailure(true)
+                .build();
+    }
 
     /**
      * 处理身份验证,有些网络请求是需要用户名密码登录的

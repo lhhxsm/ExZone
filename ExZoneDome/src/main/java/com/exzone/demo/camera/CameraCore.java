@@ -44,6 +44,27 @@ public class CameraCore {
         this.activity = activity;
     }
 
+    //通过URI得到图片路径
+    public static String getPic2Uri(Uri contentUri, Context context) {
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+            String filePath = "";
+            if (cursor != null) {
+                int columnIndex = cursor.getColumnIndexOrThrow(proj[0]);
+                cursor.moveToFirst();
+                filePath = cursor.getString(columnIndex);
+                // 4.0以上的版本会自动关闭 (4.0--14; 4.0.3--15)
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    cursor.close();
+                }
+            }
+            return filePath;
+        } catch (Exception e) {
+            return contentUri.getPath();
+        }
+    }
+
     //调用系统照相机，对Intent参数进行封装
     protected Intent startTakePhoto(Uri photoURL) {
         this.photoURL = photoURL;
@@ -80,7 +101,6 @@ public class CameraCore {
         return intent;
     }
 
-
     //拍照
     public void getPhoto2Camera(Uri uri) {
         activity.startActivityForResult(startTakePhoto(uri), REQUEST_TAKE_PHOTO_CODE);
@@ -102,7 +122,6 @@ public class CameraCore {
     public void getPhoto2AlbumCrop() {
         activity.startActivityForResult(startTakePicture(), REQUEST_TAKE_PICTRUE_CROP_CODE);
     }
-
 
     //处理onActivityResult
     public void onResult(int requestCode, int resultCode, Intent intent) {
@@ -149,32 +168,12 @@ public class CameraCore {
         }
     }
 
-    //通过URI得到图片路径
-    public static String getPic2Uri(Uri contentUri, Context context) {
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-			String filePath ="";
-            if (cursor != null) {
-				int columnIndex = cursor.getColumnIndexOrThrow(proj[0]);
-				cursor.moveToFirst();
-				filePath = cursor.getString(columnIndex);
-				// 4.0以上的版本会自动关闭 (4.0--14; 4.0.3--15)
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-					cursor.close();
-				}
-			}
-            return filePath;
-        } catch (Exception e) {
-            return contentUri.getPath();
-        }
-    }
-    
     //回调实例
-    public interface CameraResult{
-    	//成功回调
-    	public void onSuccess(String filePaht);
-    	//失败
-    	public void onFail(String message);
-    } 
+    public interface CameraResult {
+        //成功回调
+        public void onSuccess(String filePaht);
+
+        //失败
+        public void onFail(String message);
+    }
 }

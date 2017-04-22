@@ -112,57 +112,6 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
         });
     }
 
-
-    private class AutoScaleRunnable implements Runnable {
-        /**
-         * 缩放的目标值
-         */
-        private float mTargetScale;
-        /**
-         * 缩放的中心点
-         */
-        private float x;
-        private float y;
-        /**
-         * 放大和缩小的系数
-         */
-        private static final float BIGGER = 1.07f;
-        private static final float SMALL = 0.93f;
-
-        private float tmpScale;
-
-        public AutoScaleRunnable(float targetScale, float x, float y) {
-            this.mTargetScale = targetScale;
-            this.x = x;
-            this.y = y;
-            if (getScale() < mTargetScale) {
-                tmpScale = BIGGER;
-            }
-            if (getScale() > mTargetScale) {
-                tmpScale = SMALL;
-            }
-        }
-
-        @Override
-        public void run() {
-            //进行缩放
-            mScaleMatrix.postScale(tmpScale, tmpScale, x, y);
-            checkBorderAndCenterWhenScale();
-            setImageMatrix(mScaleMatrix);
-            float currentScale = getScale();
-
-            if ((tmpScale > 1.0f && currentScale < mTargetScale) || (tmpScale < 1.0f && currentScale > mTargetScale)) {//继续进行缩放
-                postDelayed(this, 16);
-            } else {//设置为我们的目标值
-                float scale = mTargetScale / currentScale;
-                mScaleMatrix.postScale(scale, scale, x, y);
-                checkBorderAndCenterWhenScale();
-                setImageMatrix(mScaleMatrix);
-                isAutoScale = false;
-            }
-        }
-    }
-
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -454,5 +403,54 @@ public class ZoomImageView extends AppCompatImageView implements ViewTreeObserve
      */
     private boolean isMoveAction(float dx, float dy) {
         return Math.sqrt(dx * dx + dy * dy) > mTouchSlop;
+    }
+
+    private class AutoScaleRunnable implements Runnable {
+        /**
+         * 放大和缩小的系数
+         */
+        private static final float BIGGER = 1.07f;
+        private static final float SMALL = 0.93f;
+        /**
+         * 缩放的目标值
+         */
+        private float mTargetScale;
+        /**
+         * 缩放的中心点
+         */
+        private float x;
+        private float y;
+        private float tmpScale;
+
+        public AutoScaleRunnable(float targetScale, float x, float y) {
+            this.mTargetScale = targetScale;
+            this.x = x;
+            this.y = y;
+            if (getScale() < mTargetScale) {
+                tmpScale = BIGGER;
+            }
+            if (getScale() > mTargetScale) {
+                tmpScale = SMALL;
+            }
+        }
+
+        @Override
+        public void run() {
+            //进行缩放
+            mScaleMatrix.postScale(tmpScale, tmpScale, x, y);
+            checkBorderAndCenterWhenScale();
+            setImageMatrix(mScaleMatrix);
+            float currentScale = getScale();
+
+            if ((tmpScale > 1.0f && currentScale < mTargetScale) || (tmpScale < 1.0f && currentScale > mTargetScale)) {//继续进行缩放
+                postDelayed(this, 16);
+            } else {//设置为我们的目标值
+                float scale = mTargetScale / currentScale;
+                mScaleMatrix.postScale(scale, scale, x, y);
+                checkBorderAndCenterWhenScale();
+                setImageMatrix(mScaleMatrix);
+                isAutoScale = false;
+            }
+        }
     }
 }

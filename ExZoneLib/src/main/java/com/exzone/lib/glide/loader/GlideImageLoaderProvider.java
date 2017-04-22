@@ -21,10 +21,10 @@ public class GlideImageLoaderProvider implements IImageLoaderProvider {
     @Override
     public void loadImage(ImageRequest request) {
         Context context = request.getImageView().getContext();
-        if (NetWorkUtils.isConnected(context)){
-            loadNormal(context,request);
-        }else {
-            loadCache(context,request);
+        if (NetWorkUtils.isConnected(context)) {
+            loadNormal(context, request);
+        } else {
+            loadCache(context, request);
 
         }
     }
@@ -39,31 +39,31 @@ public class GlideImageLoaderProvider implements IImageLoaderProvider {
     }
 
     private void loadCache(Context context, ImageRequest request) {
-          Glide.with(context).using(new StreamModelLoader<String>() {
-              @Override
-              public DataFetcher<InputStream> getResourceFetcher(final String model, int width, int height) {
-                  return new DataFetcher<InputStream>() {
-                      @Override
-                      public InputStream loadData(Priority priority) throws Exception {
-                          throw new IOException();
-                      }
+        Glide.with(context).using(new StreamModelLoader<String>() {
+            @Override
+            public DataFetcher<InputStream> getResourceFetcher(final String model, int width, int height) {
+                return new DataFetcher<InputStream>() {
+                    @Override
+                    public InputStream loadData(Priority priority) throws Exception {
+                        throw new IOException();
+                    }
 
-                      @Override
-                      public void cleanup() {
+                    @Override
+                    public void cleanup() {
 
-                      }
+                    }
 
-                      @Override
-                      public String getId() {
-                          return model;
-                      }
+                    @Override
+                    public String getId() {
+                        return model;
+                    }
 
-                      @Override
-                      public void cancel() {
+                    @Override
+                    public void cancel() {
 
-                      }
-                  };
-              }
-          });
+                    }
+                };
+            }
+        });
     }
 }

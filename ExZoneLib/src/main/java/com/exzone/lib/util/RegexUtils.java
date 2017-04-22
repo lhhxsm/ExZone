@@ -31,13 +31,13 @@ public class RegexUtils {
      * 正则表达式：验证邮箱
      */
     public static final String REGEX_EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-//    public static final String REGEX_EMAIL = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+    //    public static final String REGEX_EMAIL = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
 
     /**
      * 正则表达式：验证身份证
      */
     public static final String REGEX_ID_CARD = "(^\\d{18}$)|(^\\d{15}$)";
-//    public static final String REGEX_ID_CARD = "^(^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$)|(^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])((\\d{4})|\\d{3}[Xx])$)$";
+    //    public static final String REGEX_ID_CARD = "^(^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$)|(^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])((\\d{4})|\\d{3}[Xx])$)$";
 
     /**
      * 正则表达式：验证邮编
@@ -87,9 +87,9 @@ public class RegexUtils {
         return Pattern.matches(REGEX_PASSWORD, password);
     }
 
-//    public static boolean isEmail(final @NonNull CharSequence str) {
-//        return Patterns.EMAIL_ADDRESS.matcher(str).matches();
-//    }
+    //    public static boolean isEmail(final @NonNull CharSequence str) {
+    //        return Patterns.EMAIL_ADDRESS.matcher(str).matches();
+    //    }
 
     /**
      * 校验手机号

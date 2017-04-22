@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
-import android.widget.RadioButton;
 
 import com.exzone.lib.R;
 

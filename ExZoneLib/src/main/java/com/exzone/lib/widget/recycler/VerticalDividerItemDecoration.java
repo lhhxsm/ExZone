@@ -16,9 +16,8 @@ import com.exzone.lib.widget.recycler.recyclerview.HeaderAndFooterRecyclerViewAd
  */
 public class VerticalDividerItemDecoration extends FlexibleDividerDecoration {
 
-    private MarginProvider mMarginProvider;
-
     private static boolean hasHeader;
+    private MarginProvider mMarginProvider;
 
     protected VerticalDividerItemDecoration(Builder builder) {
         super(builder);

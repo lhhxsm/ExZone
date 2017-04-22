@@ -15,6 +15,15 @@ import android.view.MotionEvent;
  * 时间:2017/4/4.
  */
 public class MultiTouchImageView extends AppCompatImageView {
+    public int width;
+    public int height;
+    float matrixX, matrixY;
+    float saveScale = 1f;
+    float minScale = 1f;
+    float maxScale = 3f;
+    float redundantXSpace, redundantYSpace;
+    float right, bottom, origWidth, origHeight, bmWidth, bmHeight;
+    float[] m;
     private int Img_ID;
     private float startDis;// 开始距离
     private PointF midPoint;// 中间点
@@ -25,25 +34,11 @@ public class MultiTouchImageView extends AppCompatImageView {
     private Matrix currentMatrix = new Matrix();
     private Activity mActivity;
     private boolean is_Editable = true;
-    public int width;
-    public int height;
-    float matrixX, matrixY;
-    float saveScale = 1f;
-    float minScale = 1f;
-    float maxScale = 3f;
-    float redundantXSpace, redundantYSpace;
-    float right, bottom, origWidth, origHeight, bmWidth, bmHeight;
-    float[] m;
-
-    /**
-     * 模式 NONE：无 DRAG：拖拽. ZOOM:缩放
-     */
-    private enum MODE {
-        NONE, DRAG, ZOOM
-
-    }
-
     private MODE mode = MODE.NONE;// 默认模式
+    /***
+     * touch 事件
+     */
+    private int lastX, lastY;
 
     public MultiTouchImageView(Context context) {
         this(context, null);
@@ -55,21 +50,6 @@ public class MultiTouchImageView extends AppCompatImageView {
 
     public MultiTouchImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-    }
-
-    public void setActivity(Activity mActivity) {
-        this.mActivity = mActivity;
-    }
-
-    /**
-     * 控制图片的可编辑性
-     **/
-    public void setEditable(boolean is_Editable) {
-        this.is_Editable = is_Editable;
-    }
-
-    public boolean getEditable() {
-        return this.is_Editable;
     }
 
     /**
@@ -90,6 +70,21 @@ public class MultiTouchImageView extends AppCompatImageView {
         return new PointF(midX, midY);
     }
 
+    public void setActivity(Activity mActivity) {
+        this.mActivity = mActivity;
+    }
+
+    public boolean getEditable() {
+        return this.is_Editable;
+    }
+
+    /**
+     * 控制图片的可编辑性
+     **/
+    public void setEditable(boolean is_Editable) {
+        this.is_Editable = is_Editable;
+    }
+
     private float rotation(MotionEvent event) {
         double delta_x = (event.getX(0) - event.getX(1));
         double delta_y = (event.getY(0) - event.getY(1));
@@ -97,11 +92,6 @@ public class MultiTouchImageView extends AppCompatImageView {
         return (float) Math.toDegrees(radians);
 
     }
-
-    /***
-     * touch 事件
-     */
-    private int lastX, lastY;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -195,5 +185,13 @@ public class MultiTouchImageView extends AppCompatImageView {
         //冲区，否则，下一次用getDrawingCache()方法回去图像时，还是原来的图像
         setDrawingCacheEnabled(false);
         return obmp;
+    }
+
+    /**
+     * 模式 NONE：无 DRAG：拖拽. ZOOM:缩放
+     */
+    private enum MODE {
+        NONE, DRAG, ZOOM
+
     }
 }

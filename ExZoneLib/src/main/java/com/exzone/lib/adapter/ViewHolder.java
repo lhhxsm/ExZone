@@ -26,14 +26,6 @@ public class ViewHolder {
         mConvertView.setTag(this);
     }
 
-    public int getPosition() {
-        return mPosition;
-    }
-
-    public void setPosition(int mPosition) {
-        this.mPosition = mPosition;
-    }
-
     public static ViewHolder get(Context context, View convertView, ViewGroup parent, int layoutId, int position) {
         if (convertView == null) {
             return new ViewHolder(context, parent, layoutId, position);
@@ -42,6 +34,14 @@ public class ViewHolder {
             holder.mPosition = position;
             return holder;
         }
+    }
+
+    public int getPosition() {
+        return mPosition;
+    }
+
+    public void setPosition(int mPosition) {
+        this.mPosition = mPosition;
     }
 
     public View getConvertView() {

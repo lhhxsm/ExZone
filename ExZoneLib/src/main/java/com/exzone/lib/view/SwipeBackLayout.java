@@ -44,50 +44,40 @@ import android.widget.ScrollView;
  */
 public class SwipeBackLayout extends ViewGroup {
 
-    public enum DragEdge {
-        LEFT,
-
-        TOP,
-
-        RIGHT,
-
-        BOTTOM
-    }
-
-    private DragEdge dragEdge = DragEdge.TOP;
-
-    public void setDragEdge(DragEdge dragEdge) {
-        this.dragEdge = dragEdge;
-    }
-
-
     private static final double AUTO_FINISHED_SPEED_LIMIT = 2000.0;
-
+    private static final float BACK_FACTOR = 0.5f;
     private final ViewDragHelper viewDragHelper;
-
+    private DragEdge dragEdge = DragEdge.TOP;
     private View target;
-
     private View scrollChild;
-
     private int verticalDragRange = 0;
-
     private int horizontalDragRange = 0;
-
     private int draggingState = 0;
-
     private int draggingOffset;
-
     /**
      * Whether allow to pull this layout.
      */
     private boolean enablePullToBack = true;
-
-    private static final float BACK_FACTOR = 0.5f;
-
     /**
      * the anchor of calling finish.
      */
     private float finishAnchor = 0;
+    private boolean enableFlingBack = true;
+    private SwipeBackListener swipeBackListener;
+
+    public SwipeBackLayout(Context context) {
+        this(context, null);
+    }
+
+    public SwipeBackLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+
+        viewDragHelper = ViewDragHelper.create(this, 1.0f, new ViewDragHelperCallBack());
+    }
+
+    public void setDragEdge(DragEdge dragEdge) {
+        this.dragEdge = dragEdge;
+    }
 
     /**
      * Set the anchor of calling finish.
@@ -98,8 +88,6 @@ public class SwipeBackLayout extends ViewGroup {
         finishAnchor = offset;
     }
 
-    private boolean enableFlingBack = true;
-
     /**
      * Whether allow to finish activity by fling the layout.
      *
@@ -109,8 +97,6 @@ public class SwipeBackLayout extends ViewGroup {
         enableFlingBack = b;
     }
 
-    private SwipeBackListener swipeBackListener;
-
     @Deprecated
     public void setOnPullToBackListener(SwipeBackListener listener) {
         swipeBackListener = listener;
@@ -118,16 +104,6 @@ public class SwipeBackLayout extends ViewGroup {
 
     public void setOnSwipeBackListener(SwipeBackListener listener) {
         swipeBackListener = listener;
-    }
-
-    public SwipeBackLayout(Context context) {
-        this(context, null);
-    }
-
-    public SwipeBackLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-
-        viewDragHelper = ViewDragHelper.create(this, 1.0f, new ViewDragHelperCallBack());
     }
 
     public void setScrollChild(View view) {
@@ -180,7 +156,8 @@ public class SwipeBackLayout extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
-        if (getChildCount() == 0) return;
+        if (getChildCount() == 0)
+            return;
 
         View child = getChildAt(0);
 
@@ -286,6 +263,58 @@ public class SwipeBackLayout extends ViewGroup {
         act.overridePendingTransition(0, android.R.anim.fade_out);
     }
 
+    private boolean backBySpeed(float xvel, float yvel) {
+        switch (dragEdge) {
+            case TOP:
+            case BOTTOM:
+                if (Math.abs(yvel) > Math.abs(xvel) && Math.abs(yvel) > AUTO_FINISHED_SPEED_LIMIT) {
+                    return dragEdge == DragEdge.TOP ? !canChildScrollUp() : !canChildScrollDown();
+                }
+                break;
+            case LEFT:
+            case RIGHT:
+                if (Math.abs(xvel) > Math.abs(yvel) && Math.abs(xvel) > AUTO_FINISHED_SPEED_LIMIT) {
+                    return dragEdge == DragEdge.LEFT ? !canChildScrollLeft() : !canChildScrollRight();
+                }
+                break;
+        }
+        return false;
+    }
+
+    private void smoothScrollToX(int finalLeft) {
+        if (viewDragHelper.settleCapturedViewAt(finalLeft, 0)) {
+            ViewCompat.postInvalidateOnAnimation(SwipeBackLayout.this);
+        }
+    }
+
+    private void smoothScrollToY(int finalTop) {
+        if (viewDragHelper.settleCapturedViewAt(0, finalTop)) {
+            ViewCompat.postInvalidateOnAnimation(SwipeBackLayout.this);
+        }
+    }
+
+    public enum DragEdge {
+        LEFT,
+
+        TOP,
+
+        RIGHT,
+
+        BOTTOM
+    }
+
+    public interface SwipeBackListener {
+
+        /**
+         * Return scrolled fraction of the layout.
+         *
+         * @param fractionAnchor relative to the anchor.
+         * @param fractionScreen relative to the screen.
+         */
+        void onViewPositionChanged(float fractionAnchor, float fractionScreen);
+
+    }
+
     private class ViewDragHelperCallBack extends ViewDragHelper.Callback {
 
         @Override
@@ -341,7 +370,8 @@ public class SwipeBackLayout extends ViewGroup {
 
         @Override
         public void onViewDragStateChanged(int state) {
-            if (state == draggingState) return;
+            if (state == draggingState)
+                return;
 
             if ((draggingState == ViewDragHelper.STATE_DRAGGING || draggingState == ViewDragHelper.STATE_SETTLING) &&
                     state == ViewDragHelper.STATE_IDLE) {
@@ -372,10 +402,12 @@ public class SwipeBackLayout extends ViewGroup {
 
             //The proportion of the sliding.
             float fractionAnchor = (float) draggingOffset / finishAnchor;
-            if (fractionAnchor >= 1) fractionAnchor = 1;
+            if (fractionAnchor >= 1)
+                fractionAnchor = 1;
 
             float fractionScreen = (float) draggingOffset / (float) getDragRange();
-            if (fractionScreen >= 1) fractionScreen = 1;
+            if (fractionScreen >= 1)
+                fractionScreen = 1;
 
             if (swipeBackListener != null) {
                 swipeBackListener.onViewPositionChanged(fractionAnchor, fractionScreen);
@@ -384,9 +416,11 @@ public class SwipeBackLayout extends ViewGroup {
 
         @Override
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
-            if (draggingOffset == 0) return;
+            if (draggingOffset == 0)
+                return;
 
-            if (draggingOffset == getDragRange()) return;
+            if (draggingOffset == getDragRange())
+                return;
 
             boolean isBack = false;
 
@@ -420,48 +454,6 @@ public class SwipeBackLayout extends ViewGroup {
             }
 
         }
-    }
-
-    private boolean backBySpeed(float xvel, float yvel) {
-        switch (dragEdge) {
-            case TOP:
-            case BOTTOM:
-                if (Math.abs(yvel) > Math.abs(xvel) && Math.abs(yvel) > AUTO_FINISHED_SPEED_LIMIT) {
-                    return dragEdge == DragEdge.TOP ? !canChildScrollUp() : !canChildScrollDown();
-                }
-                break;
-            case LEFT:
-            case RIGHT:
-                if (Math.abs(xvel) > Math.abs(yvel) && Math.abs(xvel) > AUTO_FINISHED_SPEED_LIMIT) {
-                    return dragEdge == DragEdge.LEFT ? !canChildScrollLeft() : !canChildScrollRight();
-                }
-                break;
-        }
-        return false;
-    }
-
-    private void smoothScrollToX(int finalLeft) {
-        if (viewDragHelper.settleCapturedViewAt(finalLeft, 0)) {
-            ViewCompat.postInvalidateOnAnimation(SwipeBackLayout.this);
-        }
-    }
-
-    private void smoothScrollToY(int finalTop) {
-        if (viewDragHelper.settleCapturedViewAt(0, finalTop)) {
-            ViewCompat.postInvalidateOnAnimation(SwipeBackLayout.this);
-        }
-    }
-
-    public interface SwipeBackListener {
-
-        /**
-         * Return scrolled fraction of the layout.
-         *
-         * @param fractionAnchor relative to the anchor.
-         * @param fractionScreen relative to the screen.
-         */
-        void onViewPositionChanged(float fractionAnchor, float fractionScreen);
-
     }
 
 }

@@ -4,7 +4,8 @@
     <ImageView
         android:id="@+id/foldable_layout_below_bitmap"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"  android:contentDescription="@null"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
         android:scaleType="fitXY"/>
 
     <RelativeLayout
@@ -15,7 +16,8 @@
         <ImageView
             android:id="@+id/foldable_layout_above_bitmap"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"  android:contentDescription="@null"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
             android:scaleType="fitXY"/>
     </RelativeLayout>
 </merge>

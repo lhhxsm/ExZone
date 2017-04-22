@@ -27,21 +27,10 @@ import java.util.regex.Pattern;
  */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
-    private final SurfaceHolder mHolder;
-    private Camera mCamera = null;
-    private OnCameraStatusListener listener;
-    public int cameraPosition = 1;
-    private Context mContext;
-    private Point screenResolution;
-    private Point cameraResolution;
-    private int previewFormat;
-    private String previewFormatString;
     private static final int TEN_DESIRED_ZOOM = 27;
     private static final int DESIRED_SHARPNESS = 30;
-
     private static final Pattern COMMA_PATTERN = Pattern.compile(",");
     private static final int SDK_INT;
-    private boolean initialized;
 
     static {
         int sdkInt;
@@ -54,6 +43,33 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         SDK_INT = sdkInt;
     }
 
+    private final SurfaceHolder mHolder;
+    public int cameraPosition = 1;
+    private Camera mCamera = null;
+    private OnCameraStatusListener listener;
+    private Context mContext;
+    private Point screenResolution;
+    private Point cameraResolution;
+    private int previewFormat;
+    private String previewFormatString;
+    private boolean initialized;
+    // 创建一个PictureCallback对象，并实现其中的onPictureTaken方法
+    private PictureCallback pictureCallback = new PictureCallback() {
+
+        // 该方法用于处理拍摄后的照片数据
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            // 停止照片拍摄
+            Logger.e("callback" + listener + "");
+            camera.stopPreview();
+            camera = null;
+            // 调用结束事件
+            if (null != listener) {
+                listener.onCameraStopped(data);
+            }
+        }
+    };
+
     public CameraPreview(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
@@ -61,6 +77,95 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mHolder.addCallback(this);
         // 推荐的设置，但需要在Android 3以前的版本
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+    }
+
+    private static Point getCameraResolution(Camera.Parameters parameters, Point screenResolution) {
+
+        String previewSizeValueString = parameters.get("preview-size-values");
+        // saw this on Xperia
+        if (previewSizeValueString == null) {
+            previewSizeValueString = parameters.get("preview-size-value");
+        }
+
+        Point cameraResolution = null;
+
+        if (previewSizeValueString != null) {
+            Logger.e("preview-size-values parameter: " + previewSizeValueString);
+            cameraResolution = findBestPreviewSizeValue(previewSizeValueString, screenResolution);
+        }
+
+        if (cameraResolution == null) {
+            // Ensure that the camera resolution is a multiple of 8, as the screen may not be.
+            cameraResolution = new Point(
+                    (screenResolution.x >> 3) << 3,
+                    (screenResolution.y >> 3) << 3);
+        }
+
+        return cameraResolution;
+    }
+
+    private static Point findBestPreviewSizeValue(CharSequence previewSizeValueString, Point screenResolution) {
+        int bestX = 0;
+        int bestY = 0;
+        int diff = Integer.MAX_VALUE;
+        for (String previewSize : COMMA_PATTERN.split(previewSizeValueString)) {
+
+            previewSize = previewSize.trim();
+            int dimPosition = previewSize.indexOf('x');
+            if (dimPosition < 0) {
+                Logger.e("Bad preview-size: " + previewSize);
+                continue;
+            }
+
+            int newX;
+            int newY;
+            try {
+                newX = Integer.parseInt(previewSize.substring(0, dimPosition));
+                newY = Integer.parseInt(previewSize.substring(dimPosition + 1));
+            } catch (NumberFormatException nfe) {
+                Logger.e("Bad preview-size: " + previewSize);
+                continue;
+            }
+
+            int newDiff = Math.abs(newX - screenResolution.x) + Math.abs(newY - screenResolution.y);
+            if (newDiff == 0) {
+                bestX = newX;
+                bestY = newY;
+                break;
+            } else if (newDiff < diff) {
+                bestX = newX;
+                bestY = newY;
+                diff = newDiff;
+            }
+
+        }
+
+        if (bestX > 0 && bestY > 0) {
+            return new Point(bestX, bestY);
+        }
+        return null;
+    }
+
+    private static int findBestMotZoomValue(CharSequence stringValues, int tenDesiredZoom) {
+        int tenBestValue = 0;
+        for (String stringValue : COMMA_PATTERN.split(stringValues)) {
+            stringValue = stringValue.trim();
+            double value;
+            try {
+                value = Double.parseDouble(stringValue);
+            } catch (NumberFormatException nfe) {
+                return tenDesiredZoom;
+            }
+            int tenValue = (int) (10.0 * value);
+            if (Math.abs(tenDesiredZoom - value) < Math.abs(tenDesiredZoom - tenBestValue)) {
+                tenBestValue = tenValue;
+            }
+        }
+        return tenBestValue;
+    }
+
+    public static int getDesiredSharpness() {
+        return DESIRED_SHARPNESS;
     }
 
     @Override
@@ -216,23 +321,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-    // 创建一个PictureCallback对象，并实现其中的onPictureTaken方法
-    private PictureCallback pictureCallback = new PictureCallback() {
-
-        // 该方法用于处理拍摄后的照片数据
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-            // 停止照片拍摄
-            Logger.e("callback" + listener + "");
-            camera.stopPreview();
-            camera = null;
-            // 调用结束事件
-            if (null != listener) {
-                listener.onCameraStopped(data);
-            }
-        }
-    };
-
     // 设置监听事件
     public void setOnCameraStatusListener(OnCameraStatusListener listener) {
         if (listener != null)
@@ -271,91 +359,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         //2.1
         setDisplayOrientation(camera, 90);
         camera.setParameters(parameters);
-    }
-
-    private static Point getCameraResolution(Camera.Parameters parameters, Point screenResolution) {
-
-        String previewSizeValueString = parameters.get("preview-size-values");
-        // saw this on Xperia
-        if (previewSizeValueString == null) {
-            previewSizeValueString = parameters.get("preview-size-value");
-        }
-
-        Point cameraResolution = null;
-
-        if (previewSizeValueString != null) {
-            Logger.e("preview-size-values parameter: " + previewSizeValueString);
-            cameraResolution = findBestPreviewSizeValue(previewSizeValueString, screenResolution);
-        }
-
-        if (cameraResolution == null) {
-            // Ensure that the camera resolution is a multiple of 8, as the screen may not be.
-            cameraResolution = new Point(
-                    (screenResolution.x >> 3) << 3,
-                    (screenResolution.y >> 3) << 3);
-        }
-
-        return cameraResolution;
-    }
-
-    private static Point findBestPreviewSizeValue(CharSequence previewSizeValueString, Point screenResolution) {
-        int bestX = 0;
-        int bestY = 0;
-        int diff = Integer.MAX_VALUE;
-        for (String previewSize : COMMA_PATTERN.split(previewSizeValueString)) {
-
-            previewSize = previewSize.trim();
-            int dimPosition = previewSize.indexOf('x');
-            if (dimPosition < 0) {
-                Logger.e("Bad preview-size: " + previewSize);
-                continue;
-            }
-
-            int newX;
-            int newY;
-            try {
-                newX = Integer.parseInt(previewSize.substring(0, dimPosition));
-                newY = Integer.parseInt(previewSize.substring(dimPosition + 1));
-            } catch (NumberFormatException nfe) {
-                Logger.e("Bad preview-size: " + previewSize);
-                continue;
-            }
-
-            int newDiff = Math.abs(newX - screenResolution.x) + Math.abs(newY - screenResolution.y);
-            if (newDiff == 0) {
-                bestX = newX;
-                bestY = newY;
-                break;
-            } else if (newDiff < diff) {
-                bestX = newX;
-                bestY = newY;
-                diff = newDiff;
-            }
-
-        }
-
-        if (bestX > 0 && bestY > 0) {
-            return new Point(bestX, bestY);
-        }
-        return null;
-    }
-
-    private static int findBestMotZoomValue(CharSequence stringValues, int tenDesiredZoom) {
-        int tenBestValue = 0;
-        for (String stringValue : COMMA_PATTERN.split(stringValues)) {
-            stringValue = stringValue.trim();
-            double value;
-            try {
-                value = Double.parseDouble(stringValue);
-            } catch (NumberFormatException nfe) {
-                return tenDesiredZoom;
-            }
-            int tenValue = (int) (10.0 * value);
-            if (Math.abs(tenDesiredZoom - value) < Math.abs(tenDesiredZoom - tenBestValue)) {
-                tenBestValue = tenValue;
-            }
-        }
-        return tenBestValue;
     }
 
     private void setFlash(Camera.Parameters parameters) {
@@ -437,10 +440,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if (takingPictureZoomMaxString != null) {
             parameters.set("taking-picture-zoom", tenDesiredZoom);
         }
-    }
-
-    public static int getDesiredSharpness() {
-        return DESIRED_SHARPNESS;
     }
 
     /**

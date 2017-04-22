@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class StickyScrollView extends ScrollView {
     private static final String STICKY = "sticky";
-    private View mCurrentStickyView ;
+    private View mCurrentStickyView;
     private Drawable mShadowDrawable;
     private List<View> mStickyViews;
     private int mStickyViewTopOffset;
@@ -36,7 +36,7 @@ public class StickyScrollView extends ScrollView {
 
         @Override
         public void run() {
-            if(mCurrentStickyView != null){
+            if (mCurrentStickyView != null) {
                 int left = mCurrentStickyView.getLeft();
                 int top = mCurrentStickyView.getTop();
                 int right = mCurrentStickyView.getRight();
@@ -50,6 +50,7 @@ public class StickyScrollView extends ScrollView {
 
         }
     };
+    private boolean hasNotDoneActionDown = true;
 
     public StickyScrollView(Context context) {
         this(context, null);
@@ -65,32 +66,31 @@ public class StickyScrollView extends ScrollView {
         mStickyViews = new LinkedList<View>();
         density = context.getResources().getDisplayMetrics().density;
     }
+
     /**
      * 找到设置tag的View
      */
-    private void findViewByStickyTag(ViewGroup viewGroup){
+    private void findViewByStickyTag(ViewGroup viewGroup) {
         int childCount = (viewGroup).getChildCount();
-        for(int i=0; i<childCount; i++){
+        for (int i = 0; i < childCount; i++) {
             View child = viewGroup.getChildAt(i);
 
-            if(getStringTagForView(child).contains(STICKY)){
+            if (getStringTagForView(child).contains(STICKY)) {
                 mStickyViews.add(child);
             }
 
-            if(child instanceof ViewGroup){
-                findViewByStickyTag((ViewGroup)child);
+            if (child instanceof ViewGroup) {
+                findViewByStickyTag((ViewGroup) child);
             }
         }
 
     }
 
-
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        if(changed){
-            findViewByStickyTag((ViewGroup)getChildAt(0));
+        if (changed) {
+            findViewByStickyTag((ViewGroup) getChildAt(0));
         }
         showStickyView();
     }
@@ -104,29 +104,29 @@ public class StickyScrollView extends ScrollView {
     /**
      *
      */
-    private void showStickyView(){
+    private void showStickyView() {
         View curStickyView = null;
         View nextStickyView = null;
 
-        for(View v : mStickyViews){
+        for (View v : mStickyViews) {
             int topOffset = v.getTop() - getScrollY();
 
-            if(topOffset <= 0){
-                if(curStickyView == null || topOffset > curStickyView.getTop() - getScrollY()){
+            if (topOffset <= 0) {
+                if (curStickyView == null || topOffset > curStickyView.getTop() - getScrollY()) {
                     curStickyView = v;
                 }
-            }else{
-                if(nextStickyView == null || topOffset < nextStickyView.getTop() - getScrollY()){
+            } else {
+                if (nextStickyView == null || topOffset < nextStickyView.getTop() - getScrollY()) {
                     nextStickyView = v;
                 }
             }
         }
 
-        if(curStickyView != null){
+        if (curStickyView != null) {
             mStickyViewTopOffset = nextStickyView == null ? 0 : Math.min(0, nextStickyView.getTop() - getScrollY() - curStickyView.getHeight());
             mCurrentStickyView = curStickyView;
             post(mInvalidataRunnable);
-        }else{
+        } else {
             mCurrentStickyView = null;
             removeCallbacks(mInvalidataRunnable);
 
@@ -134,12 +134,10 @@ public class StickyScrollView extends ScrollView {
 
     }
 
-
-    private String getStringTagForView(View v){
+    private String getStringTagForView(View v) {
         Object tag = v.getTag();
         return String.valueOf(tag);
     }
-
 
     /**
      * 将sticky画出来
@@ -147,17 +145,17 @@ public class StickyScrollView extends ScrollView {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        if(mCurrentStickyView != null){
+        if (mCurrentStickyView != null) {
             //先保存起来
             canvas.save();
             //将坐标原点移动到(0, getScrollY() + mStickyViewTopOffset)
             canvas.translate(0, getScrollY() + mStickyViewTopOffset);
 
-            if(mShadowDrawable != null){
+            if (mShadowDrawable != null) {
                 int left = 0;
                 int top = mCurrentStickyView.getHeight() + mStickyViewTopOffset;
                 int right = mCurrentStickyView.getWidth();
-                int bottom = top + (int)(density * defaultShadowHeight + 0.5f);
+                int bottom = top + (int) (density * defaultShadowHeight + 0.5f);
                 mShadowDrawable.setBounds(left, top, right, bottom);
                 mShadowDrawable.draw(canvas);
             }
@@ -172,17 +170,16 @@ public class StickyScrollView extends ScrollView {
         }
     }
 
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if(ev.getAction() == MotionEvent.ACTION_DOWN){
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             redirectTouchToStickyView = true;
         }
 
-        if(redirectTouchToStickyView){
+        if (redirectTouchToStickyView) {
             redirectTouchToStickyView = mCurrentStickyView != null;
 
-            if(redirectTouchToStickyView){
+            if (redirectTouchToStickyView) {
                 redirectTouchToStickyView = ev.getY() <= (mCurrentStickyView
                         .getHeight() + mStickyViewTopOffset)
                         && ev.getX() >= mCurrentStickyView.getLeft()
@@ -196,28 +193,24 @@ public class StickyScrollView extends ScrollView {
         return super.dispatchTouchEvent(ev);
     }
 
-
-
-    private boolean hasNotDoneActionDown = true;
-
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if(redirectTouchToStickyView){
+        if (redirectTouchToStickyView) {
             ev.offsetLocation(0, ((getScrollY() + mStickyViewTopOffset) - mCurrentStickyView.getTop()));
         }
 
-        if(ev.getAction()== MotionEvent.ACTION_DOWN){
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             hasNotDoneActionDown = false;
         }
 
-        if(hasNotDoneActionDown){
+        if (hasNotDoneActionDown) {
             MotionEvent down = MotionEvent.obtain(ev);
             down.setAction(MotionEvent.ACTION_DOWN);
             super.onTouchEvent(down);
             hasNotDoneActionDown = false;
         }
 
-        if(ev.getAction()==MotionEvent.ACTION_UP || ev.getAction()==MotionEvent.ACTION_CANCEL){
+        if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
             hasNotDoneActionDown = true;
         }
         return super.onTouchEvent(ev);

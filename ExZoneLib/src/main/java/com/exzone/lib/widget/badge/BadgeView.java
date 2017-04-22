@@ -75,27 +75,6 @@ public class BadgeView extends AppCompatTextView {
         }
     }
 
-
-    public void setBackgroundColor(int backgroundColor) {
-        this.mBackgroundColor = backgroundColor;
-        setBgSelector();
-    }
-
-    public void setCornerRadius(int cornerRadius) {
-        this.mCornerRadius = ScreenUtils.dp2Px(mContext, cornerRadius);
-        setBgSelector();
-    }
-
-    public void setStrokeWidth(int strokeWidth) {
-        this.mStrokeWidth = ScreenUtils.dp2Px(mContext, strokeWidth);
-        setBgSelector();
-    }
-
-    public void setStrokeColor(int strokeColor) {
-        this.mStrokeColor = strokeColor;
-        setBgSelector();
-    }
-
     public void setIsRadiusHalfHeight(boolean isRadiusHalfHeight) {
         this.isRadiusHalfHeight = isRadiusHalfHeight;
         setBgSelector();
@@ -110,16 +89,36 @@ public class BadgeView extends AppCompatTextView {
         return mBackgroundColor;
     }
 
+    public void setBackgroundColor(int backgroundColor) {
+        this.mBackgroundColor = backgroundColor;
+        setBgSelector();
+    }
+
     public int getCornerRadius() {
         return mCornerRadius;
+    }
+
+    public void setCornerRadius(int cornerRadius) {
+        this.mCornerRadius = ScreenUtils.dp2Px(mContext, cornerRadius);
+        setBgSelector();
     }
 
     public int getStrokeWidth() {
         return mStrokeWidth;
     }
 
+    public void setStrokeWidth(int strokeWidth) {
+        this.mStrokeWidth = ScreenUtils.dp2Px(mContext, strokeWidth);
+        setBgSelector();
+    }
+
     public int getStrokeColor() {
         return mStrokeColor;
+    }
+
+    public void setStrokeColor(int strokeColor) {
+        this.mStrokeColor = strokeColor;
+        setBgSelector();
     }
 
     public boolean isRadiusHalfHeight() {

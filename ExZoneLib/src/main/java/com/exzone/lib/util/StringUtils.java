@@ -31,8 +31,8 @@ import java.util.regex.Pattern;
  */
 public class StringUtils {
 
-    private static final int PAD_LIMIT = 8192;
     public static final String EMPTY = "";
+    private static final int PAD_LIMIT = 8192;
 
     private StringUtils() {
         throw new AssertionError();
@@ -510,33 +510,12 @@ public class StringUtils {
         return fmt.format(num);
     }
 
-    /**
-     * 去掉一些特殊字符串
-     * String s = "你要去除的字符串";
-     * 1.去除空格：s = s.replace('\\s','');
-     * 2.去除回车：s = s.replace('\n','');     这样也可以把空格和回车去掉，其他也可以照这样做。
-     * 注：\n 回车(\u000a)
-     * \t 水平制表符(\u0009)
-     * \s 空格(\u0008)
-     * \r 换行(\u000d)
-     */
-    public String replaceBlank(String str) {
-        String dest = "";
-        if (str != null) {
-            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
-            Matcher m = p.matcher(str);
-            dest = m.replaceAll("");
-        }
-        return dest;
-    }
-
     public static SpannableString format(Context context, String text, int style) {
         SpannableString spannableString = new SpannableString(text);
         spannableString.setSpan(new TextAppearanceSpan(context, style), 0, text.length(),
                 0);
         return spannableString;
     }
-
 
     /**
      * 将字符串进行md5转换
@@ -812,6 +791,22 @@ public class StringUtils {
 
     }
 
+    /**
+     * 覆盖手机号 coverPhoneNumber("13488886137")=134*****137
+     *
+     * @param str
+     * @return
+     */
+    public static String coverPhoneNumber(String str) {
+        int begin = 3;
+        // 此时不覆盖
+        int end = begin;
+        if (StringUtils.isNotBlank(str)) {
+            end = str.length() - 3;
+        }
+        return coverString(str, begin, end);
+    }
+
 
     //	/**
     //	 * 覆盖保存的登录名
@@ -828,22 +823,6 @@ public class StringUtils {
     //		}
     //		return name;
     //	}
-
-    /**
-     * 覆盖手机号 coverPhoneNumber("13488886137")=134*****137
-     *
-     * @param str
-     * @return
-     */
-    public static String coverPhoneNumber(String str) {
-        int begin = 3;
-        // 此时不覆盖
-        int end = begin;
-        if (StringUtils.isNotBlank(str)) {
-            end = str.length() - 3;
-        }
-        return coverString(str, begin, end);
-    }
 
     /**
      * 覆盖身份证号码 coverIDCard("56647719320129891X")=566***********891X
@@ -937,9 +916,6 @@ public class StringUtils {
         return false;
     }
 
-    // Splitting
-    // -----------------------------------------------------------------------
-
     /**
      * <p>
      * Splits the provided text into an array, using whitespace as the
@@ -971,6 +947,9 @@ public class StringUtils {
     public static String[] split(String str) {
         return split(str, null, -1);
     }
+
+    // Splitting
+    // -----------------------------------------------------------------------
 
     /**
      * <p>
@@ -1234,7 +1213,6 @@ public class StringUtils {
         }
         return (String[]) list.toArray(new String[list.size()]);
     }
-
 
     /**
      * <p>
@@ -1544,9 +1522,6 @@ public class StringUtils {
         }
     }
 
-    // Empty checks
-    // -----------------------------------------------------------------------
-
     /**
      * <p>
      * Checks if a String is empty ("") or null.
@@ -1571,6 +1546,9 @@ public class StringUtils {
     public static boolean isEmpty(String str) {
         return str == null || str.length() == 0;
     }
+
+    // Empty checks
+    // -----------------------------------------------------------------------
 
     /**
      * is null or its length is 0
@@ -1608,9 +1586,6 @@ public class StringUtils {
     public static boolean isNotEmpty(String str) {
         return !StringUtils.isEmpty(str);
     }
-
-    // Substring
-    // -----------------------------------------------------------------------
 
     /**
      * <p>
@@ -1662,6 +1637,9 @@ public class StringUtils {
 
         return str.substring(start);
     }
+
+    // Substring
+    // -----------------------------------------------------------------------
 
     /**
      * <p>
@@ -1740,9 +1718,6 @@ public class StringUtils {
         return str.substring(start, end);
     }
 
-    // Padding
-    // -----------------------------------------------------------------------
-
     /**
      * <p>
      * Repeat a String <code>repeat</code> times to form a new String.
@@ -1807,7 +1782,7 @@ public class StringUtils {
         }
     }
 
-    // Replacing
+    // Padding
     // -----------------------------------------------------------------------
 
     /**
@@ -1842,6 +1817,9 @@ public class StringUtils {
                                      String replacement) {
         return replace(text, searchString, replacement, 1);
     }
+
+    // Replacing
+    // -----------------------------------------------------------------------
 
     /**
      * <p>
@@ -1937,7 +1915,6 @@ public class StringUtils {
         return buf.toString();
     }
 
-
     /**
      * capitalize first letter
      * <p>
@@ -1964,7 +1941,6 @@ public class StringUtils {
                 .append(Character.toUpperCase(c))
                 .append(str.substring(1)).toString();
     }
-
 
     /**
      * get innerHtml from href
@@ -2113,6 +2089,7 @@ public class StringUtils {
 
     /**
      * 判断字符串中是否有中文字符
+     *
      * @param str 需要判断的字符串
      * @return boolean
      */
@@ -2128,5 +2105,25 @@ public class StringUtils {
             }
         }
         return count > 0;
+    }
+
+    /**
+     * 去掉一些特殊字符串
+     * String s = "你要去除的字符串";
+     * 1.去除空格：s = s.replace('\\s','');
+     * 2.去除回车：s = s.replace('\n','');     这样也可以把空格和回车去掉，其他也可以照这样做。
+     * 注：\n 回车(\u000a)
+     * \t 水平制表符(\u0009)
+     * \s 空格(\u0008)
+     * \r 换行(\u000d)
+     */
+    public String replaceBlank(String str) {
+        String dest = "";
+        if (str != null) {
+            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+            Matcher m = p.matcher(str);
+            dest = m.replaceAll("");
+        }
+        return dest;
     }
 }

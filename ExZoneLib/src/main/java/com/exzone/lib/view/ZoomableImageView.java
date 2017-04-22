@@ -17,25 +17,16 @@ import android.view.ScaleGestureDetector;
 public class ZoomableImageView extends AppCompatImageView {
     private float maxScale = 3f;
     private float minScale = 1f;
-
-    private enum State {
-        INIT, DRAG, ZOOM
-    }
-
     private State state;
-
     private Matrix matrix;
     private float[] finalTransformation = new float[9];
     private PointF last = new PointF();
     private float currentScale = 1f;
-
     private int viewWidth;
     private int viewHeight;
     private float afterScaleDrawableWidth;
     private float afterScaleDrawableHeight;
-
     private ScaleGestureDetector scaleDetector;
-
     private GestureDetector doubleTapDetector;
 
     public ZoomableImageView(Context context) {
@@ -239,6 +230,10 @@ public class ZoomableImageView extends AppCompatImageView {
 
     private boolean isZoom() {
         return currentScale != 1f;
+    }
+
+    private enum State {
+        INIT, DRAG, ZOOM
     }
 
     /**

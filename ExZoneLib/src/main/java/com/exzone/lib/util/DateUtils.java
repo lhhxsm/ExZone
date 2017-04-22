@@ -22,9 +22,15 @@ import java.util.Locale;
  */
 public class DateUtils {
 
+    public static final SimpleDateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat(
+            "yyyy-MM-dd HH:mm:ss");
+    public static final SimpleDateFormat DATE_FORMAT_DATE = new SimpleDateFormat(
+            "yyyy-MM-dd");
+
     private DateUtils() {
         throw new AssertionError();
     }
+
     /**
      * 获取当前时间戳
      *
@@ -94,11 +100,6 @@ public class DateUtils {
         Calendar calendar = Calendar.getInstance();
         return calendar.YEAR;
     }
-
-    public static final SimpleDateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss");
-    public static final SimpleDateFormat DATE_FORMAT_DATE = new SimpleDateFormat(
-            "yyyy-MM-dd");
 
     /**
      * 获取当天日期

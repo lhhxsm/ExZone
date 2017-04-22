@@ -54,7 +54,8 @@ public class ConfirmDialog extends AppCompatDialog {
     protected void onCreate(final @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Window window = getWindow();
-        if (window == null) return;
+        if (window == null)
+            return;
         window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         setContentView(R.layout.generic_dialog_alert);
         titleTextView = (TextView) findViewById(R.id.title_text_view);

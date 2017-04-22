@@ -17,19 +17,17 @@ import android.support.annotation.Nullable;
  * 时间:2017/3/26.
  */
 public class RadiusDrawable extends Drawable {
+    private final Paint paint;
+    private final boolean isStroke;
     private int topLeftRadius;
     private int topRightRadius;
     private int bottomLeftRadius;
     private int bottomRightRadius;
-
     private int left;
     private int top;
     private int right;
     private int bottom;
-
-    private final Paint paint;
     private int color;
-    private final boolean isStroke;
     private int strokeWidth = 0;
     private int strokeColor;
 

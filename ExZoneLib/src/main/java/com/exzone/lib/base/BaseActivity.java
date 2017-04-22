@@ -23,6 +23,8 @@ import rx.functions.Action1;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
+    private boolean couldDoubleBackExit;
+    private boolean doubleBackExitPressedOnce;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,15 +40,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         ActManager.getInstance().finishActivity(this);
     }
 
-
     @Override
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
     }
-
-    private boolean couldDoubleBackExit;
-    private boolean doubleBackExitPressedOnce;
 
     /**
      * 设置是否可以双击返回退出，需要有该功能的页面set true即可

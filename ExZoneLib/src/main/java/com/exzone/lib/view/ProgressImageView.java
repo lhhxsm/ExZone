@@ -5,7 +5,6 @@ import android.graphics.drawable.Animatable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 
 /**
  * 作者:李鸿浩

@@ -16,11 +16,11 @@ import java.io.IOException;
  * 时间:2017/4/3.
  */
 public class FileCache {
-    private File cacheDir;
     public final String cachePath = "/mnt/sdcard/DCIM/";
     public final String imgCacheDir = "CacheDir/";
     // 机型适配
     public final String cachePath2 = "/sdcard/DCIM/";
+    private File cacheDir;
 
     /**
      * 优先存放SD卡目录 其次系统默认缓存

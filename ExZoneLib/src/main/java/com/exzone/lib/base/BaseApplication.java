@@ -30,6 +30,10 @@ public class BaseApplication extends Application {
     private static Handler sMainHandler;
     private static int sMainTid;
 
+    public synchronized static BaseApplication getInstance() {
+        return sInstance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -73,7 +77,6 @@ public class BaseApplication extends Application {
         MultiDex.install(this);
     }
 
-
     @Override
     public File getCacheDir() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -83,9 +86,5 @@ public class BaseApplication extends Application {
             }
         }
         return super.getCacheDir();
-    }
-
-    public synchronized static BaseApplication getInstance() {
-        return sInstance;
     }
 }

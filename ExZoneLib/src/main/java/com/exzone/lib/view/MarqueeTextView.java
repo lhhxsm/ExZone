@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 /**
  * 作者:李鸿浩

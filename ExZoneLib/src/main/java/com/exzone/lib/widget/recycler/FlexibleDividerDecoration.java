@@ -22,11 +22,6 @@ public abstract class FlexibleDividerDecoration extends RecyclerView.ItemDecorat
     private static final int[] ATTRS = new int[]{
             android.R.attr.listDivider
     };
-
-    protected enum DividerType {
-        DRAWABLE, PAINT, COLOR
-    }
-
     protected DividerType mDividerType = DividerType.DRAWABLE;
     protected VisibilityProvider mVisibilityProvider;
     protected PaintProvider mPaintProvider;
@@ -36,7 +31,6 @@ public abstract class FlexibleDividerDecoration extends RecyclerView.ItemDecorat
     protected boolean mShowLastDivider;
     protected boolean mPositionInsideItem;
     private Paint mPaint;
-
     protected FlexibleDividerDecoration(Builder builder) {
         if (builder.mPaintProvider != null) {
             mDividerType = DividerType.PAINT;
@@ -240,6 +234,10 @@ public abstract class FlexibleDividerDecoration extends RecyclerView.ItemDecorat
 
     protected abstract void setItemOffsets(Rect outRect, int position, RecyclerView parent);
 
+    protected enum DividerType {
+        DRAWABLE, PAINT, COLOR
+    }
+
     /**
      * Interface for controlling divider visibility
      */
@@ -318,8 +316,8 @@ public abstract class FlexibleDividerDecoration extends RecyclerView.ItemDecorat
 
     public static class Builder<T extends Builder> {
 
-        private Context mContext;
         protected Resources mResources;
+        private Context mContext;
         private PaintProvider mPaintProvider;
         private ColorProvider mColorProvider;
         private DrawableProvider mDrawableProvider;

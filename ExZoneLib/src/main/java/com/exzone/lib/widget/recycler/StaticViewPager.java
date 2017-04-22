@@ -30,6 +30,6 @@ public class StaticViewPager extends ViewPager {
 
     @Override
     public void setCurrentItem(int item) {
-        this.setCurrentItem(item,false);
+        this.setCurrentItem(item, false);
     }
 }

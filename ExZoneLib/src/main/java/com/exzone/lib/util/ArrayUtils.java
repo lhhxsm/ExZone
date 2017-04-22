@@ -40,7 +40,8 @@ public class ArrayUtils {
      */
     public static boolean contains(String[] source, String element) {
         for (String string : source) {
-            if (element.endsWith(string)) return true;
+            if (element.endsWith(string))
+                return true;
         }
         return false;
     }
