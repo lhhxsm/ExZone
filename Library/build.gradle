@@ -1,64 +1,63 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+  compileSdkVersion 25
+  buildToolsVersion "25.0.2"
 
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+  defaultConfig {
+    minSdkVersion 15
+    targetSdkVersion 25
+    versionCode 1
+    versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+  lintOptions {
+    //设置编译的lint开关，程序在build的时候，会执行lint检查，有任何的错误或者警告提示，都会终止构建
+    warning 'InvalidPackage'
+    abortOnError true
+  }
 
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    lintOptions {
-        //设置编译的lint开关，程序在build的时候，会执行lint检查，有任何的错误或者警告提示，都会终止构建
-        warning 'InvalidPackage'
-        abortOnError true
-    }
-
-    packagingOptions {
-        exclude 'LICENSE.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/ASL2.0'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-    }
+  packagingOptions {
+    exclude 'LICENSE.txt'
+    exclude 'META-INF/LICENSE.txt'
+    exclude 'META-INF/NOTICE.txt'
+    exclude 'META-INF/ASL2.0'
+    exclude 'META-INF/LICENSE'
+    exclude 'META-INF/NOTICE'
+  }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    testCompile 'junit:junit:4.12'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.facebook.fresco:fresco:0.12.0'
-    //    //自定义网络加载
-    //    compile "com.facebook.fresco:imagepipeline-okhttp3:0.12.0+"
-    //    // 在 API < 14 上的机器支持 WebP 时，需要添加
-    //    compile 'com.facebook.fresco:animated-base-support:0.12.0'
-    //    // 支持 GIF 动图，需要添加
-    //    compile 'com.facebook.fresco:animated-gif:0.12.0'
-    //    // 支持 WebP （静态图+动图），需要添加
-    //    compile 'com.facebook.fresco:animated-webp:0.12.0'
-    //    compile 'com.facebook.fresco:webpsupport:0.12.0'
-    //    // 仅支持 WebP 静态图，需要添加
-    //    compile 'com.facebook.fresco:webpsupport:0.12.0'
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    exclude group: 'com.android.support', module: 'support-annotations'
+  })
+  compile 'com.android.support:appcompat-v7:25.2.0'
+  testCompile 'junit:junit:4.12'
+  compile 'com.github.bumptech.glide:glide:3.7.0'
+  compile 'com.squareup.picasso:picasso:2.5.2'
+  compile 'com.facebook.fresco:fresco:0.12.0'
+  //    //自定义网络加载
+  //    compile "com.facebook.fresco:imagepipeline-okhttp3:0.12.0+"
+  //    // 在 API < 14 上的机器支持 WebP 时，需要添加
+  //    compile 'com.facebook.fresco:animated-base-support:0.12.0'
+  //    // 支持 GIF 动图，需要添加
+  //    compile 'com.facebook.fresco:animated-gif:0.12.0'
+  //    // 支持 WebP （静态图+动图），需要添加
+  //    compile 'com.facebook.fresco:animated-webp:0.12.0'
+  //    compile 'com.facebook.fresco:webpsupport:0.12.0'
+  //    // 仅支持 WebP 静态图，需要添加
+  //    compile 'com.facebook.fresco:webpsupport:0.12.0'
 }
 
 tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
+  options.encoding = "UTF-8"
 }
 
