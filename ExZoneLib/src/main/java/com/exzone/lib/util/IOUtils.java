@@ -3,7 +3,6 @@ package com.exzone.lib.util;
 import android.database.Cursor;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -23,132 +22,129 @@ import java.nio.charset.Charset;
  */
 public class IOUtils {
 
-    public static void close(Closeable c) {
-        if (c == null)
-            return;
-        try {
-            c.close();
-        } catch (Throwable t) {
-            t.printStackTrace();
-            Logger.e("fail to close:" + t);
-        }
+  public static void close(Closeable c) {
+    if (c == null) return;
+    try {
+      c.close();
+    } catch (Throwable t) {
+      t.printStackTrace();
+      Logger.e("fail to close:" + t);
     }
+  }
 
-    public static void close(ParcelFileDescriptor descriptor) {
-        if (descriptor == null)
-            return;
-        try {
-            descriptor.close();
-        } catch (Throwable t) {
-            Logger.e("fail to close:" + t);
-        }
+  public static void close(ParcelFileDescriptor descriptor) {
+    if (descriptor == null) return;
+    try {
+      descriptor.close();
+    } catch (Throwable t) {
+      Logger.e("fail to close:" + t);
     }
+  }
 
-    public static void close(Cursor cursor) {
-        try {
-            if (cursor != null)
-                cursor.close();
-        } catch (Throwable t) {
-            Logger.e("fail to close:" + t);
-        }
+  public static void close(Cursor cursor) {
+    try {
+      if (cursor != null) cursor.close();
+    } catch (Throwable t) {
+      Logger.e("fail to close:" + t);
     }
+  }
 
-    /**
-     * 文本的写入操作
-     *
-     * @param filePath 文件路径。一定要加上文件名字 <br>
-     *                 例如：../a/a.txt
-     * @param content  写入内容
-     */
-    public static void write(String filePath, String content) {
-        BufferedWriter bw = null;
-        try {
-            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), Charset.forName("UTF-8")));
-            bw.write(content);
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        } finally {
-            //            if (bw != null) {
-            //                try {
-            //                    bw.close();
-            //                } catch (IOException e) {
-            //                    e.printStackTrace();
-            //                }
-            //            }
-            close(bw);
-        }
+  /**
+   * 文本的写入操作
+   *
+   * @param filePath 文件路径。一定要加上文件名字 <br>
+   * 例如：../a/a.txt
+   * @param content 写入内容
+   */
+  public static void write(String filePath, String content) {
+    BufferedWriter bw = null;
+    try {
+      bw = new BufferedWriter(
+          new OutputStreamWriter(new FileOutputStream(filePath), Charset.forName("UTF-8")));
+      bw.write(content);
+    } catch (Exception e1) {
+      e1.printStackTrace();
+    } finally {
+      //            if (bw != null) {
+      //                try {
+      //                    bw.close();
+      //                } catch (IOException e) {
+      //                    e.printStackTrace();
+      //                }
+      //            }
+      close(bw);
     }
+  }
 
-    /**
-     * 文本的读取操作
-     *
-     * @param path 文件路径,一定要加上文件名字<br>
-     *             例如：../a/a.txt
-     * @return
-     */
-    public static String read(String path) {
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(path), Charset.forName("UTF-8")));
-            StringBuffer sb = new StringBuffer();
-            String str = null;
-            while ((str = br.readLine()) != null) {
-                sb.append(str);
-            }
-            return sb.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            //            if (br != null) {
-            //                try {
-            //                    br.close();
-            //                } catch (IOException e) {
-            //                    e.printStackTrace();
-            //                }
-            //            }
-            close(br);
-        }
-        return null;
+  /**
+   * 文本的读取操作
+   *
+   * @param path 文件路径,一定要加上文件名字<br>
+   * 例如：../a/a.txt
+   */
+  public static String read(String path) {
+    BufferedReader br = null;
+    try {
+      br = new BufferedReader(
+          new InputStreamReader(new FileInputStream(path), Charset.forName("UTF-8")));
+      StringBuffer sb = new StringBuffer();
+      String str = null;
+      while ((str = br.readLine()) != null) {
+        sb.append(str);
+      }
+      return sb.toString();
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      //            if (br != null) {
+      //                try {
+      //                    br.close();
+      //                } catch (IOException e) {
+      //                    e.printStackTrace();
+      //                }
+      //            }
+      close(br);
     }
+    return null;
+  }
 
-    /**
-     * 文本的读取操作
-     *
-     * @param is 文件路径,一定要加上文件名字<br>
-     *           例如：../a/a.txt
-     * @return
-     */
-    public static String read(InputStream is) {
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-            StringBuffer sb = new StringBuffer();
-            String str = null;
-            while ((str = br.readLine()) != null) {
-                sb.append(str);
-            }
-            return sb.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            //            if (br != null) {
-            //                try {
-            //                    br.close();
-            //                } catch (IOException e) {
-            //                    e.printStackTrace();
-            //                }
-            //            }
-            close(br);
-        }
-        return null;
+  /**
+   * 文本的读取操作
+   *
+   * @param is 文件路径,一定要加上文件名字<br>
+   * 例如：../a/a.txt
+   */
+  public static String read(InputStream is) {
+    BufferedReader br = null;
+    try {
+      br = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+      StringBuffer sb = new StringBuffer();
+      String str = null;
+      while ((str = br.readLine()) != null) {
+        sb.append(str);
+      }
+      return sb.toString();
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      //            if (br != null) {
+      //                try {
+      //                    br.close();
+      //                } catch (IOException e) {
+      //                    e.printStackTrace();
+      //                }
+      //            }
+      close(br);
     }
+    return null;
+  }
 
-    public static byte[] readFully(final @NonNull InputStream inputStream) throws IOException {
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        final byte[] buffer = new byte[1024];
-        for (int count; (count = inputStream.read(buffer)) != -1; ) {
-            out.write(buffer, 0, count);
-        }
-        return out.toByteArray();
+  public static byte[] readFully(final @NonNull InputStream inputStream) throws IOException {
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    final byte[] buffer = new byte[1024];
+    for (int count; (count = inputStream.read(buffer)) != -1; ) {
+      out.write(buffer, 0, count);
     }
+    return out.toByteArray();
+  }
 }

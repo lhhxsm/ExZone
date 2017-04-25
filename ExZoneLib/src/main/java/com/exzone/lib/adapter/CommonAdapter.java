@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-
 import java.util.List;
 
 //避免焦点冲突的方法
@@ -19,53 +18,45 @@ import java.util.List;
 /**
  * 通用的列表适配器
  *
- * @param <T>
  * @author Administrator
  */
 public abstract class CommonAdapter<T> extends BaseAdapter {
 
-    protected Context mContext;
-    protected List<T> mDatas;
-    protected LayoutInflater mInflater;
-    protected int layoutId;
+  protected Context mContext;
+  protected List<T> mDatas;
+  protected LayoutInflater mInflater;
+  protected int layoutId;
 
-    public CommonAdapter(Context context, List<T> datas, int layoutId) {
-        mContext = context;
-        mDatas = datas;
-        this.layoutId = layoutId;
-        mInflater = LayoutInflater.from(context);
+  public CommonAdapter(Context context, List<T> datas, int layoutId) {
+    mContext = context;
+    mDatas = datas;
+    this.layoutId = layoutId;
+    mInflater = LayoutInflater.from(context);
+  }
+
+  @Override public int getCount() {
+    if (mDatas == null) {
+      return 0;
     }
+    return mDatas.size();
+  }
 
-    @Override
-    public int getCount() {
-        if (mDatas == null) {
-            return 0;
-        }
-        return mDatas.size();
-    }
+  @Override public T getItem(int position) {
+    return mDatas.get(position);
+  }
 
-    @Override
-    public T getItem(int position) {
-        return mDatas.get(position);
-    }
+  @Override public long getItemId(int position) {
+    return position;
+  }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+  @Override public View getView(int position, View convertView, ViewGroup parent) {
+    ViewHolder holder = ViewHolder.get(mContext, convertView, parent, layoutId, position);
+    convert(holder, getItem(position));
+    return holder.getConvertView();
+  }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = ViewHolder.get(mContext, convertView, parent, layoutId, position);
-        convert(holder, getItem(position));
-        return holder.getConvertView();
-    }
-
-    /**
-     * 控件赋值
-     *
-     * @param holder
-     * @param bean
-     */
-    public abstract void convert(ViewHolder holder, T bean);
+  /**
+   * 控件赋值
+   */
+  public abstract void convert(ViewHolder holder, T bean);
 }

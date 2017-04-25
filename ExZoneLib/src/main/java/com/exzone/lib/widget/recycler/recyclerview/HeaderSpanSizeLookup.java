@@ -8,31 +8,30 @@ import android.support.v7.widget.RecyclerView;
  */
 public class HeaderSpanSizeLookup extends GridLayoutManager.SpanSizeLookup {
 
-    private HeaderAndFooterRecyclerViewAdapter mAadapter;
+  private HeaderAndFooterRecyclerViewAdapter mAadapter;
 
-    private RecyclerView.Adapter adapter;
+  private RecyclerView.Adapter adapter;
 
-    private int mSpanSize = 1;
+  private int mSpanSize = 1;
 
-    public HeaderSpanSizeLookup(RecyclerView.Adapter adapter, int spanSize) {
+  public HeaderSpanSizeLookup(RecyclerView.Adapter adapter, int spanSize) {
 
-        this.adapter = adapter;
+    this.adapter = adapter;
 
-        this.mSpanSize = spanSize;
+    this.mSpanSize = spanSize;
+  }
+
+  @Override public int getSpanSize(int position) {
+
+    boolean isHeaderOrFooter = false;
+
+    if (adapter instanceof HeaderAndFooterRecyclerViewAdapter) {
+
+      mAadapter = (HeaderAndFooterRecyclerViewAdapter) adapter;
+
+      isHeaderOrFooter = mAadapter.isHeader(position) || mAadapter.isFooter(position);
     }
 
-    @Override
-    public int getSpanSize(int position) {
-
-        boolean isHeaderOrFooter = false;
-
-        if (adapter instanceof HeaderAndFooterRecyclerViewAdapter) {
-
-            mAadapter = (HeaderAndFooterRecyclerViewAdapter) adapter;
-
-            isHeaderOrFooter = mAadapter.isHeader(position) || mAadapter.isFooter(position);
-        }
-
-        return isHeaderOrFooter ? mSpanSize : 1;
-    }
+    return isHeaderOrFooter ? mSpanSize : 1;
+  }
 }

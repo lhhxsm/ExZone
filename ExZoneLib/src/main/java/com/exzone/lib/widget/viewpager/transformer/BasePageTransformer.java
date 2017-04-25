@@ -11,17 +11,16 @@ import android.view.View;
  * 时间: 2016/10/10.
  */
 public abstract class BasePageTransformer implements ViewPager.PageTransformer {
-    public static final float DEFAULT_CENTER = 0.5f;
-    protected ViewPager.PageTransformer mPageTransformer = NonPageTransformer.INSTANCE;
+  public static final float DEFAULT_CENTER = 0.5f;
+  protected ViewPager.PageTransformer mPageTransformer = NonPageTransformer.INSTANCE;
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    @Override
-    public void transformPage(View page, float position) {
-        if (mPageTransformer != null) {
-            mPageTransformer.transformPage(page, position);
-        }
-        pageTransformer(page, position);
+  @TargetApi(Build.VERSION_CODES.HONEYCOMB) @Override
+  public void transformPage(View page, float position) {
+    if (mPageTransformer != null) {
+      mPageTransformer.transformPage(page, position);
     }
+    pageTransformer(page, position);
+  }
 
-    protected abstract void pageTransformer(View page, float position);
+  protected abstract void pageTransformer(View page, float position);
 }

@@ -3,7 +3,6 @@ package com.exzone.demo.camera;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-
 import java.io.File;
 
 /**
@@ -12,83 +11,74 @@ import java.io.File;
  */
 public class CameraProxy {
 
-    /**
-     * 相机核心类
-     */
-    private CameraCore cameraCore;
+  /**
+   * 相机核心类
+   */
+  private CameraCore cameraCore;
 
-    public CameraProxy(CameraCore.CameraResult cameraResult, Activity activity) {
-        cameraCore = new CameraCore(cameraResult, activity);
-    }
+  public CameraProxy(CameraCore.CameraResult cameraResult, Activity activity) {
+    cameraCore = new CameraCore(cameraResult, activity);
+  }
 
-    /**
-     * 拍照
-     *
-     * @param path
-     * @Description:函数描述
-     * @author Administrator
-     * @date 2016年3月14日 下午1:55:45
-     * @version V1.0.0
-     */
-    public void getPhoto2Camera(String path) {
-        Uri uri = Uri.fromFile(new File(path));
-        cameraCore.getPhoto2Camera(uri);
-    }
+  /**
+   * 拍照
+   *
+   * @Description:函数描述
+   * @author Administrator
+   * @date 2016年3月14日 下午1:55:45
+   * @version V1.0.0
+   */
+  public void getPhoto2Camera(String path) {
+    Uri uri = Uri.fromFile(new File(path));
+    cameraCore.getPhoto2Camera(uri);
+  }
 
-    /**
-     * 拍照截图
-     *
-     * @param path
-     * @Description:函数描述
-     * @author Administrator
-     * @date 2016年3月14日 下午1:55:42
-     * @version V1.0.0
-     */
-    public void getPhoto2CameraCrop(String path) {
-        Uri uri = Uri.fromFile(new File(path));
-        cameraCore.getPhoto2CameraCrop(uri);
-    }
+  /**
+   * 拍照截图
+   *
+   * @Description:函数描述
+   * @author Administrator
+   * @date 2016年3月14日 下午1:55:42
+   * @version V1.0.0
+   */
+  public void getPhoto2CameraCrop(String path) {
+    Uri uri = Uri.fromFile(new File(path));
+    cameraCore.getPhoto2CameraCrop(uri);
+  }
 
-    /**
-     * 选择照片
-     *
-     * @param path
-     * @Description:函数描述
-     * @author Administrator
-     * @date 2016年3月14日 下午1:55:19
-     * @version V1.0.0
-     */
-    public void getPhoto2Album() {
-        cameraCore.getPhoto2Album();
-    }
+  /**
+   * 选择照片
+   *
+   * @Description:函数描述
+   * @author Administrator
+   * @date 2016年3月14日 下午1:55:19
+   * @version V1.0.0
+   */
+  public void getPhoto2Album() {
+    cameraCore.getPhoto2Album();
+  }
 
-    /**
-     * 选择照片，截图
-     *
-     * @param path
-     * @Description:函数描述
-     * @author Administrator
-     * @date 2016年3月14日 下午1:55:26
-     * @version V1.0.0
-     */
-    public void getPhoto2AlbumCrop() {
-        cameraCore.getPhoto2AlbumCrop();
-    }
+  /**
+   * 选择照片，截图
+   *
+   * @Description:函数描述
+   * @author Administrator
+   * @date 2016年3月14日 下午1:55:26
+   * @version V1.0.0
+   */
+  public void getPhoto2AlbumCrop() {
+    cameraCore.getPhoto2AlbumCrop();
+  }
 
-    /**
-     * 接受ActivityResult
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     * @Description:函数描述
-     * @author Administrator
-     * @date 2016年3月14日 下午1:55:29
-     * @version V1.0.0
-     */
-    public void onResult(int requestCode, int resultCode, Intent data) {
-        cameraCore.onResult(requestCode, resultCode, data);
-    }
-
-
+  /**
+   * 接受ActivityResult
+   *
+   * @Description:函数描述
+   * @author Administrator
+   * @date 2016年3月14日 下午1:55:29
+   * @version V1.0.0
+   */
+  public void onResult(int requestCode, int resultCode, Intent data) {
+    cameraCore.onResult(requestCode, resultCode, data);
+  }
 }

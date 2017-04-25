@@ -14,18 +14,23 @@ import android.widget.Toast;
  */
 public class StickyActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sticky);
-        Button mButton = (Button) findViewById(R.id.button);
-        mButton.setOnClickListener(new View.OnClickListener() {
+  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_sticky);
+    Button mButton = (Button) findViewById(R.id.button);
+    mButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(StickyActivity.this, "clicked !", Toast.LENGTH_SHORT).show();
+      @Override public void onClick(View v) {
+        Toast.makeText(StickyActivity.this, "clicked !", Toast.LENGTH_SHORT).show();
+      }
+    });
+  }
 
-            }
-        });
-    }
+  @Override protected void onStart() {
+    super.onStart();
+  }
+
+  @Override protected void onDestroy() {
+    super.onDestroy();
+  }
 }

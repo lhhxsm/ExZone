@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import com.exzone.lib.view.panel.SlideBottomPanel;
-
 import java.util.ArrayList;
 
 /**
@@ -16,33 +14,30 @@ import java.util.ArrayList;
  */
 public class SlideBottomPanelActivity extends AppCompatActivity {
 
-    private ArrayList<String> list = new ArrayList<>();
-    private SlideBottomPanel sbv;
+  private ArrayList<String> list = new ArrayList<>();
+  private SlideBottomPanel sbv;
 
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_slide_bottom_panel);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_slide_bottom_panel);
+    sbv = (SlideBottomPanel) findViewById(R.id.sbv);
+    ListView listView = (ListView) findViewById(R.id.list_view);
+    listView.setAdapter(new ArrayAdapter<>(getApplicationContext(), R.layout.list_item, getData()));
+  }
 
-        sbv = (SlideBottomPanel) findViewById(R.id.sbv);
-        ListView listView = (ListView) findViewById(R.id.list_view);
-        listView.setAdapter(new ArrayAdapter<>(getApplicationContext(), R.layout.list_item, getData()));
+  private ArrayList<String> getData() {
+    for (int i = 0; i < 20; i++) {
+      list.add("Item " + i);
     }
+    return list;
+  }
 
-    private ArrayList<String> getData() {
-        for (int i = 0; i < 20; i++) {
-            list.add("Item " + i);
-        }
-        return list;
+  @Override public void onBackPressed() {
+    if (sbv.isPanelShowing()) {
+      sbv.hide();
+      return;
     }
-
-    @Override
-    public void onBackPressed() {
-        if (sbv.isPanelShowing()) {
-            sbv.hide();
-            return;
-        }
-        super.onBackPressed();
-    }
+    super.onBackPressed();
+  }
 }

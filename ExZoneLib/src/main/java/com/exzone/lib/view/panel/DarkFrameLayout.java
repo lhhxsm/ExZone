@@ -18,57 +18,56 @@ import android.widget.FrameLayout;
  */
 public class DarkFrameLayout extends FrameLayout {
 
-    public static final int MAX_ALPHA = 0X9f;
+  public static final int MAX_ALPHA = 0X9f;
 
-    private int alpha = 0x00;
-    private Paint mFadePaint;
+  private int alpha = 0x00;
+  private Paint mFadePaint;
 
-    private SlideBottomPanel slideBottomPanel;
+  private SlideBottomPanel slideBottomPanel;
 
-    public DarkFrameLayout(@NonNull Context context) {
-        this(context, null);
-    }
+  public DarkFrameLayout(@NonNull Context context) {
+    this(context, null);
+  }
 
-    public DarkFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
+  public DarkFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+    this(context, attrs, 0);
+  }
 
-    public DarkFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        mFadePaint = new Paint();
-    }
+  public DarkFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs,
+      @AttrRes int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+    mFadePaint = new Paint();
+  }
 
-    @Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
-        drawFade(canvas);
-    }
+  @Override protected void dispatchDraw(Canvas canvas) {
+    super.dispatchDraw(canvas);
+    drawFade(canvas);
+  }
 
-    private void drawFade(Canvas canvas) {
-        mFadePaint.setColor(Color.argb(alpha, 0, 0, 0));
-        canvas.drawRect(0, 0, getMeasuredWidth(), getHeight(), mFadePaint);
-    }
+  private void drawFade(Canvas canvas) {
+    mFadePaint.setColor(Color.argb(alpha, 0, 0, 0));
+    canvas.drawRect(0, 0, getMeasuredWidth(), getHeight(), mFadePaint);
+  }
 
-    public void fade(boolean fade) {
-        alpha = fade ? 0x8f : 0x00;
-        invalidate();
-    }
+  public void fade(boolean fade) {
+    alpha = fade ? 0x8f : 0x00;
+    invalidate();
+  }
 
-    public void fade(int alpha) {
-        this.alpha = alpha;
-        invalidate();
-    }
+  public void fade(int alpha) {
+    this.alpha = alpha;
+    invalidate();
+  }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return slideBottomPanel.isPanelShowing();
-    }
+  @Override public boolean onInterceptTouchEvent(MotionEvent ev) {
+    return slideBottomPanel.isPanelShowing();
+  }
 
-    public int getCurrentAlpha() {
-        return alpha;
-    }
+  public int getCurrentAlpha() {
+    return alpha;
+  }
 
-    public void setSlideBottomPanel(SlideBottomPanel slideBottomPanel) {
-        this.slideBottomPanel = slideBottomPanel;
-    }
+  public void setSlideBottomPanel(SlideBottomPanel slideBottomPanel) {
+    this.slideBottomPanel = slideBottomPanel;
+  }
 }

@@ -27,60 +27,57 @@ import android.view.MotionEvent;
  */
 public class HackyViewPager extends ViewPager {
 
-    private boolean isLocked;
+  private boolean isLocked;
 
-    private ImagePageCallback mCallback;
+  private ImagePageCallback mCallback;
 
-    public HackyViewPager(Context context) {
-        super(context);
-        isLocked = false;
-    }
+  public HackyViewPager(Context context) {
+    super(context);
+    isLocked = false;
+  }
 
-    public HackyViewPager(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        isLocked = false;
-    }
+  public HackyViewPager(Context context, AttributeSet attrs) {
+    super(context, attrs);
+    isLocked = false;
+  }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (!isLocked) {
-            try {
-                return super.onInterceptTouchEvent(ev);
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
+  @Override public boolean onInterceptTouchEvent(MotionEvent ev) {
+    if (!isLocked) {
+      try {
+        return super.onInterceptTouchEvent(ev);
+      } catch (IllegalArgumentException e) {
+        e.printStackTrace();
         return false;
+      }
     }
+    return false;
+  }
 
-    public void setImagePageCallback(ImagePageCallback callback) {
-        this.mCallback = callback;
+  public void setImagePageCallback(ImagePageCallback callback) {
+    this.mCallback = callback;
+  }
+
+  @Override public boolean onTouchEvent(MotionEvent event) {
+    if (!isLocked) {
+      return super.onTouchEvent(event);
     }
+    return false;
+  }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (!isLocked) {
-            return super.onTouchEvent(event);
-        }
-        return false;
-    }
+  public void toggleLock() {
+    isLocked = !isLocked;
+  }
 
-    public void toggleLock() {
-        isLocked = !isLocked;
-    }
+  public boolean isLocked() {
+    return isLocked;
+  }
 
-    public boolean isLocked() {
-        return isLocked;
-    }
+  public void setLocked(boolean isLocked) {
+    this.isLocked = isLocked;
+  }
 
-    public void setLocked(boolean isLocked) {
-        this.isLocked = isLocked;
-    }
-
-    public interface ImagePageCallback {
-        //页数回调
-        void onImagePage(int page);
-    }
-
+  public interface ImagePageCallback {
+    //页数回调
+    void onImagePage(int page);
+  }
 }

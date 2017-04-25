@@ -10,11 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.exzone.demo.R;
 import com.exzone.lib.view.FoldableLayout;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,135 +21,128 @@ import java.util.Map;
  */
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder> {
 
-    private String[] mDataSet;
-    private Map<Integer, Boolean> mFoldStates = new HashMap<>();
-    private Context mContext;
+  private String[] mDataSet;
+  private Map<Integer, Boolean> mFoldStates = new HashMap<>();
+  private Context mContext;
 
-    /**
-     * @param context 上下文
-     * @param dataSet 数据
-     */
-    public PhotoAdapter(String[] dataSet, Context context) {
-        mDataSet = dataSet;
-        mContext = context;
+  /**
+   * @param context 上下文
+   * @param dataSet 数据
+   */
+  public PhotoAdapter(String[] dataSet, Context context) {
+    mDataSet = dataSet;
+    mContext = context;
+  }
+
+  @Override public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    return new PhotoViewHolder(new FoldableLayout(parent.getContext()));
+  }
+
+  @Override public void onBindViewHolder(final PhotoViewHolder holder, int position) {
+    final String path = "content://com.exzone.demo.foldable/demo-pictures/" + mDataSet[position];
+
+    Glide.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewCover);
+    Glide.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewDetail);
+    holder.mTextViewCover.setText(mDataSet[position].replace(".jpg", ""));
+
+    // Bind state
+    if (mFoldStates.containsKey(position)) {
+      if (mFoldStates.get(position)) {
+        if (!holder.mFoldableLayout.isFolded()) {
+          holder.mFoldableLayout.foldWithoutAnimation();
+        }
+      } else if (!mFoldStates.get(position)) {
+        if (holder.mFoldableLayout.isFolded()) {
+          holder.mFoldableLayout.unfoldWithoutAnimation();
+        }
+      }
+    } else {
+      holder.mFoldableLayout.foldWithoutAnimation();
     }
 
-    @Override
-    public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PhotoViewHolder(new FoldableLayout(parent.getContext()));
-    }
+    holder.mButtonShare.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/jpg");
+        Uri uri = Uri.parse(path);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        mContext.startActivity(Intent.createChooser(shareIntent, "Share image using"));
+      }
+    });
 
-    @Override
-    public void onBindViewHolder(final PhotoViewHolder holder, int position) {
-        final String path = "content://com.exzone.demo.foldable/demo-pictures/" + mDataSet[position];
-
-        Glide.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewCover);
-        Glide.with(holder.mFoldableLayout.getContext()).load(path).into(holder.mImageViewDetail);
-        holder.mTextViewCover.setText(mDataSet[position].replace(".jpg", ""));
-
-        // Bind state
-        if (mFoldStates.containsKey(position)) {
-            if (mFoldStates.get(position)) {
-                if (!holder.mFoldableLayout.isFolded()) {
-                    holder.mFoldableLayout.foldWithoutAnimation();
-                }
-            } else if (!mFoldStates.get(position)) {
-                if (holder.mFoldableLayout.isFolded()) {
-                    holder.mFoldableLayout.unfoldWithoutAnimation();
-                }
-            }
+    holder.mFoldableLayout.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        if (holder.mFoldableLayout.isFolded()) {
+          holder.mFoldableLayout.unfoldWithAnimation();
         } else {
-            holder.mFoldableLayout.foldWithoutAnimation();
+          holder.mFoldableLayout.foldWithAnimation();
         }
+      }
+    });
+    holder.mFoldableLayout.setFoldListener(new FoldableLayout.FoldListener() {
+      @Override public void onUnFoldStart() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          holder.mFoldableLayout.setElevation(5);
+        }
+      }
 
-        holder.mButtonShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("image/jpg");
-                Uri uri = Uri.parse(path);
-                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                mContext.startActivity(Intent.createChooser(shareIntent, "Share image using"));
-            }
-        });
+      @Override public void onUnFoldEnd() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          holder.mFoldableLayout.setElevation(0);
+        }
+        mFoldStates.put(holder.getAdapterPosition(), false);
+      }
 
-        holder.mFoldableLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.mFoldableLayout.isFolded()) {
-                    holder.mFoldableLayout.unfoldWithAnimation();
-                } else {
-                    holder.mFoldableLayout.foldWithAnimation();
-                }
-            }
-        });
-        holder.mFoldableLayout.setFoldListener(new FoldableLayout.FoldListener() {
-            @Override
-            public void onUnFoldStart() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    holder.mFoldableLayout.setElevation(5);
-                }
-            }
+      @Override public void onFoldStart() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          holder.mFoldableLayout.setElevation(5);
+        }
+      }
 
-            @Override
-            public void onUnFoldEnd() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    holder.mFoldableLayout.setElevation(0);
-                }
-                mFoldStates.put(holder.getAdapterPosition(), false);
-            }
+      @Override public void onFoldEnd() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          holder.mFoldableLayout.setElevation(0);
+        }
+        mFoldStates.put(holder.getAdapterPosition(), true);
+      }
+    });
+  }
 
-            @Override
-            public void onFoldStart() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    holder.mFoldableLayout.setElevation(5);
-                }
-            }
+  @Override public int getItemCount() {
+    return mDataSet.length;
+  }
 
-            @Override
-            public void onFoldEnd() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    holder.mFoldableLayout.setElevation(0);
-                }
-                mFoldStates.put(holder.getAdapterPosition(), true);
-            }
-        });
-    }
+  /**
+   *
+   */
+  protected static class PhotoViewHolder extends RecyclerView.ViewHolder {
 
-    @Override
-    public int getItemCount() {
-        return mDataSet.length;
-    }
+    protected FoldableLayout mFoldableLayout;
+
+    protected ImageView mImageViewCover;
+
+    protected ImageView mImageViewDetail;
+
+    protected TextView mTextViewCover;
+
+    protected Button mButtonShare;
 
     /**
-     *
+     * @param foldableLayout 自定义控件
      */
-    protected static class PhotoViewHolder extends RecyclerView.ViewHolder {
+    public PhotoViewHolder(FoldableLayout foldableLayout) {
+      super(foldableLayout);
+      mFoldableLayout = foldableLayout;
+      foldableLayout.setupViews(R.layout.list_item_cover, R.layout.list_item_detail,
+          R.dimen.card_cover_height, itemView.getContext());
 
-        protected FoldableLayout mFoldableLayout;
+      mImageViewDetail =
+          (ImageView) mFoldableLayout.getDetailView().findViewById(R.id.imageview_detail);
 
-        protected ImageView mImageViewCover;
-
-        protected ImageView mImageViewDetail;
-
-        protected TextView mTextViewCover;
-
-        protected Button mButtonShare;
-
-        /**
-         * @param foldableLayout 自定义控件
-         */
-        public PhotoViewHolder(FoldableLayout foldableLayout) {
-            super(foldableLayout);
-            mFoldableLayout = foldableLayout;
-            foldableLayout.setupViews(R.layout.list_item_cover, R.layout.list_item_detail, R.dimen.card_cover_height,
-                    itemView.getContext());
-
-            mImageViewDetail = (ImageView) mFoldableLayout.getDetailView().findViewById(R.id.imageview_detail);
-
-            mImageViewCover = (ImageView) mFoldableLayout.getCoverView().findViewById(R.id.imageview_cover);
-            mTextViewCover = (TextView) mFoldableLayout.getCoverView().findViewById(R.id.textview_cover);
-            mButtonShare = (Button) mFoldableLayout.getCoverView().findViewById(R.id.share_button);
-        }
+      mImageViewCover =
+          (ImageView) mFoldableLayout.getCoverView().findViewById(R.id.imageview_cover);
+      mTextViewCover = (TextView) mFoldableLayout.getCoverView().findViewById(R.id.textview_cover);
+      mButtonShare = (Button) mFoldableLayout.getCoverView().findViewById(R.id.share_button);
     }
+  }
 }

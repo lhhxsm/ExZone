@@ -7,7 +7,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -17,38 +16,32 @@ import java.io.InputStream;
  * 时间：2016/10/7.
  */
 public class LargeImageViewSimpleBak extends AppCompatActivity {
-    private ImageView mImageView;
+  private ImageView mImageView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_foldable);
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_foldable);
 
-        mImageView = (ImageView) findViewById(R.id.id_imageview);
-        try {
-            InputStream inputStream = getAssets().open("tangyan.jpg");
+    mImageView = (ImageView) findViewById(R.id.id_imageview);
+    try {
+      InputStream inputStream = getAssets().open("tangyan.jpg");
 
-            //获得图片的宽、高
-            BitmapFactory.Options tmpOptions = new BitmapFactory.Options();
-            tmpOptions.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(inputStream, null, tmpOptions);
-            int width = tmpOptions.outWidth;
-            int height = tmpOptions.outHeight;
+      //获得图片的宽、高
+      BitmapFactory.Options tmpOptions = new BitmapFactory.Options();
+      tmpOptions.inJustDecodeBounds = true;
+      BitmapFactory.decodeStream(inputStream, null, tmpOptions);
+      int width = tmpOptions.outWidth;
+      int height = tmpOptions.outHeight;
 
-            //设置显示图片的中心区域
-            BitmapRegionDecoder bitmapRegionDecoder = BitmapRegionDecoder.newInstance(inputStream, false);
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.RGB_565;
-            Bitmap bitmap = bitmapRegionDecoder.decodeRegion(new Rect(width / 2 - 100,
-                    height / 2 - 100, width / 2 + 100, height / 2 + 100), options);
-            mImageView.setImageBitmap(bitmap);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+      //设置显示图片的中心区域
+      BitmapRegionDecoder bitmapRegionDecoder = BitmapRegionDecoder.newInstance(inputStream, false);
+      BitmapFactory.Options options = new BitmapFactory.Options();
+      options.inPreferredConfig = Bitmap.Config.RGB_565;
+      Bitmap bitmap = bitmapRegionDecoder.decodeRegion(
+          new Rect(width / 2 - 100, height / 2 - 100, width / 2 + 100, height / 2 + 100), options);
+      mImageView.setImageBitmap(bitmap);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-
+  }
 }

@@ -1,16 +1,16 @@
 <resources>
-    <string name="app_name">ExZoneLib</string>
-    <string name="sure">确定</string>
-    <string name="cancel">取消</string>
-    <string name="press_the_key_again_to_close_the_program">再按一次返回键关闭程序</string>
-    <string name="update_info">
+  <string name="app_name">ExZoneLib</string>
+  <string name="sure">确定</string>
+  <string name="cancel">取消</string>
+  <string name="press_the_key_again_to_close_the_program">再按一次返回键关闭程序</string>
+  <string name="update_info">
         最新版本：%1$s
         \n\n更新内容：\n%2$s
     </string>
-    <!--footer-->
-    <string name="list_footer_loading">加载中&#8230;</string>
-    <string name="list_footer_network_error">点击重新加载</string>
-    <string name="list_footer_end">加载完毕</string>
-    <string name="please_check_the_network_connection">请检查网络连接</string>
-    <string name="more_than_99">99+</string>
+  <!--footer-->
+  <string name="list_footer_loading">加载中&#8230;</string>
+  <string name="list_footer_network_error">点击重新加载</string>
+  <string name="list_footer_end">加载完毕</string>
+  <string name="please_check_the_network_connection">请检查网络连接</string>
+  <string name="more_than_99">99+</string>
 </resources>

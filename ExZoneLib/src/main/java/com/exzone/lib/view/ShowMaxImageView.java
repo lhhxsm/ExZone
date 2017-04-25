@@ -6,7 +6,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.exzone.lib.util.ScreenUtils;
 
@@ -18,88 +17,82 @@ import com.exzone.lib.util.ScreenUtils;
  */
 
 public class ShowMaxImageView extends AppCompatImageView {
-    private float mHeight = 0;
+  private float mHeight = 0;
 
-    public ShowMaxImageView(Context context) {
-        this(context, null);
+  public ShowMaxImageView(Context context) {
+    this(context, null);
+  }
+
+  public ShowMaxImageView(Context context, AttributeSet attrs) {
+    this(context, attrs, 0);
+  }
+
+  public ShowMaxImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+  }
+
+  @Override public void setImageBitmap(Bitmap bm) {
+
+    if (bm != null) {
+      getHeight(bm);
     }
 
-    public ShowMaxImageView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+    super.setImageBitmap(bm);
+    requestLayout();
+    invalidate();
+  }
+
+  @Override public void setImageDrawable(Drawable drawable) {
+    if (drawable != null) {
+      getHeight(drawableToBitmap(drawable));
     }
+    super.setImageDrawable(drawable);
+    requestLayout();
+    invalidate();
+  }
 
-    public ShowMaxImageView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+  @Override protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    if (mHeight != 0) {
+      int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
+      int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
+
+      int resultHeight = (int) Math.max(mHeight, sizeHeight);
+
+      if (resultHeight >= ScreenUtils.getScreenHeight(getContext())) {
+        resultHeight = ScreenUtils.getScreenHeight(getContext()) / 3;
+      }
+
+      setMeasuredDimension(sizeWidth, resultHeight);
+    } else {
+      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
+  }
 
-    @Override
-    public void setImageBitmap(Bitmap bm) {
+  private void getHeight(Bitmap bm) {
+    float bitmapWidth = bm.getWidth();
+    float bitmapHeight = bm.getHeight();
 
-        if (bm != null) {
-            getHeight(bm);
-        }
-
-        super.setImageBitmap(bm);
-        requestLayout();
-        invalidate();
+    if (bitmapWidth > 0 && bitmapHeight > 0) {
+      float scaleWidth = getWidth() / bitmapWidth;
+      if (scaleWidth != 0) {
+        mHeight = bitmapHeight * scaleWidth;
+      }
     }
+  }
 
-    @Override
-    public void setImageDrawable(Drawable drawable) {
-        if (drawable != null) {
-            getHeight(drawableToBitmap(drawable));
-        }
-        super.setImageDrawable(drawable);
-        requestLayout();
-        invalidate();
+  private Bitmap drawableToBitmap(Drawable drawable) {
+    if (drawable != null) {
+      if (drawable instanceof GlideBitmapDrawable) {
+        GlideBitmapDrawable bd = (GlideBitmapDrawable) drawable;
+        return bd.getBitmap();
+      } else if (drawable instanceof BitmapDrawable) {
+        BitmapDrawable bd = (BitmapDrawable) drawable;
+        return bd.getBitmap();
+      } else {
+        return null;
+      }
+    } else {
+      return null;
     }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (mHeight != 0) {
-            int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
-            int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
-
-            int resultHeight = (int) Math.max(mHeight, sizeHeight);
-
-            if (resultHeight >= ScreenUtils.getScreenHeight(getContext())) {
-                resultHeight = ScreenUtils.getScreenHeight(getContext()) / 3;
-            }
-
-            setMeasuredDimension(sizeWidth, resultHeight);
-        } else {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        }
-    }
-
-    private void getHeight(Bitmap bm) {
-        float bitmapWidth = bm.getWidth();
-        float bitmapHeight = bm.getHeight();
-
-        if (bitmapWidth > 0 && bitmapHeight > 0) {
-            float scaleWidth = getWidth() / bitmapWidth;
-            if (scaleWidth != 0) {
-                mHeight = bitmapHeight * scaleWidth;
-            }
-        }
-    }
-
-
-    private Bitmap drawableToBitmap(Drawable drawable) {
-        if (drawable != null) {
-            if (drawable instanceof GlideBitmapDrawable) {
-                GlideBitmapDrawable bd = (GlideBitmapDrawable) drawable;
-                return bd.getBitmap();
-
-            } else if (drawable instanceof BitmapDrawable) {
-                BitmapDrawable bd = (BitmapDrawable) drawable;
-                return bd.getBitmap();
-
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
-    }
+  }
 }

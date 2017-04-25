@@ -11,18 +11,17 @@ import android.util.AttributeSet;
  * 时间：2016/10/8.
  */
 public class MarqueeTextView extends AppCompatTextView {
-    public MarqueeTextView(Context context) {
-        super(context);
-        setEllipsize(TextUtils.TruncateAt.MARQUEE);
-    }
+  public MarqueeTextView(Context context) {
+    super(context);
+    setEllipsize(TextUtils.TruncateAt.MARQUEE);
+  }
 
-    public MarqueeTextView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        setEllipsize(TextUtils.TruncateAt.MARQUEE);
-    }
+  public MarqueeTextView(Context context, AttributeSet attrs) {
+    super(context, attrs);
+    setEllipsize(TextUtils.TruncateAt.MARQUEE);
+  }
 
-    @Override
-    public boolean isFocused() {
-        return true;
-    }
+  @Override public boolean isFocused() {
+    return true;
+  }
 }

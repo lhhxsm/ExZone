@@ -1,7 +1,6 @@
 package com.exzone.lib.rxjava;
 
 import com.exzone.lib.entity.UpdateEntity;
-
 import retrofit2.http.GET;
 import rx.Observable;
 
@@ -11,9 +10,8 @@ import rx.Observable;
  * 时间:2016/7/6.
  */
 public interface APIService {
-    String ENDPOINT = "https://......";
+  String ENDPOINT = "https://......";
 
-    // 查询app更新信息
-    @GET("......")
-    Observable<UpdateEntity> geUpdateInfo();
+  // 查询app更新信息
+  @GET("......") Observable<UpdateEntity> geUpdateInfo();
 }

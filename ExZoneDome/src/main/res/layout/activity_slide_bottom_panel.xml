@@ -1,65 +1,73 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
 
-    <com.exzone.lib.view.panel.SlideBottomPanel
-        android:id="@+id/sbv"
+  <com.exzone.lib.view.panel.SlideBottomPanel
+      android:id="@+id/sbv"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:sbp_panel_height="380dp"
+      app:sbp_title_height_no_display="55dp"
+      >
+
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:sbp_panel_height="380dp"
-        app:sbp_title_height_no_display="55dp">
+        android:layout_height="380dp"
+        android:background="#ffffff"
+        android:orientation="vertical"
+        >
 
+      <ListView
+          android:id="@+id/list_view"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="380dp"
-            android:background="#ffffff"
-            android:orientation="vertical">
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="55dp"
+          android:background="#ffffff"
+          android:gravity="center_vertical"
+          android:orientation="horizontal"
+          android:paddingLeft="@dimen/activity_horizontal_margin"
+          android:paddingRight="@dimen/activity_horizontal_margin"
+          >
 
-            <ListView
-                android:id="@+id/list_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+        <ImageView
+            android:id="@+id/iv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@android:drawable/ic_menu_edit"
+            />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="#ffffff"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="26dp"
+            android:layout_toRightOf="@+id/iv_1"
+            android:contentDescription="@string/app_name"
+            android:src="@android:drawable/ic_menu_share"
+            />
 
-                <ImageView
-                    android:id="@+id/iv_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/app_name"
-                    android:src="@android:drawable/ic_menu_edit"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/app_name"
+            android:src="@android:drawable/ic_menu_compass"
+            />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="26dp"
-                    android:layout_toRightOf="@+id/iv_1"
-                    android:contentDescription="@string/app_name"
-                    android:src="@android:drawable/ic_menu_share"/>
+      </RelativeLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="center_vertical"
-                    android:contentDescription="@string/app_name"
-                    android:src="@android:drawable/ic_menu_compass"/>
+    </FrameLayout>
 
-            </RelativeLayout>
-
-        </FrameLayout>
-
-    </com.exzone.lib.view.panel.SlideBottomPanel>
+  </com.exzone.lib.view.panel.SlideBottomPanel>
 
 </LinearLayout>

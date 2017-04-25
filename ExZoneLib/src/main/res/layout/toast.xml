@@ -8,15 +8,17 @@
     android:paddingBottom="@dimen/grid_3_half"
     android:paddingLeft="@dimen/grid_2"
     android:paddingRight="@dimen/grid_2"
-    android:paddingTop="@dimen/grid_3_half">
+    android:paddingTop="@dimen/grid_3_half"
+    >
 
-    <TextView
-        android:id="@+id/toast_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="1"
-        android:lineSpacingExtra="@dimen/body_line_spacing_extra"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/body"/>
+  <TextView
+      android:id="@+id/toast_text_view"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_gravity="center_horizontal"
+      android:layout_weight="1"
+      android:lineSpacingExtra="@dimen/body_line_spacing_extra"
+      android:textColor="@android:color/white"
+      android:textSize="@dimen/body"
+      />
 </LinearLayout>

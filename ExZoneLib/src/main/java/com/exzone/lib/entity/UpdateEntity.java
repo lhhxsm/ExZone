@@ -1,6 +1,5 @@
 package com.exzone.lib.entity;
 
-
 /**
  * 作者:李鸿浩
  * 描述:版本信息实体类
@@ -8,40 +7,40 @@ package com.exzone.lib.entity;
  */
 
 public class UpdateEntity {
-    private int versionCode;
-    private String versionName;
-    private String fileUrl;
-    private String updateInfo;
+  private int versionCode;
+  private String versionName;
+  private String fileUrl;
+  private String updateInfo;
 
-    public int getVersionCode() {
-        return versionCode;
-    }
+  public int getVersionCode() {
+    return versionCode;
+  }
 
-    public void setVersionCode(int versionCode) {
-        this.versionCode = versionCode;
-    }
+  public void setVersionCode(int versionCode) {
+    this.versionCode = versionCode;
+  }
 
-    public String getVersionName() {
-        return versionName;
-    }
+  public String getVersionName() {
+    return versionName;
+  }
 
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
-    }
+  public void setVersionName(String versionName) {
+    this.versionName = versionName;
+  }
 
-    public String getFileUrl() {
-        return fileUrl;
-    }
+  public String getFileUrl() {
+    return fileUrl;
+  }
 
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
-    }
+  public void setFileUrl(String fileUrl) {
+    this.fileUrl = fileUrl;
+  }
 
-    public String getUpdateInfo() {
-        return updateInfo;
-    }
+  public String getUpdateInfo() {
+    return updateInfo;
+  }
 
-    public void setUpdateInfo(String updateInfo) {
-        this.updateInfo = updateInfo;
-    }
+  public void setUpdateInfo(String updateInfo) {
+    this.updateInfo = updateInfo;
+  }
 }

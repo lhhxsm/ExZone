@@ -1,91 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="NavigationTabStrip">
-        <attr name="nts_color" format="color"/>
-        <attr name="nts_size" format="dimension"/>
-        <attr name="nts_weight" format="dimension"/>
-        <attr name="nts_factor" format="float"/>
-        <attr name="nts_titles" format="reference"/>
-        <attr name="nts_type" format="enum">
-            <enum name="line" value="0"/>
-            <enum name="point" value="1"/>
-        </attr>
-        <attr name="nts_gravity" format="enum">
-            <enum name="bottom" value="0"/>
-            <enum name="top" value="1"/>
-        </attr>
-        <attr name="nts_typeface" format="string"/>
-        <attr name="nts_corners_radius" format="dimension"/>
-        <attr name="nts_animation_duration" format="integer"/>
-        <attr name="nts_inactive_color" format="color"/>
-        <attr name="nts_active_color" format="color"/>
-    </declare-styleable>
+  <declare-styleable name="NavigationTabStrip">
+    <attr format="color" name="nts_color"/>
+    <attr format="dimension" name="nts_size"/>
+    <attr format="dimension" name="nts_weight"/>
+    <attr format="float" name="nts_factor"/>
+    <attr format="reference" name="nts_titles"/>
+    <attr format="enum" name="nts_type">
+      <enum name="line" value="0"/>
+      <enum name="point" value="1"/>
+    </attr>
+    <attr format="enum" name="nts_gravity">
+      <enum name="bottom" value="0"/>
+      <enum name="top" value="1"/>
+    </attr>
+    <attr format="string" name="nts_typeface"/>
+    <attr format="dimension" name="nts_corners_radius"/>
+    <attr format="integer" name="nts_animation_duration"/>
+    <attr format="color" name="nts_inactive_color"/>
+    <attr format="color" name="nts_active_color"/>
+  </declare-styleable>
 
-    <declare-styleable name="SmoothCheckBox">
-        <attr name="duration" format="integer"/>
-        <attr name="stroke_width" format="dimension"/>
-        <attr name="color_tick" format="color"/>
-        <attr name="color_checked" format="color"/>
-        <attr name="color_unchecked" format="color"/>
-        <attr name="color_unchecked_stroke" format="color"/>
-    </declare-styleable>
+  <declare-styleable name="SmoothCheckBox">
+    <attr format="integer" name="duration"/>
+    <attr format="dimension" name="stroke_width"/>
+    <attr format="color" name="color_tick"/>
+    <attr format="color" name="color_checked"/>
+    <attr format="color" name="color_unchecked"/>
+    <attr format="color" name="color_unchecked_stroke"/>
+  </declare-styleable>
 
-    <declare-styleable name="BottomTabRadioButton">
-        <attr name="hint_mode" format="enum">
-            <enum name="none" value="0"/>
-            <enum name="point" value="1"/>
-            <enum name="num" value="2"/>
-        </attr>
-        <attr name="hint_color" format="color"/>
-        <attr name="hint_top_padding" format="dimension"/>
-        <attr name="hint_right_padding" format="dimension"/>
-        <attr name="point_radius" format="dimension"/>
-        <attr name="num" format="integer"/>
-        <attr name="num_radius" format="dimension"/>
-        <attr name="num_size" format="dimension"/>
-        <attr name="num_color" format="color"/>
-    </declare-styleable>
+  <declare-styleable name="BottomTabRadioButton">
+    <attr format="enum" name="hint_mode">
+      <enum name="none" value="0"/>
+      <enum name="point" value="1"/>
+      <enum name="num" value="2"/>
+    </attr>
+    <attr format="color" name="hint_color"/>
+    <attr format="dimension" name="hint_top_padding"/>
+    <attr format="dimension" name="hint_right_padding"/>
+    <attr format="dimension" name="point_radius"/>
+    <attr format="integer" name="num"/>
+    <attr format="dimension" name="num_radius"/>
+    <attr format="dimension" name="num_size"/>
+    <attr format="color" name="num_color"/>
+  </declare-styleable>
 
-    <declare-styleable name="DrawableTextView">
-        <attr name="drawableWidth" format="dimension"/>
-        <attr name="drawableHeight" format="dimension"/>
-    </declare-styleable>
+  <declare-styleable name="DrawableTextView">
+    <attr format="dimension" name="drawableWidth"/>
+    <attr format="dimension" name="drawableHeight"/>
+  </declare-styleable>
 
-    <declare-styleable name="DropDownMenu">
-        <attr name="underlineColor" format="color"/>
-        <attr name="dividerColor" format="color"/>
-        <attr name="textSelectedColor" format="color"/>
-        <attr name="textUnselectedColor" format="color"/>
-        <attr name="menuBackgroundColor" format="color"/>
-        <attr name="maskColor" format="color"/>
-        <attr name="menuTextSize" format="dimension"/>
-        <attr name="menuSelectedIcon" format="reference"/>
-        <attr name="menuUnselectedIcon" format="reference"/>
-    </declare-styleable>
+  <declare-styleable name="DropDownMenu">
+    <attr format="color" name="underlineColor"/>
+    <attr format="color" name="dividerColor"/>
+    <attr format="color" name="textSelectedColor"/>
+    <attr format="color" name="textUnselectedColor"/>
+    <attr format="color" name="menuBackgroundColor"/>
+    <attr format="color" name="maskColor"/>
+    <attr format="dimension" name="menuTextSize"/>
+    <attr format="reference" name="menuSelectedIcon"/>
+    <attr format="reference" name="menuUnselectedIcon"/>
+  </declare-styleable>
 
-    <declare-styleable name="BadgeView">
-        <!-- 圆角矩形背景色 -->
-        <attr name="backgroundColor" format="color"/>
-        <!-- 圆角弧度,单位dp-->
-        <attr name="cornerRadius" format="dimension"/>
-        <!-- 圆角弧度,单位dp-->
-        <attr name="strokeWidth" format="dimension"/>
-        <!-- 圆角边框颜色-->
-        <attr name="strokeColor" format="color"/>
-        <!-- 圆角弧度是高度一半-->
-        <attr name="isRadiusHalfHeight" format="boolean"/>
-        <!-- 圆角矩形宽高相等,取较宽高中大值-->
-        <attr name="isWidthHeightEqual" format="boolean"/>
-    </declare-styleable>
+  <declare-styleable name="BadgeView">
+    <!-- 圆角矩形背景色 -->
+    <attr format="color" name="backgroundColor"/>
+    <!-- 圆角弧度,单位dp-->
+    <attr format="dimension" name="cornerRadius"/>
+    <!-- 圆角弧度,单位dp-->
+    <attr format="dimension" name="strokeWidth"/>
+    <!-- 圆角边框颜色-->
+    <attr format="color" name="strokeColor"/>
+    <!-- 圆角弧度是高度一半-->
+    <attr format="boolean" name="isRadiusHalfHeight"/>
+    <!-- 圆角矩形宽高相等,取较宽高中大值-->
+    <attr format="boolean" name="isWidthHeightEqual"/>
+  </declare-styleable>
 
-    <declare-styleable name="SlideBottomPanel">
-        <attr name="sbp_background_layout" format="reference"/>
-        <attr name="sbp_title_height_no_display" format="dimension"/>
-        <attr name="sbp_panel_height" format="dimension"/>
-        <attr name="sbp_boundary" format="boolean"/>
-        <attr name="sbp_move_distance_trigger" format="dimension"/>
-        <attr name="sbp_animation_duration" format="integer"/>
-        <attr name="sbp_fade" format="boolean"/>
-        <attr name="sbp_hide_panel_title" format="boolean"/>
-    </declare-styleable>
+  <declare-styleable name="SlideBottomPanel">
+    <attr format="reference" name="sbp_background_layout"/>
+    <attr format="dimension" name="sbp_title_height_no_display"/>
+    <attr format="dimension" name="sbp_panel_height"/>
+    <attr format="boolean" name="sbp_boundary"/>
+    <attr format="dimension" name="sbp_move_distance_trigger"/>
+    <attr format="integer" name="sbp_animation_duration"/>
+    <attr format="boolean" name="sbp_fade"/>
+    <attr format="boolean" name="sbp_hide_panel_title"/>
+  </declare-styleable>
+  <declare-styleable name="StrokedTextView">
+    <attr format="color" name="strokedColor"/>
+    <attr format="float" name="strokedWidth"/>
+  </declare-styleable>
 </resources>

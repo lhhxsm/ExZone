@@ -10,120 +10,108 @@ import android.view.View;
  */
 public class RecyclerViewUtils {
 
-    /**
-     * 设置HeaderView
-     *
-     * @param recyclerView
-     * @param view
-     */
-    public static void setHeaderView(RecyclerView recyclerView, View view) {
+  /**
+   * 设置HeaderView
+   */
+  public static void setHeaderView(RecyclerView recyclerView, View view) {
 
-        RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
+    RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
 
-        if (outerAdapter == null || !(outerAdapter instanceof HeaderAndFooterRecyclerViewAdapter)) {
-            return;
-        }
-
-        HeaderAndFooterRecyclerViewAdapter headerAndFooterAdapter = (HeaderAndFooterRecyclerViewAdapter) outerAdapter;
-        if (headerAndFooterAdapter.getHeaderViewsCount() == 0) {
-            headerAndFooterAdapter.addHeaderView(view);
-        }
+    if (outerAdapter == null || !(outerAdapter instanceof HeaderAndFooterRecyclerViewAdapter)) {
+      return;
     }
 
-    /**
-     * 设置FooterView
-     *
-     * @param recyclerView
-     * @param view
-     */
-    public static void setFooterView(RecyclerView recyclerView, View view) {
-        RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
+    HeaderAndFooterRecyclerViewAdapter headerAndFooterAdapter =
+        (HeaderAndFooterRecyclerViewAdapter) outerAdapter;
+    if (headerAndFooterAdapter.getHeaderViewsCount() == 0) {
+      headerAndFooterAdapter.addHeaderView(view);
+    }
+  }
 
-        if (outerAdapter == null || !(outerAdapter instanceof HeaderAndFooterRecyclerViewAdapter)) {
-            return;
-        }
+  /**
+   * 设置FooterView
+   */
+  public static void setFooterView(RecyclerView recyclerView, View view) {
+    RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
 
-        HeaderAndFooterRecyclerViewAdapter headerAndFooterAdapter = (HeaderAndFooterRecyclerViewAdapter) outerAdapter;
-        if (headerAndFooterAdapter.getFooterViewsCount() == 0) {
-            headerAndFooterAdapter.addFooterView(view);
-        }
+    if (outerAdapter == null || !(outerAdapter instanceof HeaderAndFooterRecyclerViewAdapter)) {
+      return;
     }
 
-    /**
-     * 移除FooterView
-     *
-     * @param recyclerView
-     */
-    public static void removeFooterView(RecyclerView recyclerView) {
+    HeaderAndFooterRecyclerViewAdapter headerAndFooterAdapter =
+        (HeaderAndFooterRecyclerViewAdapter) outerAdapter;
+    if (headerAndFooterAdapter.getFooterViewsCount() == 0) {
+      headerAndFooterAdapter.addFooterView(view);
+    }
+  }
 
-        RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
+  /**
+   * 移除FooterView
+   */
+  public static void removeFooterView(RecyclerView recyclerView) {
 
-        if (outerAdapter != null && outerAdapter instanceof HeaderAndFooterRecyclerViewAdapter) {
+    RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
 
-            int footerViewCounter = ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).getFooterViewsCount();
-            if (footerViewCounter > 0) {
-                View footerView = ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).getFooterView();
-                ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).removeFooterView(footerView);
-            }
-        }
+    if (outerAdapter != null && outerAdapter instanceof HeaderAndFooterRecyclerViewAdapter) {
+
+      int footerViewCounter =
+          ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).getFooterViewsCount();
+      if (footerViewCounter > 0) {
+        View footerView = ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).getFooterView();
+        ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).removeFooterView(footerView);
+      }
+    }
+  }
+
+  /**
+   * 移除HeaderView
+   */
+  public static void removeHeaderView(RecyclerView recyclerView) {
+
+    RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
+
+    if (outerAdapter != null && outerAdapter instanceof HeaderAndFooterRecyclerViewAdapter) {
+
+      int headerViewCounter =
+          ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).getHeaderViewsCount();
+      if (headerViewCounter > 0) {
+        View headerView = ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).getHeaderView();
+        ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).removeFooterView(headerView);
+      }
+    }
+  }
+
+  /**
+   * 请使用本方法替代RecyclerView.ViewHolder的getLayoutPosition()方法
+   */
+  public static int getLayoutPosition(RecyclerView recyclerView, RecyclerView.ViewHolder holder) {
+    RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
+    if (outerAdapter != null && outerAdapter instanceof HeaderAndFooterRecyclerViewAdapter) {
+
+      int headerViewCounter =
+          ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).getHeaderViewsCount();
+      if (headerViewCounter > 0) {
+        return holder.getLayoutPosition() - headerViewCounter;
+      }
     }
 
-    /**
-     * 移除HeaderView
-     *
-     * @param recyclerView
-     */
-    public static void removeHeaderView(RecyclerView recyclerView) {
+    return holder.getLayoutPosition();
+  }
 
-        RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
+  /**
+   * 请使用本方法替代RecyclerView.ViewHolder的getAdapterPosition()方法
+   */
+  public static int getAdapterPosition(RecyclerView recyclerView, RecyclerView.ViewHolder holder) {
+    RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
+    if (outerAdapter != null && outerAdapter instanceof HeaderAndFooterRecyclerViewAdapter) {
 
-        if (outerAdapter != null && outerAdapter instanceof HeaderAndFooterRecyclerViewAdapter) {
-
-            int headerViewCounter = ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).getHeaderViewsCount();
-            if (headerViewCounter > 0) {
-                View headerView = ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).getHeaderView();
-                ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).removeFooterView(headerView);
-            }
-        }
+      int headerViewCounter =
+          ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).getHeaderViewsCount();
+      if (headerViewCounter > 0) {
+        return holder.getAdapterPosition() - headerViewCounter;
+      }
     }
 
-    /**
-     * 请使用本方法替代RecyclerView.ViewHolder的getLayoutPosition()方法
-     *
-     * @param recyclerView
-     * @param holder
-     * @return
-     */
-    public static int getLayoutPosition(RecyclerView recyclerView, RecyclerView.ViewHolder holder) {
-        RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
-        if (outerAdapter != null && outerAdapter instanceof HeaderAndFooterRecyclerViewAdapter) {
-
-            int headerViewCounter = ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).getHeaderViewsCount();
-            if (headerViewCounter > 0) {
-                return holder.getLayoutPosition() - headerViewCounter;
-            }
-        }
-
-        return holder.getLayoutPosition();
-    }
-
-    /**
-     * 请使用本方法替代RecyclerView.ViewHolder的getAdapterPosition()方法
-     *
-     * @param recyclerView
-     * @param holder
-     * @return
-     */
-    public static int getAdapterPosition(RecyclerView recyclerView, RecyclerView.ViewHolder holder) {
-        RecyclerView.Adapter outerAdapter = recyclerView.getAdapter();
-        if (outerAdapter != null && outerAdapter instanceof HeaderAndFooterRecyclerViewAdapter) {
-
-            int headerViewCounter = ((HeaderAndFooterRecyclerViewAdapter) outerAdapter).getHeaderViewsCount();
-            if (headerViewCounter > 0) {
-                return holder.getAdapterPosition() - headerViewCounter;
-            }
-        }
-
-        return holder.getAdapterPosition();
-    }
+    return holder.getAdapterPosition();
+  }
 }
