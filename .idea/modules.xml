@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/BaseLibrary/BaseLibrary.iml" filepath="$PROJECT_DIR$/BaseLibrary/BaseLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Demo/Demo.iml" filepath="$PROJECT_DIR$/Demo/Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/ExZone.iml" filepath="$PROJECT_DIR$/ExZone.iml" />
       <module fileurl="file://$PROJECT_DIR$/ExZoneDome/ExZoneDome.iml" filepath="$PROJECT_DIR$/ExZoneDome/ExZoneDome.iml" />
       <module fileurl="file://$PROJECT_DIR$/ExZoneLib/ExZoneLib.iml" filepath="$PROJECT_DIR$/ExZoneLib/ExZoneLib.iml" />

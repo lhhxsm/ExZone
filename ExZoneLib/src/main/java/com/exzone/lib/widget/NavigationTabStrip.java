@@ -228,18 +228,18 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     return mTitles;
   }
 
-  public void setTitles(final int... titleResIds) {
-    final String[] titles = new String[titleResIds.length];
-    for (int i = 0; i < titleResIds.length; i++)
-      titles[i] = getResources().getString(titleResIds[i]);
-    setTitles(titles);
-  }
-
   public void setTitles(final String... titles) {
     for (int i = 0; i < titles.length; i++)
       titles[i] = titles[i].toUpperCase();
     mTitles = titles;
     requestLayout();
+  }
+
+  public void setTitles(final int... titleResIds) {
+    final String[] titles = new String[titleResIds.length];
+    for (int i = 0; i < titleResIds.length; i++)
+      titles[i] = getResources().getString(titleResIds[i]);
+    setTitles(titles);
   }
 
   public int getStripColor() {
@@ -260,6 +260,11 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     return mStripGravity;
   }
 
+  public void setStripGravity(final StripGravity stripGravity) {
+    mStripGravity = stripGravity;
+    requestLayout();
+  }
+
   private void setStripGravity(final int index) {
     switch (index) {
       case StripGravity.TOP_INDEX:
@@ -271,13 +276,13 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     }
   }
 
-  public void setStripGravity(final StripGravity stripGravity) {
-    mStripGravity = stripGravity;
-    requestLayout();
-  }
-
   public StripType getStripType() {
     return mStripType;
+  }
+
+  public void setStripType(final StripType stripType) {
+    mStripType = stripType;
+    requestLayout();
   }
 
   private void setStripType(final int index) {
@@ -289,11 +294,6 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
       default:
         setStripType(StripType.LINE);
     }
-  }
-
-  public void setStripType(final StripType stripType) {
-    mStripType = stripType;
-    requestLayout();
   }
 
   public float getStripFactor() {
@@ -308,6 +308,12 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     return mTypeface;
   }
 
+  public void setTypeface(final Typeface typeface) {
+    mTypeface = typeface;
+    mTitlePaint.setTypeface(typeface);
+    postInvalidate();
+  }
+
   public void setTypeface(final String typeface) {
     Typeface tempTypeface;
     try {
@@ -318,12 +324,6 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     }
 
     setTypeface(tempTypeface);
-  }
-
-  public void setTypeface(final Typeface typeface) {
-    mTypeface = typeface;
-    mTitlePaint.setTypeface(typeface);
-    postInvalidate();
   }
 
   public int getActiveColor() {

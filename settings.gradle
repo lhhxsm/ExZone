@@ -1,1 +1,1 @@
-include ':ExZoneDome', ':ExZoneLib', ':Library'
+include ':ExZoneDome', ':ExZoneLib', ':Library', ':BaseLibrary', ':Demo'
