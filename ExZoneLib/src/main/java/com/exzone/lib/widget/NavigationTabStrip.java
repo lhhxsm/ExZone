@@ -228,18 +228,18 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     return mTitles;
   }
 
-  public void setTitles(final String... titles) {
-    for (int i = 0; i < titles.length; i++)
-      titles[i] = titles[i].toUpperCase();
-    mTitles = titles;
-    requestLayout();
-  }
-
   public void setTitles(final int... titleResIds) {
     final String[] titles = new String[titleResIds.length];
     for (int i = 0; i < titleResIds.length; i++)
       titles[i] = getResources().getString(titleResIds[i]);
     setTitles(titles);
+  }
+
+  public void setTitles(final String... titles) {
+    for (int i = 0; i < titles.length; i++)
+      titles[i] = titles[i].toUpperCase();
+    mTitles = titles;
+    requestLayout();
   }
 
   public int getStripColor() {
@@ -260,11 +260,6 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     return mStripGravity;
   }
 
-  public void setStripGravity(final StripGravity stripGravity) {
-    mStripGravity = stripGravity;
-    requestLayout();
-  }
-
   private void setStripGravity(final int index) {
     switch (index) {
       case StripGravity.TOP_INDEX:
@@ -276,13 +271,13 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     }
   }
 
-  public StripType getStripType() {
-    return mStripType;
+  public void setStripGravity(final StripGravity stripGravity) {
+    mStripGravity = stripGravity;
+    requestLayout();
   }
 
-  public void setStripType(final StripType stripType) {
-    mStripType = stripType;
-    requestLayout();
+  public StripType getStripType() {
+    return mStripType;
   }
 
   private void setStripType(final int index) {
@@ -294,6 +289,11 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
       default:
         setStripType(StripType.LINE);
     }
+  }
+
+  public void setStripType(final StripType stripType) {
+    mStripType = stripType;
+    requestLayout();
   }
 
   public float getStripFactor() {
@@ -308,12 +308,6 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     return mTypeface;
   }
 
-  public void setTypeface(final Typeface typeface) {
-    mTypeface = typeface;
-    mTitlePaint.setTypeface(typeface);
-    postInvalidate();
-  }
-
   public void setTypeface(final String typeface) {
     Typeface tempTypeface;
     try {
@@ -324,6 +318,12 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     }
 
     setTypeface(tempTypeface);
+  }
+
+  public void setTypeface(final Typeface typeface) {
+    mTypeface = typeface;
+    mTitlePaint.setTypeface(typeface);
+    postInvalidate();
   }
 
   public int getActiveColor() {
@@ -384,7 +384,9 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
         }
 
         @Override public void onAnimationEnd(final Animator animation) {
-          if (mIsViewPagerMode) return;
+          if (mIsViewPagerMode) {
+            return;
+          }
 
           animation.removeListener(this);
           animation.addListener(this);
@@ -414,8 +416,12 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
       return;
     }
 
-    if (mViewPager == viewPager) return;
-    if (mViewPager != null) mViewPager.setOnPageChangeListener(null);
+    if (mViewPager == viewPager) {
+      return;
+    }
+    if (mViewPager != null) {
+      mViewPager.setOnPageChangeListener(null);
+    }
     if (viewPager.getAdapter() == null) {
       throw new IllegalStateException("ViewPager does not provide adapter instance.");
     }
@@ -432,13 +438,17 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     setViewPager(viewPager);
 
     mIndex = index;
-    if (mIsViewPagerMode) mViewPager.setCurrentItem(index, true);
+    if (mIsViewPagerMode) {
+      mViewPager.setCurrentItem(index, true);
+    }
     postInvalidate();
   }
 
   // Reset scroller and reset scroll duration equals to animation duration
   private void resetScroller() {
-    if (mViewPager == null) return;
+    if (mViewPager == null) {
+      return;
+    }
     try {
       final Field scrollerField = ViewPager.class.getDeclaredField("mScroller");
       scrollerField.setAccessible(true);
@@ -463,14 +473,22 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
 
   // Set tab index from touch or programmatically
   public void setTabIndex(int index, boolean force) {
-    if (mAnimator.isRunning()) return;
-    if (mTitles.length == 0) return;
+    if (mAnimator.isRunning()) {
+      return;
+    }
+    if (mTitles.length == 0) {
+      return;
+    }
 
     // This check gives us opportunity to have an non selected tab
-    if (mIndex == INVALID_INDEX) force = true;
+    if (mIndex == INVALID_INDEX) {
+      force = true;
+    }
 
     // Detect if last is the same
-    if (index == mIndex) return;
+    if (index == mIndex) {
+      return;
+    }
 
     // Snap index to tabs size
     index = Math.max(0, Math.min(index, mTitles.length - 1));
@@ -481,7 +499,9 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
 
     mIsSetIndexFromTabBar = true;
     if (mIsViewPagerMode) {
-      if (mViewPager == null) throw new IllegalStateException("ViewPager is null.");
+      if (mViewPager == null) {
+        throw new IllegalStateException("ViewPager is null.");
+      }
       mViewPager.setCurrentItem(index, true);
     }
 
@@ -524,15 +544,21 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
 
   @Override public boolean onTouchEvent(final MotionEvent event) {
     // Return if animation is running
-    if (mAnimator.isRunning()) return true;
+    if (mAnimator.isRunning()) {
+      return true;
+    }
     // If is not idle state, return
-    if (mScrollState != ViewPager.SCROLL_STATE_IDLE) return true;
+    if (mScrollState != ViewPager.SCROLL_STATE_IDLE) {
+      return true;
+    }
 
     switch (event.getAction()) {
       case MotionEvent.ACTION_DOWN:
         // Action down touch
         mIsActionDown = true;
-        if (!mIsViewPagerMode) break;
+        if (!mIsViewPagerMode) {
+          break;
+        }
         // Detect if we touch down on tab, later to move
         mIsTabActionDown = (int) (event.getX() / mTabSize) == mIndex;
         break;
@@ -542,10 +568,14 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
           mViewPager.setCurrentItem((int) (event.getX() / mTabSize), true);
           break;
         }
-        if (mIsActionDown) break;
+        if (mIsActionDown) {
+          break;
+        }
       case MotionEvent.ACTION_UP:
         // Press up and set tab index relative to current coordinate
-        if (mIsActionDown) setTabIndex((int) (event.getX() / mTabSize));
+        if (mIsActionDown) {
+          setTabIndex((int) (event.getX() / mTabSize));
+        }
       case MotionEvent.ACTION_CANCEL:
       case MotionEvent.ACTION_OUTSIDE:
       default:
@@ -568,7 +598,9 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     // Set bounds for NTS
     mBounds.set(0.0F, 0.0F, width, height);
 
-    if (mTitles.length == 0 || width == 0 || height == 0) return;
+    if (mTitles.length == 0 || width == 0 || height == 0) {
+      return;
+    }
 
     // Get smaller side
     mTabSize = width / (float) mTitles.length;
@@ -581,7 +613,9 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
       mIsSetIndexFromTabBar = true;
 
       // Set random in preview mode
-      if (isInEditMode()) mIndex = new Random().nextInt(mTitles.length);
+      if (isInEditMode()) {
+        mIndex = new Random().nextInt(mTitles.length);
+      }
 
       mStartStripX = (mIndex * mTabSize) + (mStripType == StripType.POINT ? mTabSize * 0.5F : 0.0F);
       mEndStripX = mStartStripX;
@@ -633,7 +667,9 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
           updateInactiveTitle();
         } else if (i == mIndex + 1) {
           updateCurrentTitle(interpolation);
-        } else if (i == mIndex) updateLastTitle(lastInterpolation);
+        } else if (i == mIndex) {
+          updateLastTitle(lastInterpolation);
+        }
       }
 
       canvas.drawText(title, leftTitleOffset,
@@ -703,7 +739,9 @@ public class NavigationTabStrip extends View implements ViewPager.OnPageChangeLi
     }
     mScrollState = state;
 
-    if (mOnPageChangeListener != null) mOnPageChangeListener.onPageScrollStateChanged(state);
+    if (mOnPageChangeListener != null) {
+      mOnPageChangeListener.onPageScrollStateChanged(state);
+    }
   }
 
   @Override public void onRestoreInstanceState(Parcelable state) {

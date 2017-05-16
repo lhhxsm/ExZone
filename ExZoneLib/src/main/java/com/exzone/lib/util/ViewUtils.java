@@ -48,7 +48,9 @@ public final class ViewUtils {
    * 修改普通View的高
    */
   public static void changeH(View v, int H) {
-    if (v == null) return;
+    if (v == null) {
+      return;
+    }
     LayoutParams params = v.getLayoutParams();
     params.height = H;
     v.setLayoutParams(params);
@@ -58,7 +60,9 @@ public final class ViewUtils {
    * 修改普通View的宽
    */
   public static void changeW(View v, int W) {
-    if (v == null) return;
+    if (v == null) {
+      return;
+    }
     LayoutParams params = v.getLayoutParams();
     params.width = W;
     v.setLayoutParams(params);
@@ -68,7 +72,9 @@ public final class ViewUtils {
    * 修改控件的宽高
    */
   public static void changeWH(View v, int W, int H) {
-    if (v == null) return;
+    if (v == null) {
+      return;
+    }
     LayoutParams params = v.getLayoutParams();
     params.width = W;
     params.height = H;

@@ -125,7 +125,9 @@ public class NativeUtil {
       ratio = bitHeight / imageHeight;
     }
     // 最小比率为1
-    if (ratio <= 0) ratio = 1;
+    if (ratio <= 0) {
+      ratio = 1;
+    }
     return ratio;
   }
 

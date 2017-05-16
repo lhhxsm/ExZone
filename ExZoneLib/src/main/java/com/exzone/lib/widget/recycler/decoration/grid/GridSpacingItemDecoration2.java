@@ -112,7 +112,9 @@ public class GridSpacingItemDecoration2 extends RecyclerView.ItemDecoration {
       if (orientation == StaggeredGridLayoutManager.VERTICAL) {
         childCount = childCount - childCount % spanCount;
         // 如果是最后一行，则不需要绘制底部
-        if (pos >= childCount) return true;
+        if (pos >= childCount) {
+          return true;
+        }
       } else
       // StaggeredGridLayoutManager 且横向滚动
       {

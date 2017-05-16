@@ -9,7 +9,7 @@ import android.view.View;
 import com.android.lib.ioc.ViewUtils;
 
 /**
- * 作者:lihonghao
+ * 作者:李鸿浩
  * 描述:
  * 时间:2017/5/11.
  */
@@ -18,7 +18,7 @@ public abstract class BaseActivity extends AppCompatActivity {
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     //设置布局Layout
-    setContentView(layoutResID());
+    setContentView();
     // 一些特定的算法，子类基本都会使用的
     ViewUtils.inject(this);
     //初始化头部
@@ -29,7 +29,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     initData();
   }
 
-  protected abstract int layoutResID();
+  protected abstract void setContentView();
 
   protected abstract void initTitle();
 

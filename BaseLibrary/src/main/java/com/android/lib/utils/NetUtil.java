@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
  * 描述:
  * 时间:2017/5/4.
  */
-public class NetUtils {
+public class NetUtil {
 
   /**
    * 是否有网络

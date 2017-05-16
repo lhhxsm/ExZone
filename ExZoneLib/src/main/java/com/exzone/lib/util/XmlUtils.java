@@ -11,7 +11,9 @@ import android.support.v4.util.ArrayMap;
 public class XmlUtils {
   public static ArrayMap<String, ArrayMap<String, String>> parseNodes(
       XmlResourceParser xmlResourceParser) throws Exception {
-    if (xmlResourceParser == null) return null;
+    if (xmlResourceParser == null) {
+      return null;
+    }
     ArrayMap<String, ArrayMap<String, String>> map = null;
     ArrayMap<String, String> nodeMap = null;
     int root = xmlResourceParser.getEventType();

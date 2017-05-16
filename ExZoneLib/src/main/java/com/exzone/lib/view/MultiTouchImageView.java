@@ -168,8 +168,12 @@ public class MultiTouchImageView extends AppCompatImageView {
   }
 
   private void scaleMatrixToBounds() {
-    if (Math.abs(matrixX + right / 2) > 0.5f) matrix.postTranslate(-(matrixX + right / 2), 0);
-    if (Math.abs(matrixY + bottom / 2) > 0.5f) matrix.postTranslate(0, -(matrixY + bottom / 2));
+    if (Math.abs(matrixX + right / 2) > 0.5f) {
+      matrix.postTranslate(-(matrixX + right / 2), 0);
+    }
+    if (Math.abs(matrixY + bottom / 2) > 0.5f) {
+      matrix.postTranslate(0, -(matrixY + bottom / 2));
+    }
   }
 
   public Bitmap getImageBitmap() {

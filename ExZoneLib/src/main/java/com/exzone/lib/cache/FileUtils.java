@@ -74,7 +74,9 @@ public class FileUtils {
    */
   public static String getSDCardPath() {
     String sdcard = Environment.getExternalStorageDirectory().getPath();
-    if (!sdcard.endsWith("/")) sdcard += "/";
+    if (!sdcard.endsWith("/")) {
+      sdcard += "/";
+    }
     return sdcard;
   }
 

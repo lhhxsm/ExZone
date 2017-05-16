@@ -23,7 +23,9 @@ import java.nio.charset.Charset;
 public class IOUtils {
 
   public static void close(Closeable c) {
-    if (c == null) return;
+    if (c == null) {
+      return;
+    }
     try {
       c.close();
     } catch (Throwable t) {
@@ -33,7 +35,9 @@ public class IOUtils {
   }
 
   public static void close(ParcelFileDescriptor descriptor) {
-    if (descriptor == null) return;
+    if (descriptor == null) {
+      return;
+    }
     try {
       descriptor.close();
     } catch (Throwable t) {
@@ -43,7 +47,9 @@ public class IOUtils {
 
   public static void close(Cursor cursor) {
     try {
-      if (cursor != null) cursor.close();
+      if (cursor != null) {
+        cursor.close();
+      }
     } catch (Throwable t) {
       Logger.e("fail to close:" + t);
     }

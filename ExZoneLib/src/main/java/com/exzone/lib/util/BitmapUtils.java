@@ -336,7 +336,9 @@ public class BitmapUtils {
    * @return 缩放后的图片
    */
   public static Bitmap scaleBitmap(Bitmap bmp, int newW, int newH) {
-    if (bmp == null) return null;
+    if (bmp == null) {
+      return null;
+    }
     // 获得图片的宽高
     int width = bmp.getWidth();
     int height = bmp.getHeight();
@@ -351,7 +353,9 @@ public class BitmapUtils {
   }
 
   public static Drawable scaleDrawable(Drawable drawable, int w, int h) {
-    if (drawable == null) return null;
+    if (drawable == null) {
+      return null;
+    }
     int width = drawable.getIntrinsicWidth();
     int height = drawable.getIntrinsicHeight();
     Bitmap oldBitmap = drawableToBitmap(drawable); // drawable转换成bitmap
@@ -665,7 +669,9 @@ public class BitmapUtils {
    * Bitmap转成Byte数组
    */
   private static byte[] bitmap2Bytes(Bitmap bm) {
-    if (bm == null) return null;
+    if (bm == null) {
+      return null;
+    }
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
     return baos.toByteArray();
@@ -688,7 +694,9 @@ public class BitmapUtils {
     matrix.postScale(scaleWidth, scaleHeight);
     // 得到新的图片
     Bitmap newBitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height, matrix, true);
-    if (needRecycle) bitMap.recycle();
+    if (needRecycle) {
+      bitMap.recycle();
+    }
     return newBitMap;
   }
 
@@ -696,7 +704,9 @@ public class BitmapUtils {
    * 保存图片
    */
   public static boolean saveBitmap(Bitmap bitmap, File file) {
-    if (bitmap == null) return false;
+    if (bitmap == null) {
+      return false;
+    }
     FileOutputStream fos = null;
     try {
       fos = new FileOutputStream(file, false);

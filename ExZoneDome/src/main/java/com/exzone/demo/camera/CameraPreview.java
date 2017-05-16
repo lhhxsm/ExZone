@@ -314,7 +314,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
   // 设置监听事件
   public void setOnCameraStatusListener(OnCameraStatusListener listener) {
-    if (listener != null) this.listener = listener;
+    if (listener != null) {
+      this.listener = listener;
+    }
   }
 
   /**
@@ -440,7 +442,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     try {
       downPolymorphic =
           camera.getClass().getMethod("setDisplayOrientation", new Class[] { int.class });
-      if (downPolymorphic != null) downPolymorphic.invoke(camera, new Object[] { angle });
+      if (downPolymorphic != null) {
+        downPolymorphic.invoke(camera, new Object[] { angle });
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }

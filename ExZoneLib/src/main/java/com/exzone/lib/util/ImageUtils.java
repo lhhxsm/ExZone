@@ -227,7 +227,9 @@ public class ImageUtils {
    * 根据Uri获取图片绝对路径，解决Android4.4以上版本Uri转换
    */
   public static String getImageAbsolutePath19(Context context, Uri imageUri) {
-    if (context == null || imageUri == null) return null;
+    if (context == null || imageUri == null) {
+      return null;
+    }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(
         context, imageUri)) {
       if (isExternalStorageDocument(imageUri)) {
@@ -264,7 +266,9 @@ public class ImageUtils {
     // MediaStore (and general)
     if ("content".equalsIgnoreCase(imageUri.getScheme())) {
       // Return the remote address
-      if (isGooglePhotosUri(imageUri)) return imageUri.getLastPathSegment();
+      if (isGooglePhotosUri(imageUri)) {
+        return imageUri.getLastPathSegment();
+      }
       return getDataColumn(context, imageUri, null, null);
     }
     // File

@@ -25,12 +25,16 @@ public class MediaPlayerUtils {
   }
 
   public int getDuration() {
-    if (mMediaPlayer != null) return mMediaPlayer.getDuration();
+    if (mMediaPlayer != null) {
+      return mMediaPlayer.getDuration();
+    }
     return 100;
   }
 
   public int getCurrentPosition() {
-    if (mMediaPlayer != null) return mMediaPlayer.getCurrentPosition();
+    if (mMediaPlayer != null) {
+      return mMediaPlayer.getCurrentPosition();
+    }
     return 0;
   }
 

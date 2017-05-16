@@ -11,10 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/BaseLibrary" />
             <option value="$PROJECT_DIR$/Demo" />
-            <option value="$PROJECT_DIR$/ExZoneDome" />
-            <option value="$PROJECT_DIR$/ExZoneLib" />
             <option value="$PROJECT_DIR$/FrameLibrary" />
-            <option value="$PROJECT_DIR$/Library" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

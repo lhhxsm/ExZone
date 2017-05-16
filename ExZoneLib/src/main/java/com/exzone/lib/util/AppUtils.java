@@ -30,7 +30,9 @@ public class AppUtils {
    * 获取应用程序版本（versionCode）
    */
   public static int getVersionCode(Context context) {
-    if (context == null) return -1;
+    if (context == null) {
+      return -1;
+    }
     PackageManager manager = context.getPackageManager();
     PackageInfo info = null;
     try {
@@ -48,7 +50,9 @@ public class AppUtils {
    * @return 当前应用的版本号
    */
   public static String getVersionName(Context context) {
-    if (context == null) return null;
+    if (context == null) {
+      return null;
+    }
     PackageManager manager = context.getPackageManager();
     PackageInfo info = null;
     try {
@@ -134,7 +138,9 @@ public class AppUtils {
    * 获取MAC地址
    */
   public static String getMacAddress(Context context) {
-    if (context == null) return null;
+    if (context == null) {
+      return null;
+    }
     WifiManager wifiManager =
         (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
     WifiInfo wifiInfo = wifiManager.getConnectionInfo();

@@ -401,7 +401,9 @@ public class SlideBottomPanel extends FrameLayout {
   }
 
   public void hide() {
-    if (!isPanelShowing) return;
+    if (!isPanelShowing) {
+      return;
+    }
     hidePanel();
   }
 
@@ -486,7 +488,9 @@ public class SlideBottomPanel extends FrameLayout {
   private boolean scrollViewCanScrollVertically(ScrollView scrollView, int direction) {
     final int offset = Math.max(0, scrollView.getScrollY());
     final int range = computeVerticalScrollRange(scrollView) - scrollView.getHeight();
-    if (range == 0) return false;
+    if (range == 0) {
+      return false;
+    }
     if (direction < 0) { //scroll up
       return offset > 0;
     } else {//scroll down

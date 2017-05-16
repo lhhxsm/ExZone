@@ -150,7 +150,9 @@ public class SwipeBackLayout extends ViewGroup {
   @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
     int width = getMeasuredWidth();
     int height = getMeasuredHeight();
-    if (getChildCount() == 0) return;
+    if (getChildCount() == 0) {
+      return;
+    }
 
     View child = getChildAt(0);
 
@@ -357,7 +359,9 @@ public class SwipeBackLayout extends ViewGroup {
     }
 
     @Override public void onViewDragStateChanged(int state) {
-      if (state == draggingState) return;
+      if (state == draggingState) {
+        return;
+      }
 
       if ((draggingState == ViewDragHelper.STATE_DRAGGING
           || draggingState == ViewDragHelper.STATE_SETTLING)
@@ -388,10 +392,14 @@ public class SwipeBackLayout extends ViewGroup {
 
       //The proportion of the sliding.
       float fractionAnchor = (float) draggingOffset / finishAnchor;
-      if (fractionAnchor >= 1) fractionAnchor = 1;
+      if (fractionAnchor >= 1) {
+        fractionAnchor = 1;
+      }
 
       float fractionScreen = (float) draggingOffset / (float) getDragRange();
-      if (fractionScreen >= 1) fractionScreen = 1;
+      if (fractionScreen >= 1) {
+        fractionScreen = 1;
+      }
 
       if (swipeBackListener != null) {
         swipeBackListener.onViewPositionChanged(fractionAnchor, fractionScreen);
@@ -399,9 +407,13 @@ public class SwipeBackLayout extends ViewGroup {
     }
 
     @Override public void onViewReleased(View releasedChild, float xvel, float yvel) {
-      if (draggingOffset == 0) return;
+      if (draggingOffset == 0) {
+        return;
+      }
 
-      if (draggingOffset == getDragRange()) return;
+      if (draggingOffset == getDragRange()) {
+        return;
+      }
 
       boolean isBack = false;
 

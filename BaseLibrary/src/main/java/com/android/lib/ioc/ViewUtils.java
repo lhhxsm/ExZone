@@ -3,7 +3,7 @@ package com.android.lib.ioc;
 import android.app.Activity;
 import android.view.View;
 import android.widget.Toast;
-import com.android.lib.utils.NetUtils;
+import com.android.lib.utils.NetUtil;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -115,7 +115,7 @@ public class ViewUtils {
       //判断是否需要检测网络
       if (isCheckNet) {//需要
         //判断网络
-        if (!NetUtils.isAvailable(v.getContext())) {
+        if (!NetUtil.isAvailable(v.getContext())) {
           Toast.makeText(v.getContext(), "亲,您的网络不太给力", Toast.LENGTH_SHORT).show();
           return;
         }

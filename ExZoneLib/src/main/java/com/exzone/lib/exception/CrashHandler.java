@@ -72,7 +72,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
       //导出异常信息到SD卡中
       dumpExceptionToSDCard(ex);
       //上传异常信息到服务器,便于分析日志,让开发者找出bug并解决
-      unploadExceptionToServer();
+      uploadExceptionToServer();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -153,7 +153,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
   /**
    * 上传服务器
    */
-  private void unploadExceptionToServer() {
+  private void uploadExceptionToServer() {
 
   }
 }

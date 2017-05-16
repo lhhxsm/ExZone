@@ -29,16 +29,22 @@ public class VideoView extends SurfaceView {
   private SurfaceHolder.Callback mCallback = new SurfaceHolder.Callback() {
     @Override public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
       holder.setKeepScreenOn(true);
-      if (mListener != null) mListener.onSurfaceChanged(holder, format, width, height);
+      if (mListener != null) {
+        mListener.onSurfaceChanged(holder, format, width, height);
+      }
     }
 
     @Override public void surfaceCreated(SurfaceHolder holder) {
       mSurfaceHolder = holder;
-      if (mListener != null) mListener.onSurfaceCreated(holder);
+      if (mListener != null) {
+        mListener.onSurfaceCreated(holder);
+      }
     }
 
     @Override public void surfaceDestroyed(SurfaceHolder holder) {
-      if (mListener != null) mListener.onSurfaceDestroyed(holder);
+      if (mListener != null) {
+        mListener.onSurfaceDestroyed(holder);
+      }
     }
   };
 
@@ -51,7 +57,9 @@ public class VideoView extends SurfaceView {
   public void initialize(Activity activity, SurfaceCallback l, boolean push) {
     mActivity = activity;
     mListener = l;
-    if (mSurfaceHolder == null) mSurfaceHolder = getHolder();
+    if (mSurfaceHolder == null) {
+      mSurfaceHolder = getHolder();
+    }
 
     // These methods is set to hw decoder or sw decoder, <= 2.3
     if (push) {
