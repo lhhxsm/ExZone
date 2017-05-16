@@ -33,11 +33,7 @@ public class FixDexManager {
    * @param fixDexPath dex包文件路径
    */
   public void fixDex(String fixDexPath) throws Exception {
-    //1. 先获取已经运行的 dexElement
-    ClassLoader applicationClassLoader = mContext.getClassLoader();
-    Object applicationDexElements = getDexElementsByClassLoader(applicationClassLoader);
     //2. 获取下载好的补丁的 dexElement
-
     //2.1 移动到系统能够访问的 dex目录下 ClassLoader
     File srcFile = new File(fixDexPath);
     if (!srcFile.exists()) {
@@ -55,32 +51,7 @@ public class FixDexManager {
     List<File> fixDexFiles = new ArrayList<>();
     fixDexFiles.add(destFile);
 
-    File optimizedDirectory = new File(mDexDir, "odex");
-
-    if (!optimizedDirectory.exists()) {
-      optimizedDirectory.mkdirs();
-    }
-    //修复
-    for (File fixDexFile : fixDexFiles) {
-      //dexPath dex路径
-      //optimizedDirectory 解压路径
-      //libraryPath .so文件位置
-      //parent 父ClassLoader
-      ClassLoader fixDexClassLoader = new BaseDexClassLoader(//
-          fixDexFile.getAbsolutePath(), //dex路径 必须要做应用目录下的odex文件中
-          optimizedDirectory, //解压路径
-          null,//.so文件位置
-          applicationClassLoader//父ClassLoader
-      );
-
-      Object fixDexElements = getDexElementsByClassLoader(fixDexClassLoader);
-      //3. 把补丁的dexElement 插到已经运行的dexElement的最前面
-      // applicationClassLoader数组 合并 fixDexElements数组
-      // 3.1合并完成
-      applicationDexElements = combineArray(fixDexElements, applicationDexElements);
-    }
-    // 3.2 把合并的数组注入到原来的applicationClassLoader中
-    injectDexElements(applicationClassLoader, applicationDexElements);
+    fixDexFiles(fixDexFiles);
   }
 
   /**
@@ -130,5 +101,58 @@ public class FixDexManager {
       }
     }
     return result;
+  }
+
+  /**
+   * 加载全部的修复包
+   */
+  public void loadFixDex() throws Exception {
+    File[] dexFiles = mDexDir.listFiles();
+
+    List<File> fixDexFiles = new ArrayList<>();
+
+    for (File dexFile : dexFiles) {
+      if (dexFile.getName().endsWith(".dex")) {
+        fixDexFiles.add(dexFile);
+      }
+    }
+
+    fixDexFiles(fixDexFiles);
+  }
+
+  /**
+   * 修复dex
+   */
+  private void fixDexFiles(List<File> fixDexFiles) throws Exception {
+    //1. 先获取已经运行的 dexElement
+    ClassLoader applicationClassLoader = mContext.getClassLoader();
+    Object applicationDexElements = getDexElementsByClassLoader(applicationClassLoader);
+
+    File optimizedDirectory = new File(mDexDir, "odex");
+
+    if (!optimizedDirectory.exists()) {
+      optimizedDirectory.mkdirs();
+    }
+    //修复
+    for (File fixDexFile : fixDexFiles) {
+      //dexPath dex路径
+      //optimizedDirectory 解压路径
+      //libraryPath .so文件位置
+      //parent 父ClassLoader
+      ClassLoader fixDexClassLoader = new BaseDexClassLoader(//
+          fixDexFile.getAbsolutePath(), //dex路径 必须要做应用目录下的odex文件中
+          optimizedDirectory, //解压路径
+          null,//.so文件位置
+          applicationClassLoader//父ClassLoader
+      );
+
+      Object fixDexElements = getDexElementsByClassLoader(fixDexClassLoader);
+      //3. 把补丁的dexElement 插到已经运行的dexElement的最前面
+      // applicationClassLoader数组 合并 fixDexElements数组
+      // 3.1合并完成
+      applicationDexElements = combineArray(fixDexElements, applicationDexElements);
+    }
+    // 3.2 把合并的数组注入到原来的applicationClassLoader中
+    injectDexElements(applicationClassLoader, applicationDexElements);
   }
 }

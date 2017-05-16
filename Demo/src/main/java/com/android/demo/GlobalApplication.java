@@ -2,6 +2,7 @@ package com.android.demo;
 
 import android.app.Application;
 import com.android.lib.ExceptionCrashHandler;
+import com.android.lib.FixDexManager;
 
 /**
  * 作者:李鸿浩
@@ -22,5 +23,13 @@ public class GlobalApplication extends Application {
     //sPatchManager.init("1.0");
     ////加载之前的apatch包
     //sPatchManager.loadPatch();
+
+    try {
+      //加载所有修复的Dex包
+      FixDexManager manager=new FixDexManager(this);
+      manager.loadFixDex();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }
