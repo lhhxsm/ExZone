@@ -15,6 +15,7 @@ public class GlobalApplication extends Application {
 
   @Override public void onCreate() {
     super.onCreate();
+
     //设置全局异常捕获
     ExceptionCrashHandler.getInstance().init(this);
     ////初始化阿里的热修复
