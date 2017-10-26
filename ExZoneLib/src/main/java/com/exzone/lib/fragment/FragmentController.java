@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.ArrayList;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:fragment切换控制器, 初始化时直接add全部fragment, 然后利用show和hide进行切换控制
  * 时间: 2017/2/7.
  */

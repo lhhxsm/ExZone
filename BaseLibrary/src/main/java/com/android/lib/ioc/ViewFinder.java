@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.view.View;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:View的findViewById的辅助类
  * 时间:2017/5/4.
  */

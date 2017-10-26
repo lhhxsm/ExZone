@@ -20,7 +20,7 @@ import com.exzone.lib.dialog.ConfirmDialog;
 import rx.functions.Action1;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:视图工具类
  * 时间：2016/10/10.
  */

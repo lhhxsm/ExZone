@@ -12,7 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:圆角 Drawable 每个角的圆半径可以不同 （使用不同半径圆角图形的时候 使用这个类 以防止 系统提供的用 xml 实现的圆角 Drawable 在2.3 上 出现各个角位置错乱）
  * 时间:2017/3/26.
  */

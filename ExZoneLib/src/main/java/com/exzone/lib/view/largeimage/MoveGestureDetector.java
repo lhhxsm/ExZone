@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 import com.exzone.lib.util.Logger;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 时间: 2017/1/20.
  */

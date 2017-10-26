@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:集合工具类
  * 时间:2016/7/9.
  */

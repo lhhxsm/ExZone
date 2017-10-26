@@ -8,7 +8,7 @@ import android.webkit.WebView;
 import com.exzone.lib.util.NetWorkUtils;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:封装一些常用的方法的WebView
  * 时间:2016/10/6.
  */

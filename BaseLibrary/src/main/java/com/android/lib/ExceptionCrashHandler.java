@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:单例设计模式的异常捕获
  * 时间:2017/5/11.
  */
@@ -40,6 +40,26 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
       }
     }
     return sInstance;
+  }
+
+  /**
+   * 获取手机信息
+   */
+  public static String getMobileInfo() {
+    StringBuffer sb = new StringBuffer();
+    try {
+      //利用反射获取Build的所有属性
+      Field[] fields = Build.class.getDeclaredFields();
+      for (Field field : fields) {
+        field.setAccessible(true);
+        String name = field.getName();
+        String value = field.get(null).toString();
+        sb.append(name).append("=").append(value).append("\n");
+      }
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }
+    return sb.toString();
   }
 
   public void init(Context context) {
@@ -186,25 +206,5 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
       Log.e(TAG, e.getMessage());
     }
     return map;
-  }
-
-  /**
-   * 获取手机信息
-   */
-  public static String getMobileInfo() {
-    StringBuffer sb = new StringBuffer();
-    try {
-      //利用反射获取Build的所有属性
-      Field[] fields = Build.class.getDeclaredFields();
-      for (Field field : fields) {
-        field.setAccessible(true);
-        String name = field.getName();
-        String value = field.get(null).toString();
-        sb.append(name).append("=").append(value).append("\n");
-      }
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    }
-    return sb.toString();
   }
 }

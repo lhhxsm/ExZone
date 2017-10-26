@@ -10,7 +10,7 @@ import android.view.animation.AnimationUtils;
 import com.exzone.lib.R;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:属性动画工具类
  * 时间: 2016/10/9.
  */

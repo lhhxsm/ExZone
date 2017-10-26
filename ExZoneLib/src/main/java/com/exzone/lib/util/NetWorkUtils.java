@@ -12,7 +12,7 @@ import android.net.NetworkInfo;
 import android.os.IBinder;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:网络 工具类
  * 时间：2016/10/10.
  */

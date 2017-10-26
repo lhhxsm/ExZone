@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 时间:2017/4/25.
  */

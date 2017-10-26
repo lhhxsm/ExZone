@@ -14,7 +14,7 @@ import rx.subjects.Subject;
 
 /**
  * 描述:用RxJava实现事件总线功能
- * 作者:李鸿浩
+ * 作者:lhh
  * 时间:2016/11/21.
  */
 

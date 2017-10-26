@@ -14,7 +14,7 @@ import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapResource;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 时间: 2017/2/6.
  */

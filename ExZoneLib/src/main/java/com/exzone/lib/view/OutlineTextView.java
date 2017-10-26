@@ -11,7 +11,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:文字描边
  * 时间：2016/10/9.
  */

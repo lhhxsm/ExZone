@@ -4,7 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:日志工具类
  * 时间: 2016/9/30.
  */

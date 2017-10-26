@@ -4,7 +4,7 @@ import android.media.MediaPlayer;
 import java.io.IOException;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:音视频播放工具类
  * 时间:2017/4/3.
  */

@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:配置文件工具类
  * 时间：2016/10/7.
  */

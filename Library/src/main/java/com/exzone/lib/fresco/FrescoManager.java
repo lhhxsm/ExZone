@@ -6,7 +6,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 时间: 2016/10/11.
  */

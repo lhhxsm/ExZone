@@ -8,7 +8,7 @@ import java.util.Stack;
 
 /**
  * 功能:Activity管理类
- * 作者:李鸿浩
+ * 作者:lhh
  * 时间:2016/11/17.
  */
 public class ActManager {

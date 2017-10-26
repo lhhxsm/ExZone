@@ -5,7 +5,7 @@ import com.android.lib.ExceptionCrashHandler;
 import com.android.lib.FixDexManager;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 时间:2017/5/11.
  */
@@ -27,7 +27,7 @@ public class GlobalApplication extends Application {
 
     try {
       //加载所有修复的Dex包
-      FixDexManager manager=new FixDexManager(this);
+      FixDexManager manager = new FixDexManager(this);
       manager.loadFixDex();
     } catch (Exception e) {
       e.printStackTrace();

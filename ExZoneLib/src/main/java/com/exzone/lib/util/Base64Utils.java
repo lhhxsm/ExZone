@@ -3,7 +3,7 @@ package com.exzone.lib.util;
 import java.nio.charset.Charset;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:Base64加密解密
  * 时间: 2016/10/9.
  */

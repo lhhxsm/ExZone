@@ -17,7 +17,7 @@ import com.bumptech.glide.module.GlideModule;
 import java.io.File;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 时间: 2017/2/7.
  */

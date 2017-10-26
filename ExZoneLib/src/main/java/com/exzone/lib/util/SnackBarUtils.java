@@ -5,7 +5,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 时间:2016/7/9.
  */

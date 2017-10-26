@@ -3,7 +3,7 @@ package com.exzone.lib.util;
 import java.util.regex.Pattern;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:正则表达式
  * 时间: 2016/9/30.
  */

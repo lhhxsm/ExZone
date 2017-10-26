@@ -6,7 +6,7 @@ import rx.schedulers.Schedulers;
 
 /**
  * 描述:RxJava调度管理
- * 作者:李鸿浩
+ * 作者:lhh
  * 时间:2016/11/21.
  */
 

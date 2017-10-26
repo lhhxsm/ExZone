@@ -9,7 +9,7 @@ import android.renderscript.ScriptIntrinsicBlur;
 import com.squareup.picasso.Transformation;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:模糊一张图片(API必须大于或者等于17才有效)
  * 时间：2016/10/17.
  */

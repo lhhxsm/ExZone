@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:手势放大、缩小，旋转图片控件
  * 时间:2017/4/4.
  */

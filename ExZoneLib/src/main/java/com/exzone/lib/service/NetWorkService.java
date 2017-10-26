@@ -11,7 +11,7 @@ import android.os.IBinder;
 import com.exzone.lib.util.NetWorkUtils;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:网络监听服务,需要自己在清单文件中配置服务
  * 时间：2016/10/10.
  */

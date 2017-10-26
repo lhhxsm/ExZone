@@ -4,15 +4,15 @@ import android.text.TextUtils;
 import java.util.Locale;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 时间:2017/5/23.
  */
 public class DaoUtil {
 
   //  Filed莫名出现这两个东西  $change serialVersionUID
-  private static String[] otherFieldName = new String[]{"serialVersionUID"};
-  private static String[] otherFieldNameContainsKey = new String[]{"$"};
+  private static String[] otherFieldName = new String[] { "serialVersionUID" };
+  private static String[] otherFieldNameContainsKey = new String[] { "$" };
 
   private DaoUtil() {
     throw new UnsupportedOperationException("禁止实例化");
@@ -49,11 +49,9 @@ public class DaoUtil {
     return string == null ? null : "";
   }
 
-
   /**
    * 排除不必要的字段
    *
-   * @param name
    * @return true表示此字段正常  false表示该字段是包含的在排除的范围内
    */
   public static boolean checkFiled(String name) {
@@ -73,10 +71,8 @@ public class DaoUtil {
           break;
         }
       }
-
     }
 
     return check;
-
   }
 }

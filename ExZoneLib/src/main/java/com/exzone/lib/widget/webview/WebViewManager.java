@@ -5,7 +5,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:WebView管理器，提供常用设置
  * 时间: 2016/10/10.
  */

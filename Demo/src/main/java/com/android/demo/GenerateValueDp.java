@@ -6,17 +6,15 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 时间:2017/5/25.
  */
 public class GenerateValueDp {
+  private final static String WTemplate = "<dimen name=\"wdp{0}\">{1}dip</dimen>\n";
   private int mBaseWidth = 640;// 基准值，设计图UI 是640*1136，那么就是以640位基准。
   private int destNum = 1280;// 生成多少份 基准单位值。
-
   private String dirStr = "./res";
-  private final static String WTemplate = "<dimen name=\"wdp{0}\">{1}dip</dimen>\n";
-
   private String mSupportSw = "320,360,384,400,480,600,720,800";
 
   public GenerateValueDp(int baseWidth) {
@@ -25,9 +23,17 @@ public class GenerateValueDp {
     File dir = new File(dirStr);
     if (!dir.exists()) {
       dir.mkdir();
-
     }
     System.out.println(dir.getAbsoluteFile());
+  }
+
+  public static float change(float a) {
+    int temp = (int) (a * 100);
+    return temp / 100f;
+  }
+
+  public static void main(String[] args) {
+    new GenerateValueDp(640).generate();
   }
 
   public void generate() {
@@ -50,8 +56,7 @@ public class GenerateValueDp {
     // 我们希望能有destNum份可供我们使用。
     // 当宽度为基准值640份时，宽度满屏，也就是320dp，超过基准宽度640的值可供高度使用。
     for (int i = 1; i <= destNum; i++) {
-      sbForWidth.append(WTemplate.replace("{0}", i + "").replace("{1}",
-          change(cellw * i) + ""));
+      sbForWidth.append(WTemplate.replace("{0}", i + "").replace("{1}", change(cellw * i) + ""));
     }
     sbForWidth.append("</resources>");
 
@@ -66,14 +71,5 @@ public class GenerateValueDp {
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
-  }
-
-  public static float change(float a) {
-    int temp = (int) (a * 100);
-    return temp / 100f;
-  }
-
-  public static void main(String[] args) {
-    new GenerateValueDp(640).generate();
   }
 }

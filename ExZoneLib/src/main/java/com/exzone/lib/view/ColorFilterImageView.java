@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:实现图像根据按下抬起动作变化颜色
  * 时间: 2016/10/10.
  */

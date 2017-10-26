@@ -141,30 +141,26 @@ public final class DiskLruCache implements Closeable {
      * "journal.tmp" will be used during compaction; that file should be deleted if
      * it exists when the cache is opened.
      */
-
+  private static final OutputStream NULL_OUTPUT_STREAM = new OutputStream() {
+    @Override public void write(int b) throws IOException {
+      // Eat all writes silently. Nom nom.
+    }
+  };
+  /** This cache uses a single background thread to evict entries. */
+  final ThreadPoolExecutor executorService =
+      new ThreadPoolExecutor(0, 1, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
   private final File directory;
   private final File journalFile;
   private final File journalFileTmp;
   private final File journalFileBackup;
   private final int appVersion;
-  private long maxSize;
   private final int valueCount;
-  private long size = 0;
-  private Writer journalWriter;
   private final LinkedHashMap<String, Entry> lruEntries =
       new LinkedHashMap<String, Entry>(0, 0.75f, true);
+  private long maxSize;
+  private long size = 0;
+  private Writer journalWriter;
   private int redundantOpCount;
-
-  /**
-   * To differentiate between old and current snapshots, each entry is given
-   * a sequence number each time an edit is committed. A snapshot is stale if
-   * its sequence number is not equal to its entry's sequence number.
-   */
-  private long nextSequenceNumber = 0;
-
-  /** This cache uses a single background thread to evict entries. */
-  final ThreadPoolExecutor executorService =
-      new ThreadPoolExecutor(0, 1, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
   private final Callable<Void> cleanupCallable = new Callable<Void>() {
     public Void call() throws Exception {
       synchronized (DiskLruCache.this) {
@@ -180,6 +176,12 @@ public final class DiskLruCache implements Closeable {
       return null;
     }
   };
+  /**
+   * To differentiate between old and current snapshots, each entry is given
+   * a sequence number each time an edit is committed. A snapshot is stale if
+   * its sequence number is not equal to its entry's sequence number.
+   */
+  private long nextSequenceNumber = 0;
 
   private DiskLruCache(File directory, int appVersion, int valueCount, long maxSize) {
     this.directory = directory;
@@ -245,8 +247,28 @@ public final class DiskLruCache implements Closeable {
     return cache;
   }
 
+  private static void deleteIfExists(File file) throws IOException {
+    if (file.exists() && !file.delete()) {
+      throw new IOException();
+    }
+  }
+
+  private static void renameTo(File from, File to, boolean deleteDestination) throws IOException {
+    if (deleteDestination) {
+      deleteIfExists(to);
+    }
+    if (!from.renameTo(to)) {
+      throw new IOException();
+    }
+  }
+
+  private static String inputStreamToString(InputStream in) throws IOException {
+    return IOUtil.readFully(new InputStreamReader(in, Constants.UTF_8));
+  }
+
   private void readJournal() throws IOException {
-    StrictLineReader reader = new StrictLineReader(new FileInputStream(journalFile), Constants.US_ASCII);
+    StrictLineReader reader =
+        new StrictLineReader(new FileInputStream(journalFile), Constants.US_ASCII);
     try {
       String magic = reader.readLine();
       String version = reader.readLine();
@@ -393,21 +415,6 @@ public final class DiskLruCache implements Closeable {
 
     journalWriter = new BufferedWriter(
         new OutputStreamWriter(new FileOutputStream(journalFile, true), Constants.US_ASCII));
-  }
-
-  private static void deleteIfExists(File file) throws IOException {
-    if (file.exists() && !file.delete()) {
-      throw new IOException();
-    }
-  }
-
-  private static void renameTo(File from, File to, boolean deleteDestination) throws IOException {
-    if (deleteDestination) {
-      deleteIfExists(to);
-    }
-    if (!from.renameTo(to)) {
-      throw new IOException();
-    }
   }
 
   /**
@@ -676,10 +683,6 @@ public final class DiskLruCache implements Closeable {
     }
   }
 
-  private static String inputStreamToString(InputStream in) throws IOException {
-    return IOUtil.readFully(new InputStreamReader(in, Constants.UTF_8));
-  }
-
   /** A snapshot of the values for an entry. */
   public final class Snapshot implements Closeable {
     private final String key;
@@ -724,12 +727,6 @@ public final class DiskLruCache implements Closeable {
       }
     }
   }
-
-  private static final OutputStream NULL_OUTPUT_STREAM = new OutputStream() {
-    @Override public void write(int b) throws IOException {
-      // Eat all writes silently. Nom nom.
-    }
-  };
 
   /** Edits the values for an entry. */
   public final class Editor {

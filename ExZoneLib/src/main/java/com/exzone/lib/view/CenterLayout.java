@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.RemoteViews;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:使子控件居中
  * 时间：2016/10/9.
  */

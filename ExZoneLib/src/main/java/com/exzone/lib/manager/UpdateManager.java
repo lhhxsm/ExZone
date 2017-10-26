@@ -25,7 +25,7 @@ import rx.Observable;
 import rx.Subscriber;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:检查更新工具类
  * 时间: 2017/2/8.
  * <p>

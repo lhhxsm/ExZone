@@ -12,7 +12,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:文件操作工具类,提供一套统一的文件操作util,以屏蔽底层的机型系统的差异性等情况。
  * 时间:2017/4/3.
  */

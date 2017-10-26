@@ -17,6 +17,24 @@ import java.io.Reader;
 
 public class MainActivity extends BaseSkinActivity {
 
+  public static String readStr(InputStream in, String charset) throws IOException {
+    if (TextUtils.isEmpty(charset)) {
+      charset = "UTF-8";
+    }
+
+    if (!(in instanceof BufferedInputStream)) {
+      in = new BufferedInputStream(in);
+    }
+    Reader reader = new InputStreamReader(in, charset);
+    StringBuilder sb = new StringBuilder();
+    char[] buf = new char[1024];
+    int len;
+    while ((len = reader.read(buf)) >= 0) {
+      sb.append(buf, 0, len);
+    }
+    return sb.toString();
+  }
+
   @Override protected void setContentView() {
     setContentView(R.layout.activity_main);
   }
@@ -107,24 +125,6 @@ public class MainActivity extends BaseSkinActivity {
         Toast.makeText(this, "修复失败", Toast.LENGTH_SHORT).show();
       }
     }
-  }
-
-  public static String readStr(InputStream in, String charset) throws IOException {
-    if (TextUtils.isEmpty(charset)) {
-      charset = "UTF-8";
-    }
-
-    if (!(in instanceof BufferedInputStream)) {
-      in = new BufferedInputStream(in);
-    }
-    Reader reader = new InputStreamReader(in, charset);
-    StringBuilder sb = new StringBuilder();
-    char[] buf = new char[1024];
-    int len;
-    while ((len = reader.read(buf)) >= 0) {
-      sb.append(buf, 0, len);
-    }
-    return sb.toString();
   }
 }
 

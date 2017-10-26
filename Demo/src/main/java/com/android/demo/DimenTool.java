@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 时间:2017/5/24.
  */
@@ -89,7 +89,6 @@ public class DimenTool {
       writeFile(sw720File, sw720.toString());
       writeFile(sw800File, sw800.toString());
       writeFile(sw820File, sw820.toString());
-
     } catch (IOException e) {
       e.printStackTrace();
     } finally {

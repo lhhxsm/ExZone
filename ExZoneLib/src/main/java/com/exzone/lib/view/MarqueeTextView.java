@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:一直跑马灯的textView
  * 时间：2016/10/8.
  */

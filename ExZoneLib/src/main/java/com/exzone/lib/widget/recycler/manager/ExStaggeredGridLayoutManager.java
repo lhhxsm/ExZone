@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:不规则排列（类似于瀑布流）的布局管理器
  * 时间:2016/7/6.
  */

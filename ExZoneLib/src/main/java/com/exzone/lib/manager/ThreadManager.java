@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:线程管理
  * 时间: 2017/1/23.
  */

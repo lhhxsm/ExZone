@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:View事件注解的Annotation
  * 时间:2017/5/4.
  */

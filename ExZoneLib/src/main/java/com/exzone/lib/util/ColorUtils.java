@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:颜色生成器
  * 时间:2016/7/9.
  */

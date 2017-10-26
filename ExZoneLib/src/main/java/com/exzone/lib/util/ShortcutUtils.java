@@ -9,7 +9,7 @@ import android.net.Uri;
 import com.exzone.lib.R;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:桌面快捷图标 需要权限: com.android.launcher.permission.INSTALL_SHORTCUT com.android.launcher.permission.UNINSTALL_SHORTCUT
  * 时间: 2016/10/9.
  */

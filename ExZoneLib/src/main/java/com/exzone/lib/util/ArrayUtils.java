@@ -3,7 +3,7 @@ package com.exzone.lib.util;
 import android.text.TextUtils;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:数组工具类
  * 时间:2016/7/9.
  */

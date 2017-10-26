@@ -5,7 +5,7 @@ import android.widget.Toast;
 
 /**
  * 描述:Toast工具类
- * 作者:李鸿浩
+ * 作者:lhh
  * 时间:2016/11/20.
  */
 

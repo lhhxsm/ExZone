@@ -10,7 +10,7 @@ import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:加密工具类
  * 时间:2016/7/9.
  */

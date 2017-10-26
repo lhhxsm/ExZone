@@ -19,7 +19,7 @@ import java.util.Locale;
 
 /**
  * 功能:
- * 作者:李鸿浩
+ * 作者:lhh
  * 时间:2016/11/18.
  */
 public class CrashHandler implements Thread.UncaughtExceptionHandler {

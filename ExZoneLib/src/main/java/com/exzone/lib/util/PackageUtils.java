@@ -6,7 +6,7 @@ import android.net.Uri;
 import java.io.File;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 时间: 2017/1/23.
  */

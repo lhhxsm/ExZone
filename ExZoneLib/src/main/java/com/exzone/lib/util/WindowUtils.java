@@ -6,7 +6,7 @@ import android.content.res.Configuration;
 import android.view.Surface;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:窗口工具类
  * 时间: 2016/10/10.
  */

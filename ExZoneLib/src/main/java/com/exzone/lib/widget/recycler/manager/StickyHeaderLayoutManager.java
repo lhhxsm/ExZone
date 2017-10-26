@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:必须与关联使用SectioningAdapter
  * 时间:2016/7/11.
  */

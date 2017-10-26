@@ -15,7 +15,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:自定义可以放大缩小、移动的图片控件。
  * 时间: on 2017/3/12.
  */

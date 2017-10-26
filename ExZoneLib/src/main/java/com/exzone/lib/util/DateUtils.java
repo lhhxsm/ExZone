@@ -15,7 +15,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:日期工具类
  * 时间：2016/10/9.
  */

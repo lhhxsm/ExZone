@@ -10,7 +10,7 @@ import com.exzone.lib.util.ScreenUtils;
 import java.util.List;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:显示1~N张图片的View
  * 时间: 2016/10/10.
  */

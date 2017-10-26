@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:头部挤压
  * 时间:2016/7/11.
  * 注:刷新:SectioningAdapter.notify*

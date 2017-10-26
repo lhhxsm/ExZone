@@ -11,16 +11,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 时间:2017/5/23.
  */
 public class Dao<T> implements IDao<T> {
 
-  private SQLiteDatabase mSQLiteDatabase;
-  private Class<T> mClazz;
   private static final Object[] mPutMethodArgs = new Object[2];
   private static final Map<String, Method> mPutMethods = new ArrayMap<>();
+  private SQLiteDatabase mSQLiteDatabase;
+  private Class<T> mClazz;
 
   @Override public void init(SQLiteDatabase database, Class<T> clazz) {
     mSQLiteDatabase = database;

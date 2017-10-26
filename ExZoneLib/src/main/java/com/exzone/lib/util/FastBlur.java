@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:毛玻璃效果
  * 时间: 2016/10/9.
  */

@@ -3,7 +3,7 @@ package com.exzone.lib.util;
 import java.text.DecimalFormat;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:数学相关的工具类
  * 时间: 2016/10/10.
  */

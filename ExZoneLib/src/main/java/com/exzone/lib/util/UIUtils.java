@@ -4,7 +4,7 @@ import android.os.Handler;
 import com.exzone.lib.base.BaseApplication;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:UI工具类
  * 时间: 2016/9/30.
  */

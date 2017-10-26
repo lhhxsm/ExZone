@@ -13,7 +13,7 @@ import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:可以自带删除按键的EditText,图标设置方法是drawableRight
  * 时间：2016/10/6.
  */

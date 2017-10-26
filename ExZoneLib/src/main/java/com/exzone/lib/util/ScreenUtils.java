@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:屏幕工具类:屏幕宽高,截屏,单位转换等
  * 时间：2016/10/10.
  */

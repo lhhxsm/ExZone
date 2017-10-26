@@ -5,7 +5,7 @@ import android.view.View;
 import com.exzone.lib.util.Logger;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:ViewPager切换动画,mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
  * 3.0(API 11) 以下的不兼容
  * 时间: 2016/10/10.

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.telephony.TelephonyManager;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:手机信息工具类
  * 时间：2016/10/9.
  */

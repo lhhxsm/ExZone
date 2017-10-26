@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:用作wrap_content的RecyclerView
  * 时间: 2017/2/7.
  */

@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:录音工具类
  * 时间:2017/4/3.
  */

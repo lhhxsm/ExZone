@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * // mNavigator = new FragmentNavigator(getSupportFragmentManager(), new FragmentAdapter(),
  * R.id.container);

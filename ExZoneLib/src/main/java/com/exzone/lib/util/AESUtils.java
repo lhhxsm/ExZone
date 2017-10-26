@@ -7,7 +7,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:AES加密解密
  * 时间: 2016/10/9.
  */

@@ -5,7 +5,7 @@ import android.os.Environment;
 import android.os.StatFs;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:StatFs兼容类:由于StatFs的API从API18之后发生了较大的变化，主要是Android官方认识到之前的API用起来不方便并且有坑，于是新添加了几个方法来替代旧的方法
  * 时间: 2016/10/10.
  */

@@ -9,7 +9,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:具有反弹效果的ScrollView，能够兼容横向的滑动
  * 时间：2016/10/7.
  */

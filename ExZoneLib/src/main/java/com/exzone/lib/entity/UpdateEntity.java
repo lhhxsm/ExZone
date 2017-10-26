@@ -1,7 +1,7 @@
 package com.exzone.lib.entity;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:版本信息实体类
  * 时间: 2017/3/25.
  */

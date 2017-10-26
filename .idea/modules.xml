@@ -3,10 +3,16 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BaseLibrary/BaseLibrary.iml" filepath="$PROJECT_DIR$/BaseLibrary/BaseLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BaseLibrary/BaseLibrary.iml" filepath="$PROJECT_DIR$/BaseLibrary/BaseLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Demo/Demo.iml" filepath="$PROJECT_DIR$/Demo/Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/Demo/Demo.iml" filepath="$PROJECT_DIR$/Demo/Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/ExZone.iml" filepath="$PROJECT_DIR$/ExZone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExZone.iml" filepath="$PROJECT_DIR$/ExZone.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ExZoneLib/ExZoneLib.iml" filepath="$PROJECT_DIR$/ExZoneLib/ExZoneLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/ExZoneLib/ExZoneLib.iml" filepath="$PROJECT_DIR$/ExZoneLib/ExZoneLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/FrameLibrary/FrameLibrary.iml" filepath="$PROJECT_DIR$/FrameLibrary/FrameLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FrameLibrary/FrameLibrary.iml" filepath="$PROJECT_DIR$/FrameLibrary/FrameLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Library/Library.iml" filepath="$PROJECT_DIR$/Library/Library.iml" />
       <module fileurl="file://$PROJECT_DIR$/Library/Library.iml" filepath="$PROJECT_DIR$/Library/Library.iml" />
     </modules>
   </component>

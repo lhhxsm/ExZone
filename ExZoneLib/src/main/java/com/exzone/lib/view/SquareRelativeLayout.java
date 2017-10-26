@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:RelativeLayout将始终是正方形 - 相同的宽度和高度，其中高度基于宽度。
  * 时间: 2016/10/11.
  */

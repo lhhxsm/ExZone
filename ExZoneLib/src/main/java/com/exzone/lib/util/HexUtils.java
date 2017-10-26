@@ -1,7 +1,7 @@
 package com.exzone.lib.util;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:十六进制转换类
  * 时间:2017/4/3.
  */

@@ -16,7 +16,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:IO工具类
  * 时间：2016/10/8.
  */

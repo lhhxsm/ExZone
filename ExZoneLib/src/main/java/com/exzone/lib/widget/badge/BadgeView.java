@@ -12,7 +12,7 @@ import com.exzone.lib.R;
 import com.exzone.lib.util.ScreenUtils;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:用于需要圆角矩形框背景的TextView的情况,减少直接使用TextView时引入的shape资源文件
  * 时间:2017/3/26.
  */

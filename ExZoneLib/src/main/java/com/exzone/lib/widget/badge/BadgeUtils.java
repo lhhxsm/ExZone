@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import com.exzone.lib.R;
 
 /**
- * 作者:李鸿浩
+ * 作者:lhh
  * 描述:
  * 未读消息提示View,显示小红点或者带有数字的红点:
  * 数字一位,圆
